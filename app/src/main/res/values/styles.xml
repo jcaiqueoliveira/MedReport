@@ -8,6 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textViewStyle">@style/TextView</item>
         <item name="android:buttonStyle">@style/button</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -26,8 +28,5 @@
     <style name="button" parent="Base.Widget.AppCompat.Button">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:background">@color/colorPrimary</item>
-        <item name="colorControlNormal">@color/colorPrimary</item>
-        <item name="colorControlActivated">@color/colorPrimaryDark</item>
-        <item name="colorControlHighlight">@color/colorAccent</item>
     </style>
 </resources>

@@ -3,6 +3,6 @@
     <item name="ic_menu_report" type="drawable">@drawable/ic_assignment</item>
     <item name="ic_menu_invite" type="drawable">@drawable/ic_drafts</item>
     <item name="ic_menu_manage" type="drawable">@android:drawable/ic_menu_manage</item>
-    <item name="ic_menu_share" type="drawable">@android:drawable/ic_menu_share</item>
+    <item name="ic_menu_share" type="drawable">@drawable/ic_share</item>
     <item name="ic_menu_send" type="drawable">@android:drawable/ic_menu_send</item>
 </resources>

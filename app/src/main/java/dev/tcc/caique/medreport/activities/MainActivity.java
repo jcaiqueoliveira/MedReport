@@ -1,5 +1,6 @@
 package dev.tcc.caique.medreport.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,9 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import dev.tcc.caique.medreport.R;
+import dev.tcc.caique.medreport.fragments.AboutFragment;
 import dev.tcc.caique.medreport.fragments.InviteFragment;
 import dev.tcc.caique.medreport.fragments.ProfileFragment;
 import dev.tcc.caique.medreport.fragments.ReportFragment;
+import dev.tcc.caique.medreport.fragments.ShareFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -85,16 +88,22 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_profile) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container,new ProfileFragment()).addToBackStack(null).commit();
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_report) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container,new ReportFragment()).addToBackStack(null).commit();
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_invite) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container,new InviteFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            //getSupportFragmentManager().beginTransaction().replace(R.id.container,new ShareFragment()).addToBackStack(null).commit();
+            String shareBody = "Here is the share content body";
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(sharingIntent, "Compartilhar Usando"));
+        } else if (id == R.id.nav_about) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container,new AboutFragment()).addToBackStack(null).commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

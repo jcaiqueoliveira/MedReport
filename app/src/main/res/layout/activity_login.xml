@@ -19,22 +19,25 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Usuário"/>
+            android:hint="Usuário"
+            />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Login"/>
+            android:inputType="textPassword"
+            android:hint="Senha"/>
     </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatButton
+            android:id="@+id/enterButton"
             android:layout_width="match_parent"
             android:text="Entrar"
             android:layout_height="wrap_content"

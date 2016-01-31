@@ -3,7 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="dev.tcc.caique.medreport.fragments.ReportFragment">
-<android.support.v7.widget.RecyclerView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Nenhuma solicitação de conexão encontrada"
+        android:layout_gravity="center" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/inviteRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
+
 </FrameLayout>
