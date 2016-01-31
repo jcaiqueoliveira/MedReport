@@ -19,19 +19,22 @@
 
     <item android:title="Aplicativo">
         <menu>
+            <group android:checkableBehavior="single">
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Compartilhe" />
             <item
                 android:id="@+id/nav_about"
-                android:icon="@mipmap/ic_launcher"
+                android:icon="@drawable/ic_info"
                 android:title="Sobre" />
             <item
                 android:id="@+id/nav_exit"
                 android:icon="@drawable/ic_exit_to_app"
                 android:title="Sair" />
+            </group>
         </menu>
+
     </item>
 
 </menu>

@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_invite) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container,new InviteFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_share) {
-            //getSupportFragmentManager().beginTransaction().replace(R.id.container,new ShareFragment()).addToBackStack(null).commit();
             String shareBody = "Here is the share content body";
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
