@@ -17,9 +17,8 @@ import android.view.MenuItem;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.fragments.AboutFragment;
 import dev.tcc.caique.medreport.fragments.InviteFragment;
-import dev.tcc.caique.medreport.fragments.ProfileFragment;
+import dev.tcc.caique.medreport.fragments.ProfilePacientFragment;
 import dev.tcc.caique.medreport.fragments.ReportFragment;
-import dev.tcc.caique.medreport.fragments.ShareFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container,new ProfileFragment()).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container,new ProfilePacientFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_report) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container,new ReportFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_invite) {
@@ -104,6 +103,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(Intent.createChooser(sharingIntent, "Compartilhar Usando"));
         } else if (id == R.id.nav_about) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container,new AboutFragment()).addToBackStack(null).commit();
+        }else if (id == R.id.nav_exit){
+            finish();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

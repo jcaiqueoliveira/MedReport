@@ -8,4 +8,5 @@ public class Profile {
     private String email;
     private String idade;
     private int tipo;
+    private String crmm;
 }

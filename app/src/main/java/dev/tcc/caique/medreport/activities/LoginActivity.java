@@ -14,6 +14,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        //Todo https://developers.google.com/identity/sign-in/android/start-integrating
     }
     @OnClick({R.id.enterButton})
     public void onClick(){

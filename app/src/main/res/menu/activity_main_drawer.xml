@@ -27,6 +27,10 @@
                 android:id="@+id/nav_about"
                 android:icon="@mipmap/ic_launcher"
                 android:title="Sobre" />
+            <item
+                android:id="@+id/nav_exit"
+                android:icon="@drawable/ic_exit_to_app"
+                android:title="Sair" />
         </menu>
     </item>
 
