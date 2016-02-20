@@ -15,7 +15,7 @@ public class InviteAdapter extends RecyclerView.Adapter<InviteAdapter.ViewHolder
 
     @Override
     public ViewHolderInvite onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolderInvite(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_invite_card_list, null));
+        return new ViewHolderInvite(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_invite_card_list,parent,false));
     }
 
     @Override
