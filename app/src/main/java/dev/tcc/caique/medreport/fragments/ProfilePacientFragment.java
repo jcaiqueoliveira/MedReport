@@ -23,6 +23,7 @@ public class ProfilePacientFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        //Todo criar condição para selecionar perfil medico ou paciente
         View v = inflater.inflate(R.layout.fragment_profile_pacient, container, false);
         return v;
     }

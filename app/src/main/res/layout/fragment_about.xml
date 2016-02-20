@@ -1,13 +1,29 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context="dev.tcc.caique.medreport.fragments.AboutFragment">
-
+    <ImageView
+        android:layout_width="164dp"
+        android:layout_height="221dp"
+        android:src="@drawable/medLogo"/>
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-</FrameLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/about"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="center"
+        android:textSize="18sp"/>
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/buttonContact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contate-me!"
+        android:layout_gravity="center"
+        android:textAllCaps="false"/>
+</LinearLayout>
