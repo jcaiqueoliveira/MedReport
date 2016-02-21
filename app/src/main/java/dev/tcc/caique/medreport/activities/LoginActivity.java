@@ -19,5 +19,6 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick({R.id.enterButton})
     public void onClick(){
         startActivity(new Intent(LoginActivity.this,MainActivity.class));
+        finish();
     }
 }

@@ -3,9 +3,9 @@ package dev.tcc.caique.medreport.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,15 +13,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.fragments.AboutFragment;
+import dev.tcc.caique.medreport.fragments.AccompanimentsFragment;
 import dev.tcc.caique.medreport.fragments.InviteFragment;
 import dev.tcc.caique.medreport.fragments.ProfilePacientFragment;
 import dev.tcc.caique.medreport.fragments.ReportFragment;
+import dev.tcc.caique.medreport.utils.DialogUtils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    public FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +33,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        if(savedInstanceState == null){
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new AccompanimentsFragment(), "HOME").addToBackStack(null).commit();
+        }
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,9 +60,12 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (isAdded("HOME")) {
+            DialogUtils.createDialogCloseApp(this, "Deseja realmente fechar o aplicativo?");
         } else {
             super.onBackPressed();
         }
+        //
     }
 
     @Override
@@ -88,11 +97,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container,new ProfilePacientFragment()).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new ProfilePacientFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_report) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container,new ReportFragment()).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new ReportFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_invite) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container,new InviteFragment()).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new InviteFragment()).addToBackStack(null).commit();
+        } else if (id == R.id.nav_chat) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new AccompanimentsFragment(), "HOME").addToBackStack(null).commit();
         } else if (id == R.id.nav_share) {
             String shareBody = "Here is the share content body";
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -101,12 +112,23 @@ public class MainActivity extends AppCompatActivity
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(sharingIntent, "Compartilhar Usando"));
         } else if (id == R.id.nav_about) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container,new AboutFragment()).addToBackStack(null).commit();
-        }else if (id == R.id.nav_exit){
-            finish();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new AboutFragment()).addToBackStack(null).commit();
+        } else if (id == R.id.nav_exit) {
+            DialogUtils.createDialogCloseApp(this, "Deseja realmente sair do aplicativo?");
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private boolean isAdded(String TAG) {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG);
+        if (fragment != null) {
+            if (fragment.isAdded()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

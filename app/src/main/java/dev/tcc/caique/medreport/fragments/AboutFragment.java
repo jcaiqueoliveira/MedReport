@@ -15,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dev.tcc.caique.medreport.R;
+import dev.tcc.caique.medreport.activities.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +34,7 @@ public class AboutFragment extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_about, container, false);
         ButterKnife.bind(this,v);
+        ((MainActivity)getActivity()).fab.hide();
         return v;
     }
     @OnClick({R.id.buttonContact})

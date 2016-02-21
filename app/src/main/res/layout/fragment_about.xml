@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="164dp"
         android:layout_height="221dp"
-        android:src="@drawable/medLogo"/>
+        android:src="@drawable/medlogo"/>
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="wrap_content"
