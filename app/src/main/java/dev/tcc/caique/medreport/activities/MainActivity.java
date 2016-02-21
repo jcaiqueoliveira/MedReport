@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new AboutFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_exit) {
+            b = false;
             DialogUtils.createDialogCloseApp(this, "Deseja realmente sair do aplicativo?");
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_id": "medreport-ca876",
+    "project_number": "962212314623",
+    "name": "medreport"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:962212314623:android:2c1bbc04838b9c24",
+        "client_id": "android:dev.tcc.caique.medreport",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "dev.tcc.caique.medreport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "962212314623-v84a66uqj2ofh5b6o26dnlh13dol1hkk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.tcc.caique.medreport",
+            "certificate_hash": "A00D337316E41FD788DD525F2F70BB8E2EB1BB7B"
+          }
+        },
+        {
+          "client_id": "962212314623-00e42vhfqrt6o0bk4gqv9tfgvdlo9nd9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
