@@ -26,16 +26,14 @@ import dev.tcc.caique.medreport.utils.DialogUtils;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public FloatingActionButton fab;
-
+    public NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(savedInstanceState == null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, new AccompanimentsFragment(), "HOME").addToBackStack(null).commit();
-        }
+
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,8 +49,11 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        if(savedInstanceState == null){
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new AccompanimentsFragment(), "HOME").addToBackStack(null).commit();
+        }
     }
 
     @Override
@@ -94,8 +95,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        boolean b = true;
         int id = item.getItemId();
-
         if (id == R.id.nav_profile) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new ProfilePacientFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_report) {
@@ -105,6 +106,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_chat) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new AccompanimentsFragment(), "HOME").addToBackStack(null).commit();
         } else if (id == R.id.nav_share) {
+            b = false;
             String shareBody = "Here is the share content body";
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
@@ -117,7 +119,8 @@ public class MainActivity extends AppCompatActivity
             DialogUtils.createDialogCloseApp(this, "Deseja realmente sair do aplicativo?");
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        if(b)
+            drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 

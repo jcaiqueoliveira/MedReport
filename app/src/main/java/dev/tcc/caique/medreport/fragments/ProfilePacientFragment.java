@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import dev.tcc.caique.medreport.R;
+import dev.tcc.caique.medreport.activities.MainActivity;
+import dev.tcc.caique.medreport.utils.Constants;
 
 public class ProfilePacientFragment extends Fragment {
 
@@ -25,6 +27,12 @@ public class ProfilePacientFragment extends Fragment {
         // Inflate the layout for this fragment
         //Todo criar condição para selecionar perfil medico ou paciente
         View v = inflater.inflate(R.layout.fragment_profile_pacient, container, false);
+        ((MainActivity)getActivity()).fab.hide();
         return v;
+    }
+    @Override
+    public void onResume() {
+        ((MainActivity) getActivity()).navigationView.setCheckedItem(Constants.PROFILE);
+        super.onResume();
     }
 }

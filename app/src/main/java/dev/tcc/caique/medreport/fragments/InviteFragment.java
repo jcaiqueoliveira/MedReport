@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import dev.tcc.caique.medreport.R;
+import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.adapters.InviteAdapter;
 import dev.tcc.caique.medreport.adapters.ReportAdapter;
+import dev.tcc.caique.medreport.utils.Constants;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,11 +32,16 @@ public class InviteFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_invite, container, false);
+        ((MainActivity)getActivity()).fab.show();
         recyclerView = (RecyclerView) v.findViewById(R.id.inviteRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         inviteAdapter = new InviteAdapter();
         recyclerView.setAdapter(inviteAdapter);
         return v;
     }
-
+    @Override
+    public void onResume() {
+        ((MainActivity) getActivity()).navigationView.setCheckedItem(Constants.INVITE);
+        super.onResume();
+    }
 }

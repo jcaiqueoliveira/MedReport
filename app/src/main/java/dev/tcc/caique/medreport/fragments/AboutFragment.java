@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
+import dev.tcc.caique.medreport.utils.Constants;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,5 +48,10 @@ public class AboutFragment extends Fragment {
         Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
         sendIntent.setData(uri);
         startActivity(Intent.createChooser(sendIntent, "Escolha um aplicativo"));
+    }
+    @Override
+    public void onResume() {
+        ((MainActivity) getActivity()).navigationView.setCheckedItem(Constants.ABOUT);
+        super.onResume();
     }
 }

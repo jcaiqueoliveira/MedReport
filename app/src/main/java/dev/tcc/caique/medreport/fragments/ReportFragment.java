@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import dev.tcc.caique.medreport.R;
+import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.adapters.ReportAdapter;
+import dev.tcc.caique.medreport.utils.Constants;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,11 +31,16 @@ public class ReportFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_report, container, false);
+        ((MainActivity)getActivity()).fab.show();
         recyclerView = (RecyclerView) v.findViewById(R.id.reportRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         reportAdapter = new ReportAdapter();
         recyclerView.setAdapter(reportAdapter);
         return v;
     }
-
+    @Override
+    public void onResume() {
+        ((MainActivity) getActivity()).navigationView.setCheckedItem(Constants.REPORT);
+        super.onResume();
+    }
 }
