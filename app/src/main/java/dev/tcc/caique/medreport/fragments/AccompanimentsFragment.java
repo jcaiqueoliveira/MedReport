@@ -44,7 +44,6 @@ public class AccompanimentsFragment extends Fragment {
         accompanimentsList.setLayoutManager(new LinearLayoutManager(getActivity()));
         accompanimentsAdapter = new AccompanimentsAdapter();
         accompanimentsList.setAdapter(accompanimentsAdapter);
-        getAccounts();
         return v;
     }
 
@@ -52,18 +51,5 @@ public class AccompanimentsFragment extends Fragment {
     public void onResume() {
         ((MainActivity) getActivity()).navigationView.setCheckedItem(Constants.ACCOMPANIMENTS);
         super.onResume();
-    }
-
-    private void getAccounts(){
-        Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
-        Account[] accounts = AccountManager.get(getContext()).getAccounts();
-        for (Account account : accounts) {
-            if (emailPattern.matcher(account.name).matches()) {
-                String possibleEmail = account.name;
-                String type = account.type;
-                Log.i("Email", possibleEmail);
-                Log.i("Type", type);
-            }
-        }
     }
 }
