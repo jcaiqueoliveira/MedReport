@@ -5,4 +5,5 @@ package dev.tcc.caique.medreport.utils;
  */
 public class Chat {
     //Todo http://socket.io/get-started/chat/
+    //http://socket.io/blog/native-socket-io-and-android/#
 }
