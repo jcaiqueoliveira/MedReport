@@ -2,7 +2,6 @@ package dev.tcc.caique.medreport.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -16,18 +15,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.fragments.AboutFragment;
 import dev.tcc.caique.medreport.fragments.AccompanimentsFragment;
 import dev.tcc.caique.medreport.fragments.InviteFragment;
 import dev.tcc.caique.medreport.fragments.ProfilePacientFragment;
 import dev.tcc.caique.medreport.fragments.ReportFragment;
-import dev.tcc.caique.medreport.models.Singleton;
 import dev.tcc.caique.medreport.utils.DialogUtils;
 
 public class MainActivity extends AppCompatActivity

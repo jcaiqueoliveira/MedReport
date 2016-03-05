@@ -1,19 +1,13 @@
 package dev.tcc.caique.medreport.fragments;
 
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,6 +23,7 @@ public class AccompanimentsFragment extends Fragment {
     @Bind(R.id.accompanimentsList)
     RecyclerView accompanimentsList;
     private AccompanimentsAdapter accompanimentsAdapter;
+
     public AccompanimentsFragment() {
         // Required empty public constructor
     }
@@ -38,8 +33,8 @@ public class AccompanimentsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_accompaniments, container, false);
-        ButterKnife.bind(this,v);
+        View v = inflater.inflate(R.layout.fragment_accompaniments, container, false);
+        ButterKnife.bind(this, v);
         ((MainActivity) getActivity()).fab.hide();
         accompanimentsList.setLayoutManager(new LinearLayoutManager(getActivity()));
         accompanimentsAdapter = new AccompanimentsAdapter();

@@ -9,9 +9,11 @@
     tools:context=".fragments.ProfilePacientFragment">
 
     <LinearLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:clickable="false">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="wrap_content"
@@ -24,6 +26,7 @@
             android:layout_height="wrap_content">
 
             <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/edtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nome" />
@@ -41,6 +44,7 @@
                 android:layout_height="wrap_content">
 
                 <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/edtAge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Idade" />
@@ -52,6 +56,7 @@
                 android:layout_height="wrap_content">
 
                 <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/edtGender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Sexo" />
@@ -70,6 +75,7 @@
                 android:layout_height="wrap_content">
 
                 <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/edtHeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Altura" />
@@ -81,6 +87,7 @@
                 android:layout_height="wrap_content">
 
                 <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/edtWeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Peso" />
@@ -90,6 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/edtProblem1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text|textMultiLine"
@@ -100,6 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/edtProblem2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text|textMultiLine"
@@ -109,6 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/edtProblem3"
                 android:layout_width="match_parent"
                 android:inputType="text|textMultiLine"
                 android:layout_height="wrap_content"
