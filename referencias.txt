@@ -1,0 +1,9 @@
+Chat android links:
+*https://www.quora.com/Which-is-the-best-Android-API-to-develop-a-chat-application
+*https://sendbird.com/
+*https://github.com/nkzawa/socket.io-android-chat
+
+
+API : 
+heroku
+hello world on heroku: http://pythonclub.com.br/publicando-seu-hello-world-no-heroku.html
