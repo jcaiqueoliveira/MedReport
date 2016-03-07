@@ -37,7 +37,7 @@ public class AccompanimentsFragment extends Fragment {
         ButterKnife.bind(this, v);
         ((MainActivity) getActivity()).fab.hide();
         accompanimentsList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        accompanimentsAdapter = new AccompanimentsAdapter();
+        accompanimentsAdapter = new AccompanimentsAdapter(getActivity());
         accompanimentsList.setAdapter(accompanimentsAdapter);
         return v;
     }

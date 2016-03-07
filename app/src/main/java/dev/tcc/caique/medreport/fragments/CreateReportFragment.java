@@ -9,30 +9,26 @@ import android.view.ViewGroup;
 
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
-import dev.tcc.caique.medreport.utils.Constants;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileMedical extends Fragment {
+public class CreateReportFragment extends Fragment {
 
 
-    public ProfileMedical() {
+    public CreateReportFragment() {
         // Required empty public constructor
     }
 
+    private View v;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_profile_medical, container, false);
-        ((MainActivity)getActivity()).fab.hide();
+        v = inflater.inflate(R.layout.fragment_create_report, container, false);
+        ((MainActivity) getActivity()).fab.hide();
         return v;
     }
-    @Override
-    public void onResume() {
-        ((MainActivity) getActivity()).navigationView.setCheckedItem(Constants.PROFILE);
-        super.onResume();
-    }
+
 }

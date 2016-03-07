@@ -1,5 +1,6 @@
 package dev.tcc.caique.medreport.fragments;
 
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,36 +9,31 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.utils.Constants;
 import dev.tcc.caique.medreport.utils.Utils;
 
-public class ProfilePacientFragment extends Fragment {
-    private boolean isEditing = false;
+/**
+ * A simple {@link Fragment} subclass.
+ */
+
+public class ProfileMedicalFragment extends Fragment {
+
+    private boolean isEditing;
     private View v;
 
-    public ProfilePacientFragment() {
+    public ProfileMedicalFragment() {
         // Required empty public constructor
     }
 
-    //Todo http://developer.android.com/guide/topics/ui/menus.html#ChangingTheMenu
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        //Todo criar condição para selecionar perfil medico ou paciente
-        v = inflater.inflate(R.layout.fragment_profile_pacient, container, false);
-        setHasOptionsMenu(true);
+        v = inflater.inflate(R.layout.fragment_profile_medical, container, false);
         Utils.setViewAndChildrenEnabled(v, false);
         ((MainActivity) getActivity()).fab.hide();
         return v;
@@ -72,7 +68,7 @@ public class ProfilePacientFragment extends Fragment {
                 break;
             case R.id.saveProfile:
                 isEditing = false;
-                Utils.setViewAndChildrenEnabled(v,false);
+                Utils.setViewAndChildrenEnabled(v, false);
                 getActivity().invalidateOptionsMenu();
                 break;
         }
