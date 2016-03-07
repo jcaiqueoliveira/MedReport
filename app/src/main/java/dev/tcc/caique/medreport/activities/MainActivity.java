@@ -1,5 +1,6 @@
 package dev.tcc.caique.medreport.activities;
 
+import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,7 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.fragments.AboutFragment;
@@ -23,7 +27,9 @@ import dev.tcc.caique.medreport.fragments.AccompanimentsFragment;
 import dev.tcc.caique.medreport.fragments.InviteFragment;
 import dev.tcc.caique.medreport.fragments.ProfilePacientFragment;
 import dev.tcc.caique.medreport.fragments.ReportFragment;
+import dev.tcc.caique.medreport.models.Singleton;
 import dev.tcc.caique.medreport.utils.DialogUtils;
+import dev.tcc.caique.medreport.utils.Utils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -66,7 +72,15 @@ public class MainActivity extends AppCompatActivity
         }
         View headerLayout =  navigationView.getHeaderView(0);
         AppCompatSpinner spinnerAccounts =(AppCompatSpinner) headerLayout.findViewById(R.id.spinnerAccounts);
-        TextView nameHeader = (TextView)  headerLayout.findViewById(R.id.nameHeader);
+        //TextView nameHeader = (TextView)  headerLayout.findViewById(R.id.nameHeader);
+
+        Account[] accounts = Utils.getAccounts(this);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, getAccountEmails(accounts));
+        spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+        spinnerAccounts.setAdapter(spinnerArrayAdapter);
+
+
         //nameHeader.setText(/*Singleton.getInstance().getAccount()[0]+*/"(Acesse o perfil para criar sua conta)");
         //spinnerAccounts.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,Singleton.getInstance().getAccount()));
     }
@@ -148,6 +162,14 @@ public class MainActivity extends AppCompatActivity
             }
         }
         return false;
+    }
+
+    private ArrayList<String> getAccountEmails(Account[] accounts){
+        ArrayList<String> emails = new ArrayList<>();
+        for(Account account : accounts){
+            emails.add(account.name);
+        }
+        return emails;
     }
 
 }
