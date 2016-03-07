@@ -3,6 +3,9 @@ package dev.tcc.caique.medreport.utils;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.content.Intent;
+import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -37,5 +40,10 @@ public class Utils {
                 setViewAndChildrenEnabled(child, enabled);
             }
         }
+    }
+
+    public static void openCamera(FragmentActivity context){
+        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        context.startActivityForResult(i,Constants.CAMERA_INTENT);
     }
 }

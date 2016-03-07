@@ -14,4 +14,6 @@ public class Constants {
     public static final int INVITE = R.id.nav_invite;
     public static final int ACCOMPANIMENTS = R.id.nav_chat;
     public static final int ABOUT  = R.id.nav_about;
+
+    public static final int CAMERA_INTENT = 100;
 }
