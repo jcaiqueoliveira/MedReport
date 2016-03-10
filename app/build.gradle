@@ -35,9 +35,6 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
     compile 'com.intuit.sdp:sdp-android:1.0.2'
-<<<<<<< HEAD
     compile 'com.squareup.picasso:picasso:2.5.2'
-=======
     compile 'com.github.ParkSangGwon:TedPicker:v1.0.10'
->>>>>>> f3e8567b87013b5033eaee34812523234d66fd2b
 }
