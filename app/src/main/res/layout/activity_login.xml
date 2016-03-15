@@ -16,10 +16,24 @@
         android:orientation="vertical"
         android:gravity="center"
         android:layout_height="match_parent">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/tv_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/tv_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Usuário"
@@ -30,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
         <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/tv_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -37,10 +52,31 @@
     </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/enterButton"
+            android:onClick="Sign"
+            android:id="@+id/newAccountButton"
             android:layout_width="match_parent"
-            android:text="Entrar"
+            android:text="Cadastrar"
             android:layout_height="wrap_content"
             />
+
+        <TextView
+            android:onClick="enter"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_width="match_parent"
+            android:text="Já possui uma conta?"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:textColor="@color/colorPrimary"
+            android:onClick="enter"
+            android:gravity="center"
+            android:id="@+id/tv_enter"
+            android:layout_width="match_parent"
+            android:text="Clique para entrar"
+            android:layout_height="wrap_content"
+            />
+
     </LinearLayout>
 </LinearLayout>
