@@ -28,13 +28,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (!Preferences.getUserEmail(getApplicationContext()).equals("")) {
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                } else if (Utils.getAccounts(getApplicationContext()).length > 0) {
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                } else {
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                }
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 finish();
             }
         }, 2000);
