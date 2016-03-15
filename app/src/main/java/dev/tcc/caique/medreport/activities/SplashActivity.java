@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 
+import com.firebase.client.Firebase;
+
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.utils.Preferences;
 import dev.tcc.caique.medreport.utils.StatusConn;
@@ -18,6 +20,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        Firebase.setAndroidContext(this);
+
         if (!StatusConn.isOnline(getApplicationContext())) {
             Snackbar.make(findViewById(R.id.coordinatorLayout), "Sem conexão com a internet", Snackbar.LENGTH_LONG).show();
         }
