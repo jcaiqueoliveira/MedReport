@@ -83,7 +83,6 @@ public class CreateReportFragment extends Fragment {
             if (imageUris.size()>0){
                 gridView.setAdapter(new ImageAdapter(getActivity(),images));
             }
-            btnAdd.setVisibility(View.GONE);
         }
     }
 

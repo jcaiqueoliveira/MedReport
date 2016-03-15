@@ -10,7 +10,7 @@ public class Singleton {
         return ourInstance;
     }
     private String account[];
-
+    private int typeAccount;
     public String[] getAccount() {
         return account;
     }
@@ -20,5 +20,13 @@ public class Singleton {
     }
 
     private Singleton() {
+    }
+
+    public int getTypeAccount() {
+        return typeAccount;
+    }
+
+    public void setTypeAccount(int typeAccount) {
+        this.typeAccount = typeAccount;
     }
 }
