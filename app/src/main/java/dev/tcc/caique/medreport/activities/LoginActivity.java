@@ -33,12 +33,6 @@ public class LoginActivity extends AppCompatActivity {
         //Todo https://developers.google.com/identity/sign-in/android/start-integrating
     }
 
-    @OnClick({R.id.enterButton})
-    public void onClick(){
-        startActivity(new Intent(LoginActivity.this,MainActivity.class));
-        finish();
-    }
-
     public void Sign(View view) {
     }
 
