@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import dev.tcc.caique.medreport.R;
 
@@ -47,11 +48,13 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
 
     public class ViewHolderReport extends RecyclerView.ViewHolder{
     public ImageView delete,edit, send;
+        public TextView nameReport;
     public ViewHolderReport(View v) {
         super(v);
         delete = (ImageView)v.findViewById(R.id.delete);
         edit   = (ImageView)v.findViewById(R.id.edit);
         send   = (ImageView)v.findViewById(R.id.send);
+        nameReport = (TextView) v.findViewById(R.id.nameReport);
     }
 }
 }

@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.gun0912.tedpicker.ImagePickerActivity;
 
 import java.io.ByteArrayOutputStream;
@@ -37,7 +38,6 @@ import butterknife.OnClick;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.adapters.ImageAdapter;
-import dev.tcc.caique.medreport.models.Report;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -123,13 +123,23 @@ public class CreateReportFragment extends Fragment {
             case R.id.save:
                 try {
                     Firebase ref = new Firebase("https://medreportapp.firebaseio.com/");
+                    Firebase refPush;
                     // Map<String, Map<String, Report>> report = new HashMap<String,Firebase>();
-                    Report r = new Report(title.getText().toString(), description.getText().toString());//, createListImagesCompress());
                     Map<String, String> post2 = new HashMap<String, String>();
                     post2.put("title", "alanisawesome");
                     post2.put("description", "The Turing Machine");
-                    ref.child("users").child("52a1cba1-a170-49ca-891d-65ae3a38d84f").child("report").push().setValue(post2);
-                    String uid = ref.getKey();
+                    refPush = ref.child("users").child("52a1cba1-a170-49ca-891d-65ae3a38d84f").child("report").push();
+                    refPush.setValue(post2, new Firebase.CompletionListener() {
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                            if (firebaseError != null) {
+                                System.out.println("Data could not be saved. " + firebaseError.getMessage());
+                            } else {
+                                System.out.println("Data saved successfully.");
+                            }
+                        }
+                    });
+                    String uid = refPush.getKey();
                     ArrayList<String> strings = createListImagesCompress();
                     for (String s : strings) {
                         Log.i("aqui", "uid" + uid);
@@ -138,7 +148,16 @@ public class CreateReportFragment extends Fragment {
                         ref.child("users").child("52a1cba1-a170-49ca-891d-65ae3a38d84f").child("report").
                                 child(uid)
                                 .child("image")
-                                .push().setValue(images);
+                                .push().setValue(images, new Firebase.CompletionListener() {
+                            @Override
+                            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                if (firebaseError != null) {
+                                    System.out.println("2 - Data could not be saved. " + firebaseError.getMessage());
+                                } else {
+                                    System.out.println("2 - Data saved successfully.");
+                                }
+                            }
+                        });
                     }
 
                     //report.put("report", ref.push());
