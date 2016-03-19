@@ -36,7 +36,7 @@
             android:id="@+id/tv_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Usuário"
+            android:hint="Nome"
             />
     </android.support.design.widget.TextInputLayout>
 
@@ -60,7 +60,6 @@
             />
 
         <TextView
-            android:onClick="enter"
             android:gravity="center"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_width="match_parent"
@@ -74,7 +73,7 @@
             android:gravity="center"
             android:id="@+id/tv_enter"
             android:layout_width="match_parent"
-            android:text="Clique para entrar"
+            android:text="Clique  aqui para entrar"
             android:layout_height="wrap_content"
             />
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -22,13 +23,13 @@ import dev.tcc.caique.medreport.R;
 public class LoginActivity extends AppCompatActivity {
 
     @Bind(R.id.tv_email)
-    TextView tvEmail;
+    AppCompatEditText tvEmail;
 
     @Bind(R.id.tv_user)
-    TextView tvUser;
+    AppCompatEditText tvUser;
 
     @Bind(R.id.tv_password)
-    TextView tvPass;
+    AppCompatEditText tvPass;
 
     @Bind(R.id.newAccountButton)
     TextView btnNewAccount;
@@ -79,7 +80,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void enter(View view) {
-        btnNewAccount.setText("Entrar");
-        //tvEmail.setVisibility(View.GONE);
+        if (tvUser.getVisibility() == View.VISIBLE) {
+            btnNewAccount.setText("Entrar");
+            tvUser.setVisibility(View.GONE);
+            ((TextView) view.findViewById(R.id.tv_enter)).setText("Clique aqui para criar uma nova conta");
+        } else {
+            btnNewAccount.setText("Criar Conta");
+            tvUser.setVisibility(View.VISIBLE);
+            ((TextView) view.findViewById(R.id.tv_enter)).setText("Clique  aqui para entrar");
+        }
     }
 }
