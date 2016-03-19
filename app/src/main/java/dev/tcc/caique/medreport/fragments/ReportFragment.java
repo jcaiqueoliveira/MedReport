@@ -94,7 +94,6 @@ public class ReportFragment extends Fragment {
             super(v);
             delete = (ImageView) v.findViewById(R.id.delete);
             edit = (ImageView) v.findViewById(R.id.edit);
-            send = (ImageView) v.findViewById(R.id.send);
             nameReport = (TextView) v.findViewById(R.id.nameReport);
         }
     }

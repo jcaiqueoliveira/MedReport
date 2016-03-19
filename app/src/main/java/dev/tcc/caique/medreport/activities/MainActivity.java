@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -27,7 +26,6 @@ import dev.tcc.caique.medreport.fragments.AccompanimentsFragment;
 import dev.tcc.caique.medreport.fragments.InviteFragment;
 import dev.tcc.caique.medreport.fragments.ProfilePacientFragment;
 import dev.tcc.caique.medreport.fragments.ReportFragment;
-import dev.tcc.caique.medreport.models.Singleton;
 import dev.tcc.caique.medreport.utils.DialogUtils;
 import dev.tcc.caique.medreport.utils.Utils;
 
@@ -35,17 +33,18 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public FloatingActionButton fab;
     public NavigationView navigationView;
-   /* @Nullable
-    @Bind(R.id.spinnerAccounts)
-    AppCompatSpinner spinnerAccounts;
-    @Nullable
-    @Bind(R.id.nameHeader)
-    TextView nameHeader; */
+
+    /* @Nullable
+     @Bind(R.id.spinnerAccounts)
+     AppCompatSpinner spinnerAccounts;
+     @Nullable
+     @Bind(R.id.nameHeader)
+     TextView nameHeader; */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       // ButterKnife.bind(this);
+        // ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,17 +66,17 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new AccompanimentsFragment(), "HOME").addToBackStack(null).commit();
         }
-        View headerLayout =  navigationView.getHeaderView(0);
-        AppCompatSpinner spinnerAccounts =(AppCompatSpinner) headerLayout.findViewById(R.id.spinnerAccounts);
+        View headerLayout = navigationView.getHeaderView(0);
+        AppCompatSpinner spinnerAccounts = (AppCompatSpinner) headerLayout.findViewById(R.id.spinnerAccounts);
         //TextView nameHeader = (TextView)  headerLayout.findViewById(R.id.nameHeader);
 
         Account[] accounts = Utils.getAccounts(this);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, getAccountEmails(accounts));
-        spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerAccounts.setAdapter(spinnerArrayAdapter);
 
 
@@ -133,7 +132,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_invite) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new InviteFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_chat) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, new AccompanimentsFragment(), "HOME").addToBackStack(null).commit();
+            startActivity(new Intent(MainActivity.this, ChatActivity.class));
+            // getSupportFragmentManager().beginTransaction().replace(R.id.container, new AccompanimentsFragment(), "HOME").addToBackStack(null).commit();
         } else if (id == R.id.nav_share) {
             b = false;
             String shareBody = "Here is the share content body";
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity
             DialogUtils.createDialogCloseApp(this, "Deseja realmente sair do aplicativo?");
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if(b)
+        if (b)
             drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -164,9 +164,9 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    private ArrayList<String> getAccountEmails(Account[] accounts){
+    private ArrayList<String> getAccountEmails(Account[] accounts) {
         ArrayList<String> emails = new ArrayList<>();
-        for(Account account : accounts){
+        for (Account account : accounts) {
             emails.add(account.name);
         }
         return emails;
