@@ -6,12 +6,11 @@ import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 
 import dev.tcc.caique.medreport.R;
-import dev.tcc.caique.medreport.utils.Preferences;
 import dev.tcc.caique.medreport.utils.StatusConn;
-import dev.tcc.caique.medreport.utils.Utils;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -28,7 +27,18 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                Firebase ref = new Firebase("https://medreportapp.firebaseio.com/");
+                ref.addAuthStateListener(new Firebase.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(AuthData authData) {
+                        if (authData != null) {
+                            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        } else {
+                            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                        }
+                    }
+                });
+
                 finish();
             }
         }, 2000);

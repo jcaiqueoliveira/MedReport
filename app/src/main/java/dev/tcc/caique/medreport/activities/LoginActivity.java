@@ -1,10 +1,10 @@
 package dev.tcc.caique.medreport.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,7 +17,6 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import dev.tcc.caique.medreport.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -46,35 +45,34 @@ public class LoginActivity extends AppCompatActivity {
     public void Sign(final View view) {
         final Firebase ref = new Firebase("https://medreportapp.firebaseio.com/");
         //TODO: Validate Email
-        if(btnNewAccount.getText().toString().equals("Entrar")){
-            if(tvUser.getText().length()>0 && tvEmail.getText().length()>0 && tvPass.getText().length()>0)
+        if (btnNewAccount.getText().toString().equals("Entrar")) {
+            if (tvUser.getText().length() > 0 && tvEmail.getText().length() > 0 && tvPass.getText().length() > 0)
                 ref.authWithPassword(tvEmail.getText().toString(), tvPass.getText().toString(), new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     }
+
                     @Override
                     public void onAuthenticationError(FirebaseError firebaseError) {
-                        Snackbar.make(view,"Usuário ou senha incorretos",Snackbar.LENGTH_SHORT);
+                        Snackbar.make(view, "Usuário ou senha incorretos", Snackbar.LENGTH_SHORT).show();
                     }
                 });
-        }else{
-            if(tvUser.getText().length()>0 && tvEmail.getText().length()>0 && tvPass.getText().length()>0)
+        } else {
+            if (TextUtils.isEmpty(tvUser.getText().toString()) && TextUtils.isEmpty(tvEmail.getText().toString()) && TextUtils.isEmpty(tvPass.getText().toString()))
                 ref.createUser(tvEmail.getText().toString(), tvPass.getText().toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
                     @Override
                     public void onSuccess(Map<String, Object> result) {
-                        Log.v("Login: ", "Successfully created user account with uid: " + result.get("uid"));
-                        String uid =  result.get("uid").toString();
+                        String uid = result.get("uid").toString();
                         Map<String, Object> user = new HashMap<String, Object>();
-                        user.put(uid+"/name",tvEmail.getText().toString());
-                        user.put(uid + "/provider", "password");
+                        user.put(uid + "/name", tvUser);
                         ref.child("users").updateChildren(user);
-                        //Todo: save in sharedprefereces
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        Snackbar.make(view, "Usuário criado com sucesso, faça login para acessar o aplicativo", Snackbar.LENGTH_SHORT).show();
                     }
+
                     @Override
                     public void onError(FirebaseError firebaseError) {
-                        // there was an error
+                        Snackbar.make(view, "Erro ao criar usuário", Snackbar.LENGTH_SHORT).show();
                     }
                 });
         }

@@ -33,13 +33,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public FloatingActionButton fab;
     public NavigationView navigationView;
-
-    /* @Nullable
-     @Bind(R.id.spinnerAccounts)
-     AppCompatSpinner spinnerAccounts;
-     @Nullable
-     @Bind(R.id.nameHeader)
-     TextView nameHeader; */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,18 +63,7 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new AccompanimentsFragment(), "HOME").addToBackStack(null).commit();
         }
         View headerLayout = navigationView.getHeaderView(0);
-        AppCompatSpinner spinnerAccounts = (AppCompatSpinner) headerLayout.findViewById(R.id.spinnerAccounts);
-        //TextView nameHeader = (TextView)  headerLayout.findViewById(R.id.nameHeader);
 
-        Account[] accounts = Utils.getAccounts(this);
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item, getAccountEmails(accounts));
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerAccounts.setAdapter(spinnerArrayAdapter);
-
-
-        //nameHeader.setText(/*Singleton.getInstance().getAccount()[0]+*/"(Acesse o perfil para criar sua conta)");
-        //spinnerAccounts.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,Singleton.getInstance().getAccount()));
     }
 
     @Override
