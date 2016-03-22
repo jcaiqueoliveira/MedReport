@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -53,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onAuthenticated(AuthData authData) {
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
+                        Log.i("aqhj", "a");
                     }
 
                     @Override
@@ -62,13 +64,14 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         } else {
-            if (TextUtils.isEmpty(tvUser.getText().toString()) && TextUtils.isEmpty(tvEmail.getText().toString()) && TextUtils.isEmpty(tvPass.getText().toString()))
+            if (!TextUtils.isEmpty(tvUser.getText().toString()) && !TextUtils.isEmpty(tvEmail.getText().toString()) && !TextUtils.isEmpty(tvPass.getText().toString()))
                 ref.createUser(tvEmail.getText().toString(), tvPass.getText().toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
                     @Override
                     public void onSuccess(Map<String, Object> result) {
                         String uid = result.get("uid").toString();
                         Map<String, Object> user = new HashMap<String, Object>();
-                        user.put(uid + "/name", tvUser);
+                        user.put(uid + "/name", tvUser.getText().toString());
+                        user.put(uid + "/email", tvEmail.getText().toString());
                         ref.child("users").updateChildren(user);
                         Snackbar.make(view, "Usuário criado com sucesso, faça login para acessar o aplicativo", Snackbar.LENGTH_SHORT).show();
                     }
