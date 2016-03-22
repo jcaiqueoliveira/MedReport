@@ -38,7 +38,6 @@ public class SplashActivity extends AppCompatActivity {
                         }
                     }
                 });
-
                 finish();
             }
         }, 2000);

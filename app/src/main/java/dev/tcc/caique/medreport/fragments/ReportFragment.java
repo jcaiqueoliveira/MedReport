@@ -39,6 +39,7 @@ public class ReportFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Firebase.setAndroidContext(getActivity());
         View v = inflater.inflate(R.layout.fragment_report, container, false);
         ((MainActivity) getActivity()).fab.show();
         ((MainActivity) getActivity()).fab.setOnClickListener(new View.OnClickListener() {

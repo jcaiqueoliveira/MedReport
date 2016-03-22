@@ -5,43 +5,102 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.ui.FirebaseRecyclerAdapter;
 
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.adapters.InviteAdapter;
-import dev.tcc.caique.medreport.adapters.ReportAdapter;
+import dev.tcc.caique.medreport.models.Inviter;
 import dev.tcc.caique.medreport.utils.Constants;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class InviteFragment extends Fragment {
-
-
     public InviteFragment() {
         // Required empty public constructor
     }
 
+    FirebaseRecyclerAdapter<Inviter, ViewHolderInvite> adapter;
     private RecyclerView recyclerView;
     private InviteAdapter inviteAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_invite, container, false);
-        ((MainActivity)getActivity()).fab.show();
+        View v = inflater.inflate(R.layout.fragment_invite, container, false);
+        final Firebase ref = new Firebase("https://medreportapp.firebaseio.com/");
+        final Firebase ref2 = new Firebase("https://medreportapp.firebaseio.com/");
+        ((MainActivity) getActivity()).fab.show();
         recyclerView = (RecyclerView) v.findViewById(R.id.inviteRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        inviteAdapter = new InviteAdapter();
-        recyclerView.setAdapter(inviteAdapter);
+        try {
+            adapter = new FirebaseRecyclerAdapter<Inviter, ViewHolderInvite>(Inviter.class,
+                    R.layout.layout_invite_card_list,
+                    ViewHolderInvite.class,
+                    ref) {
+                @Override
+                protected void populateViewHolder(ViewHolderInvite viewHolderInvite, final Inviter inviter, int i) {
+                    viewHolderInvite.nameInviter.setText(inviter.getUid());
+                    viewHolderInvite.accept.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //todo requisition here
+                            ref2.child("users/" + ref.getAuth().getUid() + "/invites" + "/" + inviter.getStackId() + "/" + inviter.getUid());
+                            ref2.removeValue(new Firebase.CompletionListener() {
+                                @Override
+                                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                    if (firebaseError != null) {
+                                        Log.i("aqui", "aqui");
+                                    } else {
+                                        ref.child("users/" + ref.getAuth().getUid() + "/friends/");
+                                        // ref.setValue(new );
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                    viewHolderInvite.exclude.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
+                }
+            };
+            recyclerView.setAdapter(adapter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return v;
     }
+
     @Override
     public void onResume() {
         ((MainActivity) getActivity()).navigationView.setCheckedItem(Constants.INVITE);
         super.onResume();
+    }
+
+    public static class ViewHolderInvite extends RecyclerView.ViewHolder {
+        public ImageView accept, exclude;
+        public TextView nameInviter;
+
+        public ViewHolderInvite(View v) {
+            super(v);
+            accept = (ImageView) v.findViewById(R.id.accept);
+            exclude = (ImageView) v.findViewById(R.id.recuse);
+            nameInviter = (TextView) v.findViewById(R.id.nameInviter);
+        }
     }
 }

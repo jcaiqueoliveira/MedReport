@@ -51,11 +51,13 @@
 
             </LinearLayout>
             <ImageView
+                android:id="@+id/recuse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_close"
                 android:layout_margin="3dp"/>
             <ImageView
+                android:id="@+id/accept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_done"

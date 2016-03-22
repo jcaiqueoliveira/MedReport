@@ -47,11 +47,12 @@ public class LoginActivity extends AppCompatActivity {
         final Firebase ref = new Firebase("https://medreportapp.firebaseio.com/");
         //TODO: Validate Email
         if (btnNewAccount.getText().toString().equals("Entrar")) {
-            if (tvUser.getText().length() > 0 && tvEmail.getText().length() > 0 && tvPass.getText().length() > 0)
+            if (tvEmail.getText().length() > 0 && tvPass.getText().length() > 0) {
                 ref.authWithPassword(tvEmail.getText().toString(), tvPass.getText().toString(), new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
                     }
 
                     @Override
@@ -59,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                         Snackbar.make(view, "Usuário ou senha incorretos", Snackbar.LENGTH_SHORT).show();
                     }
                 });
+            }
         } else {
             if (TextUtils.isEmpty(tvUser.getText().toString()) && TextUtils.isEmpty(tvEmail.getText().toString()) && TextUtils.isEmpty(tvPass.getText().toString()))
                 ref.createUser(tvEmail.getText().toString(), tvPass.getText().toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
