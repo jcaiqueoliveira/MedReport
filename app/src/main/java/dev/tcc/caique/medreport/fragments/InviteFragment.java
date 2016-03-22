@@ -18,7 +18,6 @@ import com.firebase.ui.FirebaseRecyclerAdapter;
 
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
-import dev.tcc.caique.medreport.adapters.InviteAdapter;
 import dev.tcc.caique.medreport.models.Inviter;
 import dev.tcc.caique.medreport.utils.Constants;
 
@@ -32,15 +31,15 @@ public class InviteFragment extends Fragment {
 
     FirebaseRecyclerAdapter<Inviter, ViewHolderInvite> adapter;
     private RecyclerView recyclerView;
-    private InviteAdapter inviteAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_invite, container, false);
+
         final Firebase ref = new Firebase("https://medreportapp.firebaseio.com/");
-        final Firebase ref2 = new Firebase("https://medreportapp.firebaseio.com/");
+        final Firebase ref2 = new Firebase("https://medreportapp.firebaseio.com/users/" + ref.getAuth().getUid() + "/invites");
         ((MainActivity) getActivity()).fab.show();
         recyclerView = (RecyclerView) v.findViewById(R.id.inviteRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -48,20 +47,20 @@ public class InviteFragment extends Fragment {
             adapter = new FirebaseRecyclerAdapter<Inviter, ViewHolderInvite>(Inviter.class,
                     R.layout.layout_invite_card_list,
                     ViewHolderInvite.class,
-                    ref) {
+                    ref2) {
                 @Override
                 protected void populateViewHolder(ViewHolderInvite viewHolderInvite, final Inviter inviter, int i) {
+                    Log.i("position", "valor: " + i);
                     viewHolderInvite.nameInviter.setText(inviter.getUid());
                     viewHolderInvite.accept.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             //todo requisition here
-                            ref2.child("users/" + ref.getAuth().getUid() + "/invites" + "/" + inviter.getStackId() + "/" + inviter.getUid());
+                            //ref2.child("users").child(ref.getAuth().getUid()).child("invites").child("" + inviter.getStackId()).child(inviter.getUid());
                             ref2.removeValue(new Firebase.CompletionListener() {
                                 @Override
                                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                                     if (firebaseError != null) {
-                                        Log.i("aqui", "aqui");
                                     } else {
                                         ref.child("users/" + ref.getAuth().getUid() + "/friends/");
                                         // ref.setValue(new );
@@ -79,6 +78,7 @@ public class InviteFragment extends Fragment {
                     });
                 }
             };
+           Log.i("items",""+adapter.getItemCount());
             recyclerView.setAdapter(adapter);
         } catch (Exception e) {
             e.printStackTrace();

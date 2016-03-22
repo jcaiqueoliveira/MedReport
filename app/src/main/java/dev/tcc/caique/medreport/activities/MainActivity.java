@@ -33,13 +33,14 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public FloatingActionButton fab;
     public NavigationView navigationView;
+    public Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_report) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new ReportFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_invite) {
+            toolbar.setTitle("Convites");
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new InviteFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_chat) {
             startActivity(new Intent(MainActivity.this, ChatActivity.class));

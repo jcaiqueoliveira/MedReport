@@ -6,7 +6,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -54,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
                     public void onAuthenticated(AuthData authData) {
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
-                        Log.i("aqhj", "a");
                     }
 
                     @Override
