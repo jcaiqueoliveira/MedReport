@@ -19,6 +19,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import dev.tcc.caique.medreport.R;
+import dev.tcc.caique.medreport.utils.Constants;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -44,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void Sign(final View view) {
-        final Firebase ref = new Firebase("https://medreportapp.firebaseio.com/");
+        final Firebase ref = new Firebase(Constants.BASE_URL);
         //TODO: Validate Email
         if (btnNewAccount.getText().toString().equals("Entrar")) {
             if (tvEmail.getText().length() > 0 && tvPass.getText().length() > 0) {

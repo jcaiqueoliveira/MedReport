@@ -16,6 +16,7 @@ import com.firebase.client.ValueEventListener;
 
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.models.Singleton;
+import dev.tcc.caique.medreport.utils.Constants;
 import dev.tcc.caique.medreport.utils.StatusConn;
 
 public class SplashActivity extends AppCompatActivity {
@@ -33,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                ref = new Firebase("https://medreportapp.firebaseio.com/users");
+                ref = new Firebase(Constants.BASE_URL + "users");
                 ref.addAuthStateListener(new Firebase.AuthStateListener() {
                     @Override
                     public void onAuthStateChanged(AuthData authData) {
@@ -51,17 +52,30 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void getMyData() {
-        Log.i("dados", (String) ref.getAuth().getProviderData().toString());
-        Query queryRef = ref.orderByChild("email").equalTo((String) ref.getAuth().getProviderData().get("email"));
+        Firebase ref2 = new Firebase(Constants.BASE_URL + "invites/" + this.ref.getAuth().getUid());
+        Query query = ref2.orderByChild("email");
+        Singleton.getInstance().getFriends().clear();
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Singleton.getInstance().getFriends().add((String) ds.child("email").getValue());
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.i("Cancelado", "cancelado");
+            }
+        });
+        Query queryRef = this.ref.orderByChild("email").equalTo((String) ref.getAuth().getProviderData().get("email"));
         queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot messageSnapshot) {
                 if (messageSnapshot.exists()) {
                     for (DataSnapshot ds : messageSnapshot.getChildren()) {
                         Singleton.getInstance().setName(ds.child("name").getValue().toString());
-                        for (DataSnapshot dataSnapshot : ds.child("friends").getChildren()) {
-                            Singleton.getInstance().getFriends().add((String) dataSnapshot.child("user").getValue());
-                        }
+
                         startActivity(new Intent(SplashActivity.this, MainActivity.class));
                         finish();
                     }

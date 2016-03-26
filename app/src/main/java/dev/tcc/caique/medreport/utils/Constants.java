@@ -16,4 +16,5 @@ public class Constants {
     public static final int ABOUT  = R.id.nav_about;
 
     public static final int CAMERA_INTENT = 100;
+    public static final String BASE_URL = "https://medreportapp.firebaseio.com/";
 }

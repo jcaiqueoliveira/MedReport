@@ -48,7 +48,7 @@ public class ReportFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, new CreateReportFragment()).addToBackStack(null).commit();
             }
         });
-        ref = new Firebase("https://medreportapp.firebaseio.com/").child("users").child("52a1cba1-a170-49ca-891d-65ae3a38d84f").child("report");
+        ref = new Firebase(Constants.BASE_URL).child("users").child("52a1cba1-a170-49ca-891d-65ae3a38d84f").child("report");
         recyclerView = (RecyclerView) v.findViewById(R.id.reportRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

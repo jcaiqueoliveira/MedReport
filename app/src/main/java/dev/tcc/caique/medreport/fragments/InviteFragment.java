@@ -46,8 +46,8 @@ public class InviteFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_invite, container, false);
 
-        final Firebase ref = new Firebase("https://medreportapp.firebaseio.com/");
-        final Firebase ref2 = new Firebase("https://medreportapp.firebaseio.com/invites/" + ref.getAuth().getUid());
+        final Firebase ref = new Firebase(Constants.BASE_URL);
+        final Firebase ref2 = new Firebase(Constants.BASE_URL + "invites/" + ref.getAuth().getUid());
         ((MainActivity) getActivity()).fab.show();
         recyclerView = (RecyclerView) v.findViewById(R.id.inviteRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -118,7 +118,6 @@ public class InviteFragment extends Fragment {
                                     }
                                 }
                             });
-                            //ref2.child("users").child(ref.getAuth().getUid()).child("invites").child("" + inviter.getStackId()).child(inviter.getUid());
                         }
                     });
 

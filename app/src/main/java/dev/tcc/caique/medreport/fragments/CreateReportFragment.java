@@ -38,6 +38,7 @@ import butterknife.OnClick;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.adapters.ImageAdapter;
+import dev.tcc.caique.medreport.utils.Constants;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -122,7 +123,7 @@ public class CreateReportFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.save:
                 try {
-                    Firebase ref = new Firebase("https://medreportapp.firebaseio.com/");
+                    Firebase ref = new Firebase(Constants.BASE_URL);
                     Firebase refPush;
                     // Map<String, Map<String, Report>> report = new HashMap<String,Firebase>();
                     Map<String, String> post2 = new HashMap<String, String>();

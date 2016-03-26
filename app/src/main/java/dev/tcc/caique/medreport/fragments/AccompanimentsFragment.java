@@ -50,9 +50,9 @@ public class AccompanimentsFragment extends Fragment {
         ((MainActivity) getActivity()).fab.hide();
         accompanimentsList.setHasFixedSize(true);
         accompanimentsList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        final Firebase ref = new Firebase("https://medreportapp.firebaseio.com/");
-        final Firebase ref2 = new Firebase("https://medreportapp.firebaseio.com/friends/" + ref.getAuth().getUid());
-        final Firebase ref3 = new Firebase("https://medreportapp.firebaseio.com/users");
+        final Firebase ref = new Firebase(Constants.BASE_URL);
+        final Firebase ref2 = new Firebase(Constants.BASE_URL+"friends/" + ref.getAuth().getUid());
+        final Firebase ref3 = new Firebase(Constants.BASE_URL+"users");
         try {
             adapter = new FirebaseRecyclerAdapter<Accompaniments, ViewHolderAccompaniments>(Accompaniments.class, R.layout.layout_accompaniments, ViewHolderAccompaniments.class, ref2) {
                 @Override

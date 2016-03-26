@@ -61,45 +61,50 @@ public class DialogUtils {
             @Override
             public void onClick(final DialogInterface dialog, int which) {
                 Firebase.setAndroidContext(mContext);
-                final Firebase firebase = new Firebase("https://medreportapp.firebaseio.com/users");
-                final Firebase invites = new Firebase("https://medreportapp.firebaseio.com/");
+                final Firebase firebase = new Firebase(Constants.BASE_URL + "users");
+                final Firebase invites = new Firebase(Constants.BASE_URL);
                 if (!edit.getText().toString().equalsIgnoreCase((String) firebase.getAuth().getProviderData().get("email"))) {
                     Query queryRef = firebase.orderByChild("email").equalTo(edit.getText().toString());
                     queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot messageSnapshot) {
                             if (messageSnapshot.exists()) {
-                                Map<String, String> friend = new HashMap<>();
-                                for (DataSnapshot ds : messageSnapshot.getChildren()) {
-                                    if (!Singleton.getInstance().getFriends().contains(ds.getKey())) {//checando se ja nao sao amigos
+                                final Map<String, String> friend = new HashMap<>();
+                                for (final DataSnapshot ds : messageSnapshot.getChildren()) {
+                                    if (!Singleton.getInstance().getFriends().contains((String) ds.child("email").getValue())) {//checando se ja nao sao amigos
                                         friend.put("email", (String) firebase.getAuth().getProviderData().get("email"));
                                         friend.put("name", Singleton.getInstance().getName());
-                                        boolean contain = false;
-                                        for (DataSnapshot dataSnapshot : ds.child("invites").getChildren()) {//checando se o convite ja foi enviado
-                                            if (firebase.getAuth().getUid().equalsIgnoreCase((String) dataSnapshot.child("user").getValue())) {
-                                                contain = true;
-                                                break;
-                                            }
-                                        }
-                                        if (!contain) {
-                                            Firebase reference = firebase.push();
-                                            friend.put("stackId", reference.getKey());
-                                            invites.child("invites").child(ds.getKey()).child(reference.getKey()).setValue(friend, new Firebase.CompletionListener() {
-                                                @Override
-                                                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                                    if (firebaseError != null) {
-                                                        dialog.dismiss();
-                                                        Toast.makeText(mContext, "Ocorreu um erro. Tente novamente", Toast.LENGTH_SHORT).show();
-                                                    } else {
-                                                        dialog.dismiss();
-                                                        Toast.makeText(mContext, "Convite enviado", Toast.LENGTH_SHORT).show();
-                                                    }
+                                        Query queryInvite = invites.child(ds.getKey()).orderByChild("email").equalTo((String) ds.child("email").getValue());
+                                        queryInvite.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                if (dataSnapshot.getKey() == null) {
+                                                    Log.i("retorno", dataSnapshot.toString());
+                                                    Firebase reference = firebase.push();
+                                                    friend.put("stackId", reference.getKey());
+                                                    invites.child("invites").child(ds.getKey()).child(reference.getKey()).setValue(friend, new Firebase.CompletionListener() {
+                                                        @Override
+                                                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                                            if (firebaseError != null) {
+                                                                dialog.dismiss();
+                                                                Toast.makeText(mContext, "Ocorreu um erro. Tente novamente", Toast.LENGTH_SHORT).show();
+                                                            } else {
+                                                                dialog.dismiss();
+                                                                Toast.makeText(mContext, "Convite enviado", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    });
+                                                } else {
+                                                    dialog.dismiss();
+                                                    Toast.makeText(mContext, "Convite já enviado", Toast.LENGTH_SHORT).show();
                                                 }
-                                            });
-                                        } else {
-                                            dialog.dismiss();
-                                            Toast.makeText(mContext, "Convite já enviado", Toast.LENGTH_SHORT).show();
-                                        }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(FirebaseError firebaseError) {
+
+                                            }
+                                        });
                                     } else {
                                         dialog.dismiss();
                                         Toast.makeText(mContext, "Vocês já são amigos", Toast.LENGTH_SHORT).show();
