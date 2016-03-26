@@ -119,23 +119,22 @@ public class InviteFragment extends Fragment {
                                 }
                             });
                             //ref2.child("users").child(ref.getAuth().getUid()).child("invites").child("" + inviter.getStackId()).child(inviter.getUid());
-                            ref2.removeValue(new Firebase.CompletionListener() {
-                                @Override
-                                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                    if (firebaseError != null) {
-                                    } else {
-                                        ref.child("users/" + ref.getAuth().getUid() + "/friends/");
-                                        // ref.setValue(new );
-                                    }
-                                }
-                            });
                         }
                     });
 
                     viewHolderInvite.exclude.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            ref.child("invites").child(ref.getAuth().getUid()).child(inviter.getStackId()).removeValue(new Firebase.CompletionListener() {
+                                @Override
+                                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                    if (firebaseError == null) {
+                                        Toast.makeText(getActivity(), "Não adicionado", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getActivity(), "Erro ao excluir o convite. Tente novamente", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                         }
                     });
                 }

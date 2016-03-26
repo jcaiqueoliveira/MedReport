@@ -57,11 +57,14 @@ public class AccompanimentsFragment extends Fragment {
             adapter = new FirebaseRecyclerAdapter<Accompaniments, ViewHolderAccompaniments>(Accompaniments.class, R.layout.layout_accompaniments, ViewHolderAccompaniments.class, ref2) {
                 @Override
                 protected void populateViewHolder(final ViewHolderAccompaniments viewHolderAccompaniments, final Accompaniments accompaniments, int i) {
-                    Query queryRef = ref3.orderByChild(accompaniments.getStackId()).equalTo(accompaniments.getStackId());
+                    Query queryRef = ref3.orderByChild("email").equalTo(accompaniments.getEmail());
                     queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            viewHolderAccompaniments.namePerson.setText(accompaniments.getStackId());
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                viewHolderAccompaniments.namePerson.setText((String) ds.child("name").getValue());
+                            }
+
                         }
 
                         @Override
