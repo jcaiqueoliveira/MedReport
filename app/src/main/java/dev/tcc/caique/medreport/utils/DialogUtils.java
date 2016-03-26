@@ -81,7 +81,9 @@ public class DialogUtils {
                                             }
                                         }
                                         if (!contain) {
-                                            firebase.child(ds.getKey()).child("invites").push().setValue(friend, new Firebase.CompletionListener() {
+                                            Firebase reference = firebase.push();
+                                            friend.put("stackId", reference.getKey());
+                                            firebase.child(ds.getKey()).child("invites").child(reference.getKey()).setValue(friend, new Firebase.CompletionListener() {
                                                 @Override
                                                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                                                     if (firebaseError != null) {
@@ -101,7 +103,6 @@ public class DialogUtils {
                                         dialog.dismiss();
                                         Toast.makeText(mContext, "Vocês já são amigos", Toast.LENGTH_SHORT).show();
                                     }
-
                                 }
 
                             } else {

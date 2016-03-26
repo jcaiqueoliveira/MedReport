@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,7 @@ import com.firebase.ui.FirebaseRecyclerAdapter;
 
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
-import dev.tcc.caique.medreport.models.Inviter;
+import dev.tcc.caique.medreport.models.Invite;
 import dev.tcc.caique.medreport.utils.Constants;
 import dev.tcc.caique.medreport.utils.DialogUtils;
 
@@ -30,7 +29,7 @@ public class InviteFragment extends Fragment {
         // Required empty public constructor
     }
 
-    FirebaseRecyclerAdapter<Inviter, ViewHolderInvite> adapter;
+    FirebaseRecyclerAdapter<Invite, ViewHolderInvite> adapter;
     private RecyclerView recyclerView;
 
     @Override
@@ -45,14 +44,13 @@ public class InviteFragment extends Fragment {
         recyclerView = (RecyclerView) v.findViewById(R.id.inviteRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         try {
-            adapter = new FirebaseRecyclerAdapter<Inviter, ViewHolderInvite>(Inviter.class,
+            adapter = new FirebaseRecyclerAdapter<Invite, ViewHolderInvite>(Invite.class,
                     R.layout.layout_invite_card_list,
                     ViewHolderInvite.class,
                     ref2) {
                 @Override
-                protected void populateViewHolder(ViewHolderInvite viewHolderInvite, final Inviter inviter, int i) {
-                    Log.i("position", "valor: " + i);
-                    viewHolderInvite.nameInviter.setText(inviter.getName());
+                protected void populateViewHolder(ViewHolderInvite viewHolderInvite, final Invite inviter, int i) {
+                    viewHolderInvite.nameInviter.setText(inviter.toString());
                     viewHolderInvite.accept.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -84,7 +82,7 @@ public class InviteFragment extends Fragment {
             e.printStackTrace();
         }
 
-        ((MainActivity)getActivity()).fab.setOnClickListener(new View.OnClickListener() {
+        ((MainActivity) getActivity()).fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogUtils.inviteFriend(getActivity());

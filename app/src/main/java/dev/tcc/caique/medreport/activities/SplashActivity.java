@@ -34,7 +34,6 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 ref = new Firebase("https://medreportapp.firebaseio.com/users");
-                getMyData();
                 ref.addAuthStateListener(new Firebase.AuthStateListener() {
                     @Override
                     public void onAuthStateChanged(AuthData authData) {
@@ -52,7 +51,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void getMyData() {
-        Log.i("email", (String) ref.getAuth().getProviderData().get("email"));
+        Log.i("dados", (String) ref.getAuth().getProviderData().toString());
         Query queryRef = ref.orderByChild("email").equalTo((String) ref.getAuth().getProviderData().get("email"));
         queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
