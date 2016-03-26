@@ -116,8 +116,7 @@ public class MainActivity extends AppCompatActivity
             toolbar.setTitle("Convites");
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new InviteFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_chat) {
-            startActivity(new Intent(MainActivity.this, ChatActivity.class));
-            // getSupportFragmentManager().beginTransaction().replace(R.id.container, new AccompanimentsFragment(), "HOME").addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new AccompanimentsFragment(), "HOME").addToBackStack(null).commit();
         } else if (id == R.id.nav_share) {
             b = false;
             String shareBody = "Here is the share content body";
