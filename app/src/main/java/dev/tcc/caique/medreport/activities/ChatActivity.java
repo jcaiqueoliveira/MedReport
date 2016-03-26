@@ -14,6 +14,7 @@ import com.firebase.ui.FirebaseRecyclerAdapter;
 
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.models.ChatMessage;
+import dev.tcc.caique.medreport.models.Singleton;
 
 public class ChatActivity extends AppCompatActivity {
     private EditText textEdit;
@@ -29,7 +30,9 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         textEdit = (EditText) this.findViewById(R.id.text_edit);
         sendButton = (Button) this.findViewById(R.id.send_button);
-        mFirebase = new Firebase("https://medreportapp.firebaseio.com/chat/chat2");
+        Bundle b = getIntent().getExtras();
+        String chat = b.getString("SALA");
+        mFirebase = new Firebase("https://medreportapp.firebaseio.com/chat/" + chat);
         chatMessages = (RecyclerView) findViewById(R.id.chatMessages);
         chatMessages.setHasFixedSize(true);
         chatMessages.setLayoutManager(new LinearLayoutManager(this));
@@ -48,7 +51,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String text = textEdit.getText().toString();
-                ChatMessage message = new ChatMessage("Android User", text);
+                ChatMessage message = new ChatMessage(Singleton.getInstance().getName(), text);
                 mFirebase.push().setValue(message);
                 textEdit.setText("");
             }

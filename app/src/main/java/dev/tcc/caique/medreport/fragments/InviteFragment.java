@@ -5,15 +5,20 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.ui.FirebaseRecyclerAdapter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
@@ -55,6 +60,42 @@ public class InviteFragment extends Fragment {
                         @Override
                         public void onClick(View v) {
                             //todo requisition here
+                            final String chatValue = ref.push().getKey();
+                            final Map<String, String> map = new HashMap<>();
+                            map.put("stackId", inviter.getUser());
+                            map.put("chat", chatValue);
+                            ref.child("users").child(ref.getAuth().getUid()).child("friends").push().setValue(map, new Firebase.CompletionListener() {
+                                @Override
+                                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                    if (firebaseError == null) {
+                                        map.clear();
+                                        map.put("stackId", ref.getAuth().getUid());
+                                        map.put("chat", chatValue);
+                                        ref.child("users").child(inviter.getUser()).child("friends").push().setValue(map, new Firebase.CompletionListener() {
+                                            @Override
+                                            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                                if (firebaseError == null) {
+                                                    ref.child("users").child(ref.getAuth().getUid()).child("invites").child(inviter.getStackId()).removeValue(new Firebase.CompletionListener() {
+                                                        @Override
+                                                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                                            if (firebaseError == null) {
+                                                                Log.i("removido", "sucesso");
+                                                            } else {
+                                                                Log.i("error", firebaseError.getMessage());
+                                                            }
+                                                        }
+                                                    });
+                                                    Toast.makeText(getActivity(), "Adicionado com sucesso", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Log.i("error", firebaseError.getMessage());
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        Log.i("error", firebaseError.getMessage());
+                                    }
+                                }
+                            });
                             //ref2.child("users").child(ref.getAuth().getUid()).child("invites").child("" + inviter.getStackId()).child(inviter.getUid());
                             ref2.removeValue(new Firebase.CompletionListener() {
                                 @Override
