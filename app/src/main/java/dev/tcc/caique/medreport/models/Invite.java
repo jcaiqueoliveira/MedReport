@@ -8,8 +8,7 @@ public class Invite {
     private String user;
     private String stackId;
 
-    public Invite() {
-    }
+    public Invite(){}
 
     public String getName() {
         return name;

@@ -6,6 +6,7 @@ package dev.tcc.caique.medreport.models;
 public class Accompaniments {
     private String stackId;
     private String chat;
+    private String email;
 
     public Accompaniments() {
 
@@ -25,5 +26,13 @@ public class Accompaniments {
 
     public void setChat(String chat) {
         this.chat = chat;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

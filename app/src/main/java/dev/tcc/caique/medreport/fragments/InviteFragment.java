@@ -13,8 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 
 import java.util.HashMap;
@@ -44,7 +47,7 @@ public class InviteFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_invite, container, false);
 
         final Firebase ref = new Firebase("https://medreportapp.firebaseio.com/");
-        final Firebase ref2 = new Firebase("https://medreportapp.firebaseio.com/users/" + ref.getAuth().getUid() + "/invites");
+        final Firebase ref2 = new Firebase("https://medreportapp.firebaseio.com/invites/" + ref.getAuth().getUid());
         ((MainActivity) getActivity()).fab.show();
         recyclerView = (RecyclerView) v.findViewById(R.id.inviteRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -55,42 +58,61 @@ public class InviteFragment extends Fragment {
                     ref2) {
                 @Override
                 protected void populateViewHolder(ViewHolderInvite viewHolderInvite, final Invite inviter, int i) {
-                    viewHolderInvite.nameInviter.setText(inviter.toString());
+                    viewHolderInvite.nameInviter.setText(inviter.getName());
                     viewHolderInvite.accept.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             //todo requisition here
                             final String chatValue = ref.push().getKey();
                             final Map<String, String> map = new HashMap<>();
-                            map.put("stackId", inviter.getUser());
+                            map.put("email", inviter.getEmail());
                             map.put("chat", chatValue);
-                            ref.child("users").child(ref.getAuth().getUid()).child("friends").push().setValue(map, new Firebase.CompletionListener() {
+                            String stackId = ref.push().getKey();
+                            map.put("stackId", stackId);
+                            ref.child("friends").child(ref.getAuth().getUid()).child(stackId).setValue(map, new Firebase.CompletionListener() {//adicionando a quem aceitou o contive
                                 @Override
                                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                                     if (firebaseError == null) {
                                         map.clear();
-                                        map.put("stackId", ref.getAuth().getUid());
+                                        map.put("email", (String) ref.getAuth().getProviderData().get("email"));
                                         map.put("chat", chatValue);
-                                        ref.child("users").child(inviter.getUser()).child("friends").push().setValue(map, new Firebase.CompletionListener() {
+                                        final String stackId2 = ref.push().getKey();
+                                        map.put("stackId", stackId2);
+                                        Query query = ref.child("users").orderByChild("email").equalTo(inviter.getEmail());
+                                        query.addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
-                                            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                                if (firebaseError == null) {
-                                                    ref.child("users").child(ref.getAuth().getUid()).child("invites").child(inviter.getStackId()).removeValue(new Firebase.CompletionListener() {
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                                    ref.child("friends").child(ds.getKey()).child(stackId2).setValue(map, new Firebase.CompletionListener() {//adicionando a quem enviou o convite
                                                         @Override
                                                         public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                                                             if (firebaseError == null) {
-                                                                Log.i("removido", "sucesso");
+                                                                ref.child("users").child(ref.getAuth().getUid()).child("invites").child(inviter.getStackId()).removeValue(new Firebase.CompletionListener() {
+                                                                    @Override
+                                                                    public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                                                        if (firebaseError == null) {
+                                                                            Log.i("removido", "sucesso");
+                                                                        } else {
+                                                                            Log.i("error", firebaseError.getMessage());
+                                                                        }
+                                                                    }
+                                                                });
+                                                                Toast.makeText(getActivity(), "Adicionado com sucesso", Toast.LENGTH_SHORT).show();
                                                             } else {
                                                                 Log.i("error", firebaseError.getMessage());
                                                             }
                                                         }
                                                     });
-                                                    Toast.makeText(getActivity(), "Adicionado com sucesso", Toast.LENGTH_SHORT).show();
-                                                } else {
-                                                    Log.i("error", firebaseError.getMessage());
                                                 }
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(FirebaseError firebaseError) {
+
                                             }
                                         });
+
                                     } else {
                                         Log.i("error", firebaseError.getMessage());
                                     }
@@ -149,4 +171,5 @@ public class InviteFragment extends Fragment {
             nameInviter = (TextView) v.findViewById(R.id.nameInviter);
         }
     }
+
 }

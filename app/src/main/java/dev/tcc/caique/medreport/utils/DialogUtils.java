@@ -62,6 +62,7 @@ public class DialogUtils {
             public void onClick(final DialogInterface dialog, int which) {
                 Firebase.setAndroidContext(mContext);
                 final Firebase firebase = new Firebase("https://medreportapp.firebaseio.com/users");
+                final Firebase invites = new Firebase("https://medreportapp.firebaseio.com/");
                 if (!edit.getText().toString().equalsIgnoreCase((String) firebase.getAuth().getProviderData().get("email"))) {
                     Query queryRef = firebase.orderByChild("email").equalTo(edit.getText().toString());
                     queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -71,7 +72,7 @@ public class DialogUtils {
                                 Map<String, String> friend = new HashMap<>();
                                 for (DataSnapshot ds : messageSnapshot.getChildren()) {
                                     if (!Singleton.getInstance().getFriends().contains(ds.getKey())) {//checando se ja nao sao amigos
-                                        friend.put("user", firebase.getAuth().getUid());
+                                        friend.put("email", (String) firebase.getAuth().getProviderData().get("email"));
                                         friend.put("name", Singleton.getInstance().getName());
                                         boolean contain = false;
                                         for (DataSnapshot dataSnapshot : ds.child("invites").getChildren()) {//checando se o convite ja foi enviado
@@ -83,7 +84,7 @@ public class DialogUtils {
                                         if (!contain) {
                                             Firebase reference = firebase.push();
                                             friend.put("stackId", reference.getKey());
-                                            firebase.child(ds.getKey()).child("invites").child(reference.getKey()).setValue(friend, new Firebase.CompletionListener() {
+                                            invites.child("invites").child(ds.getKey()).child(reference.getKey()).setValue(friend, new Firebase.CompletionListener() {
                                                 @Override
                                                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                                                     if (firebaseError != null) {

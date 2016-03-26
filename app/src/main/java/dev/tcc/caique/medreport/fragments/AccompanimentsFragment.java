@@ -6,12 +6,17 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 
 import butterknife.Bind;
@@ -46,18 +51,31 @@ public class AccompanimentsFragment extends Fragment {
         accompanimentsList.setHasFixedSize(true);
         accompanimentsList.setLayoutManager(new LinearLayoutManager(getActivity()));
         final Firebase ref = new Firebase("https://medreportapp.firebaseio.com/");
-        final Firebase ref2 = new Firebase("https://medreportapp.firebaseio.com/users/" + ref.getAuth().getUid() + "/friends");
+        final Firebase ref2 = new Firebase("https://medreportapp.firebaseio.com/friends/" + ref.getAuth().getUid());
+        final Firebase ref3 = new Firebase("https://medreportapp.firebaseio.com/users");
         try {
             adapter = new FirebaseRecyclerAdapter<Accompaniments, ViewHolderAccompaniments>(Accompaniments.class, R.layout.layout_accompaniments, ViewHolderAccompaniments.class, ref2) {
                 @Override
-                protected void populateViewHolder(ViewHolderAccompaniments viewHolderAccompaniments, final Accompaniments accompaniments, int i) {
-                    viewHolderAccompaniments.namePerson.setText(accompaniments.getStackId());
+                protected void populateViewHolder(final ViewHolderAccompaniments viewHolderAccompaniments, final Accompaniments accompaniments, int i) {
+                    Query queryRef = ref3.orderByChild(accompaniments.getStackId()).equalTo(accompaniments.getStackId());
+                    queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            viewHolderAccompaniments.namePerson.setText(accompaniments.getStackId());
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+                            Log.i("error serach", firebaseError.getMessage());
+                        }
+                    });
+
                     viewHolderAccompaniments.view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent i = new Intent(getActivity(), ChatActivity.class);
                             Bundle b = new Bundle();
-                            b.putString("SALA",accompaniments.getChat());
+                            b.putString("SALA", accompaniments.getChat());
                             i.putExtras(b);
                             startActivity(i);
                         }
@@ -81,6 +99,7 @@ public class AccompanimentsFragment extends Fragment {
         public CircleImageView thumbnail;
         public TextView namePerson;
         public View view;
+
         public ViewHolderAccompaniments(View v) {
             super(v);
             this.view = v;
