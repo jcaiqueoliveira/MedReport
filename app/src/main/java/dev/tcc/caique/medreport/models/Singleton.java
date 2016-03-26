@@ -1,5 +1,7 @@
 package dev.tcc.caique.medreport.models;
 
+import java.util.ArrayList;
+
 /**
  * Created by Avell B153 MAX on 22/02/2016.
  */
@@ -9,15 +11,10 @@ public class Singleton {
     public static Singleton getInstance() {
         return ourInstance;
     }
-    private String account[];
-    private int typeAccount;
-    public String[] getAccount() {
-        return account;
-    }
 
-    public void setAccount(String[] account) {
-        this.account = account;
-    }
+    private int typeAccount;
+    private String name;
+    private ArrayList<String> friends = new ArrayList<>();
 
     private Singleton() {
     }
@@ -28,5 +25,21 @@ public class Singleton {
 
     public void setTypeAccount(int typeAccount) {
         this.typeAccount = typeAccount;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ArrayList<String> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(ArrayList<String> friends) {
+        this.friends = friends;
     }
 }

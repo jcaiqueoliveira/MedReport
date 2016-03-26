@@ -39,11 +39,7 @@ public class ChatActivity extends AppCompatActivity {
                 mFirebase) {
             @Override
             protected void populateViewHolder(ViewHolderChat viewHolderChat, ChatMessage c, int i) {
-                viewHolderChat.
-                        name
-                        .setText(
-                                c.
-                                        getName());
+                viewHolderChat.name.setText(c.getName());
                 viewHolderChat.message.setText(c.getText());
             }
         };

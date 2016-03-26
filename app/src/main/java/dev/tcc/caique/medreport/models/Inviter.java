@@ -1,31 +1,30 @@
 package dev.tcc.caique.medreport.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 /**
  * Created by Avell B153 MAX on 19/03/2016.
  */
-@JsonIgnoreProperties(ignoreUnknown=true)
 public class Inviter {
-    private String inviter;
-    long stackId;
-    public Inviter(){
+    private String user;
+    private String name;
+
+    public Inviter() {
 
     }
 
-    public String getUid() {
-        return inviter;
+    public String getUser() {
+        return user;
     }
 
-    public void setUid(String inviter) {
-        this.inviter = inviter;
+    public void setUser(String user) {
+        this.user = user;
     }
 
-    public long getStackId() {
-        return stackId;
+    public String getName() {
+        return name;
     }
 
-    public void setStackId(long stackId) {
-        this.stackId = stackId;
+    public void setName(String name) {
+        this.name = name;
     }
 }
+

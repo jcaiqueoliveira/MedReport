@@ -20,6 +20,7 @@ import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.models.Inviter;
 import dev.tcc.caique.medreport.utils.Constants;
+import dev.tcc.caique.medreport.utils.DialogUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,7 +52,7 @@ public class InviteFragment extends Fragment {
                 @Override
                 protected void populateViewHolder(ViewHolderInvite viewHolderInvite, final Inviter inviter, int i) {
                     Log.i("position", "valor: " + i);
-                    viewHolderInvite.nameInviter.setText(inviter.getUid());
+                    viewHolderInvite.nameInviter.setText(inviter.getName());
                     viewHolderInvite.accept.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -78,11 +79,17 @@ public class InviteFragment extends Fragment {
                     });
                 }
             };
-           Log.i("items",""+adapter.getItemCount());
             recyclerView.setAdapter(adapter);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        ((MainActivity)getActivity()).fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogUtils.inviteFriend(getActivity());
+            }
+        });
         return v;
     }
 
