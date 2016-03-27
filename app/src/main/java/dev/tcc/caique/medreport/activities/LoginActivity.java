@@ -1,6 +1,5 @@
 package dev.tcc.caique.medreport.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.utils.Constants;
+import dev.tcc.caique.medreport.utils.Utils;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -40,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        Firebase.setAndroidContext(this);
         //Todo https://developers.google.com/identity/sign-in/android/start-integrating
     }
 
@@ -52,8 +51,7 @@ public class LoginActivity extends AppCompatActivity {
                 ref.authWithPassword(tvEmail.getText().toString(), tvPass.getText().toString(), new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish();
+                        Utils.getMyData(LoginActivity.this);
                     }
 
                     @Override

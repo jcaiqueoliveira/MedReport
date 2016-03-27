@@ -8,6 +8,9 @@ public class ProfileMedical {
     private String crm;
     private String specialization;
 
+    public ProfileMedical() {
+    }
+
     public String getName() {
         return name;
     }
@@ -30,5 +33,14 @@ public class ProfileMedical {
 
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
+    }
+
+    @Override
+    public String toString() {
+        return "ProfileMedical{" +
+                "name='" + name + '\'' +
+                ", crm='" + crm + '\'' +
+                ", specialization='" + specialization + '\'' +
+                '}';
     }
 }

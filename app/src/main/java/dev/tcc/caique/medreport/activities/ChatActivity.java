@@ -27,7 +27,6 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Firebase.setAndroidContext(this);
         setContentView(R.layout.activity_chat);
         textEdit = (EditText) this.findViewById(R.id.text_edit);
         sendButton = (Button) this.findViewById(R.id.send_button);

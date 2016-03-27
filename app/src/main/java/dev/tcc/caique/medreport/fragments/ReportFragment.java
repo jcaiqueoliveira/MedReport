@@ -16,7 +16,6 @@ import com.firebase.ui.FirebaseRecyclerAdapter;
 
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
-import dev.tcc.caique.medreport.adapters.ReportAdapter;
 import dev.tcc.caique.medreport.models.Report;
 import dev.tcc.caique.medreport.utils.Constants;
 
@@ -31,7 +30,6 @@ public class ReportFragment extends Fragment {
     }
 
     private RecyclerView recyclerView;
-    private ReportAdapter reportAdapter;
     private Firebase ref;
     FirebaseRecyclerAdapter<Report, ViewHolderReport> adapter;
 
@@ -39,7 +37,6 @@ public class ReportFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Firebase.setAndroidContext(getActivity());
         View v = inflater.inflate(R.layout.fragment_report, container, false);
         ((MainActivity) getActivity()).fab.show();
         ((MainActivity) getActivity()).fab.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +60,7 @@ public class ReportFragment extends Fragment {
                 }
             };
             recyclerView.setAdapter(adapter);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return v;

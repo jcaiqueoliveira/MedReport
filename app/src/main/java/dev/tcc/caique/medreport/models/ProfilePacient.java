@@ -13,6 +13,9 @@ public class ProfilePacient {
     private String allergy;
     private String drugAllergy;
 
+    public ProfilePacient() {
+    }
+
     public String getName() {
         return name;
     }

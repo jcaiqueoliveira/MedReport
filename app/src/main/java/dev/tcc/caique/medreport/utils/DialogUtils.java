@@ -60,7 +60,6 @@ public class DialogUtils {
         builder.setPositiveButton("Adicionar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, int which) {
-                Firebase.setAndroidContext(mContext);
                 final Firebase firebase = new Firebase(Constants.BASE_URL + "users");
                 final Firebase invites = new Firebase(Constants.BASE_URL);
                 if (!edit.getText().toString().equalsIgnoreCase((String) firebase.getAuth().getProviderData().get("email"))) {

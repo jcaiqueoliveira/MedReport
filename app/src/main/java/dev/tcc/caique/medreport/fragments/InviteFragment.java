@@ -26,6 +26,7 @@ import java.util.Map;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.models.Invite;
+import dev.tcc.caique.medreport.models.Singleton;
 import dev.tcc.caique.medreport.utils.Constants;
 import dev.tcc.caique.medreport.utils.DialogUtils;
 
@@ -73,6 +74,7 @@ public class InviteFragment extends Fragment {
                                 @Override
                                 public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                                     if (firebaseError == null) {
+                                        Singleton.getInstance().getFriends().add(inviter.getEmail());
                                         map.clear();
                                         map.put("email", (String) ref.getAuth().getProviderData().get("email"));
                                         map.put("chat", chatValue);

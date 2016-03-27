@@ -20,6 +20,7 @@ import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.fragments.AboutFragment;
 import dev.tcc.caique.medreport.fragments.AccompanimentsFragment;
 import dev.tcc.caique.medreport.fragments.InviteFragment;
+import dev.tcc.caique.medreport.fragments.ProfileMedicalFragment;
 import dev.tcc.caique.medreport.fragments.ProfilePacientFragment;
 import dev.tcc.caique.medreport.fragments.ReportFragment;
 import dev.tcc.caique.medreport.models.Singleton;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity
     public NavigationView navigationView;
     public Toolbar toolbar;
     private TextView name;
+    private TextView type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,9 @@ public class MainActivity extends AppCompatActivity
         }
         View headerLayout = navigationView.getHeaderView(0);
         name = (TextView) headerLayout.findViewById(R.id.nameHeader);
+        type = (TextView) headerLayout.findViewById(R.id.typeAccount);
         name.setText("Olá " + Singleton.getInstance().getName());
+        type.setText(Singleton.getInstance().getType().equals("1") ? "Médico" : "Paciente");
     }
 
     @Override
@@ -109,7 +113,10 @@ public class MainActivity extends AppCompatActivity
         boolean b = true;
         int id = item.getItemId();
         if (id == R.id.nav_profile) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, new ProfilePacientFragment()).addToBackStack(null).commit();
+            if (Singleton.getInstance().getType().equals("1"))
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new ProfileMedicalFragment()).addToBackStack(null).commit();
+            else
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new ProfilePacientFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_report) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new ReportFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_invite) {
