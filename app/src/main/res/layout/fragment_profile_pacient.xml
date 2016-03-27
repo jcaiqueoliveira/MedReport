@@ -1,5 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -12,8 +13,8 @@
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:clickable="false">
+        android:clickable="false"
+        android:orientation="vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgProfile"
@@ -23,6 +24,7 @@
             android:src="@android:drawable/sym_def_app_icon" />
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/inputName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -41,8 +43,8 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="0dp"
-                android:layout_weight="5"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="5">
 
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/edtAge"
@@ -53,8 +55,8 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="0dp"
-                android:layout_weight="5"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="5">
 
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/edtGender"
@@ -72,8 +74,8 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="0dp"
-                android:layout_weight="5"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="5">
 
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/edtHeight"
@@ -84,8 +86,8 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="0dp"
-                android:layout_weight="5"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="5">
 
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/edtWeight"
@@ -94,36 +96,41 @@
                     android:hint="Peso" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/edtProblem1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text|textMultiLine"
-                android:hint="Possui problema de saúde?(Ex. Diabete)"/>
+                android:hint="Possui problema de saúde?(Ex. Diabete)"
+                android:inputType="text|textMultiLine" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/edtProblem2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text|textMultiLine"
-                android:hint="Possui alguma alergia?(Ex. acaro)"/>
+                android:hint="Possui alguma alergia?(Ex. acaro)"
+                android:inputType="text|textMultiLine" />
         </android.support.design.widget.TextInputLayout>
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/edtProblem3"
                 android:layout_width="match_parent"
-                android:inputType="text|textMultiLine"
                 android:layout_height="wrap_content"
-                android:hint="Alergia a remédios?(Ex. Dipirona)"/>
+                android:hint="Alergia a remédios?(Ex. Dipirona)"
+                android:inputType="text|textMultiLine" />
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 </FrameLayout>

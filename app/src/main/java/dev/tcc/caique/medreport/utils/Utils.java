@@ -69,11 +69,13 @@ public class Utils {
                         if (Singleton.getInstance().getType().equals("1")) {
                             ProfileMedical pm = ds.child("profile").getValue(ProfileMedical.class);
                             Singleton.getInstance().setPm(pm);
-                            Singleton.getInstance().setName(pm.getName());
+                            if (pm != null && pm.getName() != null)
+                                Singleton.getInstance().setName(pm.getName());
                         } else {
                             ProfilePacient pp = ds.child("profile").getValue(ProfilePacient.class);
                             Singleton.getInstance().setPp(pp);
-                            Singleton.getInstance().setName(pp.getName());
+                            if (pp != null && pp.getName() != null)
+                                Singleton.getInstance().setName(pp.getName());
                         }
                         /*for (DataSnapshot profile : ds.child("profile").getChildren()) {
                             if (Singleton.getInstance().getType().equals("1")) {
