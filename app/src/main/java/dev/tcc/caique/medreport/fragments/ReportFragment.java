@@ -17,6 +17,7 @@ import com.firebase.ui.FirebaseRecyclerAdapter;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.models.Report;
+import dev.tcc.caique.medreport.models.Singleton;
 import dev.tcc.caique.medreport.utils.Constants;
 
 /**
@@ -38,14 +39,20 @@ public class ReportFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_report, container, false);
-        ((MainActivity) getActivity()).fab.show();
-        ((MainActivity) getActivity()).fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, new CreateReportFragment()).addToBackStack(null).commit();
-            }
-        });
-        ref = new Firebase(Constants.BASE_URL).child("users").child("52a1cba1-a170-49ca-891d-65ae3a38d84f").child("report");
+        if(Singleton.getInstance().getType().equals("2")){
+            ((MainActivity) getActivity()).fab.show();
+            ((MainActivity) getActivity()).fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, new CreateReportFragment()).addToBackStack(null).commit();
+                }
+            });
+        }else{
+            ((MainActivity) getActivity()).fab.hide();
+        }
+
+        ref = new Firebase(Constants.BASE_URL+"reports");
+        ref.child(ref.getAuth().getUid());
         recyclerView = (RecyclerView) v.findViewById(R.id.reportRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

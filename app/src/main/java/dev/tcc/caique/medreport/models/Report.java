@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Report {
     private String title;
     private String description;
-    long stackId;
+    private String stackId;
     public Report(){
 
     }
@@ -29,11 +29,11 @@ public class Report {
         this.description = description;
     }
 
-    public long getStackId() {
+    public String getStackId() {
         return stackId;
     }
 
-    public void setStackId(long stackId) {
+    public void setStackId(String stackId) {
         this.stackId = stackId;
     }
 }

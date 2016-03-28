@@ -5,18 +5,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.firebase.client.AuthData;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
-import com.firebase.client.ValueEventListener;
 
 import dev.tcc.caique.medreport.R;
-import dev.tcc.caique.medreport.models.ProfileMedical;
-import dev.tcc.caique.medreport.models.Singleton;
 import dev.tcc.caique.medreport.utils.Constants;
 import dev.tcc.caique.medreport.utils.StatusConn;
 import dev.tcc.caique.medreport.utils.Utils;
@@ -51,6 +44,4 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, 2000);
     }
-
-
 }

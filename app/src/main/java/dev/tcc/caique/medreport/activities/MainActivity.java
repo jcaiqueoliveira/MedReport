@@ -68,7 +68,8 @@ public class MainActivity extends AppCompatActivity
         name = (TextView) headerLayout.findViewById(R.id.nameHeader);
         type = (TextView) headerLayout.findViewById(R.id.typeAccount);
         name.setText("Olá " + Singleton.getInstance().getName());
-        type.setText(Singleton.getInstance().getType().equals("1") ? "Médico" : "Paciente");
+        if (Singleton.getInstance().getType() != null)
+            type.setText(Singleton.getInstance().getType().equals("1") ? "Médico" : "Paciente");
     }
 
     @Override

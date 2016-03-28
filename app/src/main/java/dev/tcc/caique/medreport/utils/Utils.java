@@ -1,9 +1,13 @@
 package dev.tcc.caique.medreport.utils;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +17,10 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.models.ProfileMedical;
@@ -102,5 +110,11 @@ public class Utils {
                 Log.i("error", firebaseError.getMessage());
             }
         });
+    }
+
+    public static Bitmap recodeImage(String imageFile) {
+        byte[] imageAsBytes = Base64.decode(imageFile, Base64.DEFAULT);
+        Bitmap bmp = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+        return bmp;
     }
 }

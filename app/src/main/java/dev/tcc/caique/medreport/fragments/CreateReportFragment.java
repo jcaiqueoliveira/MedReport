@@ -7,8 +7,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,17 +23,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.gun0912.tedpicker.Config;
 import com.gun0912.tedpicker.ImagePickerActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,6 +41,8 @@ import butterknife.OnClick;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.adapters.ImageAdapter;
+import dev.tcc.caique.medreport.models.Image;
+import dev.tcc.caique.medreport.models.Report;
 import dev.tcc.caique.medreport.utils.Constants;
 
 /**
@@ -52,7 +57,10 @@ public class CreateReportFragment extends Fragment {
     EditText title;
     @Bind(R.id.description)
     EditText description;
-
+    @Bind(R.id.inputDescription)
+    TextInputLayout inputDescription;
+    @Bind(R.id.inputTitle)
+    TextInputLayout inputTitle;
     private static final int INTENT_REQUEST_GET_IMAGES = 13;
 
     private ArrayList<Bitmap> images;
@@ -81,6 +89,8 @@ public class CreateReportFragment extends Fragment {
     }
 
     private void openGalleryToSelectImages() {
+        Config c = new Config();
+        c.setSelectionLimit(4);
         Intent intent = new Intent(getActivity(), ImagePickerActivity.class);
         startActivityForResult(intent, INTENT_REQUEST_GET_IMAGES);
     }
@@ -101,10 +111,29 @@ public class CreateReportFragment extends Fragment {
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
         for (Uri uri : uris) {
             try {
+                BitmapFactory.Options o = new BitmapFactory.Options();
+                o.inJustDecodeBounds = true;
+                o.inSampleSize = 6;
+
                 InputStream image_stream = getActivity().getContentResolver().openInputStream(Uri.parse("file://" + uri));
-                Bitmap bitmap = BitmapFactory.decodeStream(image_stream);
-                bitmaps.add(bitmap);
-                bitmaps.add(MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri));
+                Bitmap bitmap = BitmapFactory.decodeStream(image_stream, null, o);
+                image_stream.close();
+                final int REQUIRED_SIZE = 75;
+
+                // Find the correct scale value. It should be the power of 2.
+                int scale = 1;
+                while (o.outWidth / scale / 2 >= REQUIRED_SIZE &&
+                        o.outHeight / scale / 2 >= REQUIRED_SIZE) {
+                    scale *= 2;
+                }
+                BitmapFactory.Options o2 = new BitmapFactory.Options();
+                o2.inSampleSize = scale;
+                image_stream = getActivity().getContentResolver().openInputStream(Uri.parse("file://" + uri));
+
+                Bitmap selectedBitmap = BitmapFactory.decodeStream(image_stream, null, o2);
+                image_stream.close();
+                bitmaps.add(selectedBitmap);
+                //bitmaps.add(MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -122,49 +151,41 @@ public class CreateReportFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save:
-                try {
-                    Firebase ref = new Firebase(Constants.BASE_URL);
-                    Firebase refPush;
-                    // Map<String, Map<String, Report>> report = new HashMap<String,Firebase>();
-                    Map<String, String> post2 = new HashMap<String, String>();
-                    post2.put("title", "alanisawesome");
-                    post2.put("description", "The Turing Machine");
-                    refPush = ref.child("users").child("52a1cba1-a170-49ca-891d-65ae3a38d84f").child("report").push();
-                    refPush.setValue(post2, new Firebase.CompletionListener() {
-                        @Override
-                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                            if (firebaseError != null) {
-                                System.out.println("Data could not be saved. " + firebaseError.getMessage());
-                            } else {
-                                System.out.println("Data saved successfully.");
-                            }
-                        }
-                    });
-                    String uid = refPush.getKey();
-                    ArrayList<String> strings = createListImagesCompress();
-                    for (String s : strings) {
-                        Log.i("aqui", "uid" + uid);
-                        Map<String, String> images = new HashMap<String, String>();
-                        images.put("image", s);
-                        ref.child("users").child("52a1cba1-a170-49ca-891d-65ae3a38d84f").child("report").
-                                child(uid)
-                                .child("image")
-                                .push().setValue(images, new Firebase.CompletionListener() {
+                if (verifyFields()) {
+                    try {
+                        final Firebase ref = new Firebase(Constants.BASE_URL);
+                        final String timeStamp = ref.push().getKey();
+                        Report report = new Report();
+                        report.setDescription(description.getText().toString());
+                        report.setTitle(title.getText().toString());
+                        report.setStackId(timeStamp);
+                        ref.child("reports").child(ref.getAuth().getUid()).child(timeStamp).setValue(report, new Firebase.CompletionListener() {
                             @Override
                             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                                 if (firebaseError != null) {
-                                    System.out.println("2 - Data could not be saved. " + firebaseError.getMessage());
+                                    showSnackBar("Erro ao salvar relatório. Tente novamente.");
                                 } else {
-                                    System.out.println("2 - Data saved successfully.");
+                                    //Todo send image
+                                    ArrayList<String> images = createListImagesCompress();
+                                    for (String s : images) {
+                                        Image i = new Image();
+                                        i.setImage(s);
+                                        ref.child("images").child(timeStamp).push().setValue(i, new Firebase.CompletionListener() {
+                                            @Override
+                                            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                                if (firebaseError != null) {
+                                                    Log.i("Error", firebaseError.getMessage());
+                                                }
+                                            }
+                                        });
+                                    }
+                                    showSnackBar("Relatório criado com sucesso");
                                 }
                             }
                         });
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-
-                    //report.put("report", ref.push());
-                    // usersRef.setValue(users);
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
                 break;
         }
@@ -176,7 +197,7 @@ public class CreateReportFragment extends Fragment {
         if (images.size() > 0) {
             for (Bitmap bmp : images) {
                 ByteArrayOutputStream bYtE = new ByteArrayOutputStream();
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, bYtE);
+                bmp.compress(Bitmap.CompressFormat.JPEG, 100, bYtE);
                 bmp.recycle();
                 byte[] byteArray = bYtE.toByteArray();
                 String imageFile = Base64.encodeToString(byteArray, Base64.DEFAULT);
@@ -186,5 +207,25 @@ public class CreateReportFragment extends Fragment {
             Log.i("maior que ", "0");
         }
         return listImages;
+    }
+
+    private boolean verifyFields() {
+        boolean seguir = true;
+        if (TextUtils.isEmpty(title.getText().toString())) {
+            inputTitle.setError("Campo Obrigatório");
+            seguir = false;
+        }
+        if (TextUtils.isEmpty(description.getText().toString())) {
+            inputDescription.setError("Campo Obrigatório");
+            seguir = false;
+        }
+        return seguir;
+    }
+
+    private void showSnackBar(String msg) {
+        Snackbar snack = Snackbar.make(v.findViewById(R.id.parent), msg, Snackbar.LENGTH_LONG);
+        View view = snack.getView();
+        ((TextView) view.findViewById(android.support.design.R.id.snackbar_text)).setTextColor(ContextCompat.getColor(getActivity(), android.R.color.white));
+        snack.show();
     }
 }
