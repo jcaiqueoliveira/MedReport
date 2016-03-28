@@ -2,7 +2,8 @@
 This is a repository to create the app android  called MedReport. This project is part of tcc in computer science
 
 #To Do Android
-- [ ] Add events to buttons done and close in InviteFragment
-- [ ] Add click to imageButtons of app ( the event call the camera)
-- [ ] Create a search for email using firebase and get time_stamp
-- [ ] Update Friend list chat
+- [ ] Adicionar tabs em inviteFragment (uma para convite enviados e outra para convites recebidos)
+- [ ] Adicionar algoritmo de compressão de imagens
+- [ ] Adicionar função para enviar image para o firebase
+- [ ] Report: listagem de relatórios (Caso paciente), listagem de pacientes(Caso médico), listagem de relatorios paciente(caso médico), exibição de relatórios(ambos)
+- [ ] Atualizar envio de relatorio (paciente)
