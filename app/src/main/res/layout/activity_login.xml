@@ -3,79 +3,96 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:weightSum="10"
-    android:gravity="center"
     tools:context="dev.tcc.caique.medreport.activities.LoginActivity">
+
     <LinearLayout
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="7"
-        android:orientation="vertical"
         android:gravity="center"
-        android:layout_height="match_parent">
+        android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/tv_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
-                />
+                android:hint="Email" />
         </android.support.design.widget.TextInputLayout>
 
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/tv_user"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nome"
-            />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content">
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/tv_password"
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/tv_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nome" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/tv_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Senha"
+                android:inputType="textPassword" />
+        </android.support.design.widget.TextInputLayout>
+
+        <RadioGroup
+            android:id="@+id/radioGroupType"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:hint="Senha"/>
-    </android.support.design.widget.TextInputLayout>
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Médico" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Paciente"
+               />
+        </RadioGroup>
 
         <android.support.v7.widget.AppCompatButton
-            android:onClick="Sign"
             android:id="@+id/newAccountButton"
             android:layout_width="match_parent"
-            android:text="Cadastrar"
             android:layout_height="wrap_content"
-            />
+            android:onClick="Sign"
+            android:text="Cadastrar" />
 
         <TextView
-            android:gravity="center"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_width="match_parent"
-            android:text="Já possui uma conta?"
             android:layout_height="wrap_content"
-            />
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:gravity="center"
+            android:text="Já possui uma conta?" />
 
         <TextView
-            android:textColor="@color/colorPrimary"
-            android:onClick="enter"
-            android:gravity="center"
             android:id="@+id/tv_enter"
             android:layout_width="match_parent"
-            android:text="Clique  aqui para entrar"
             android:layout_height="wrap_content"
-            />
+            android:gravity="center"
+            android:onClick="enter"
+            android:text="Clique  aqui para entrar"
+            android:textColor="@color/colorPrimary" />
 
     </LinearLayout>
 </LinearLayout>

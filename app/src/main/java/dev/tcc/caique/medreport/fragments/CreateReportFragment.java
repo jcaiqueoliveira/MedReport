@@ -2,11 +2,14 @@ package dev.tcc.caique.medreport.fragments;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -31,6 +34,7 @@ import com.gun0912.tedpicker.Config;
 import com.gun0912.tedpicker.ImagePickerActivity;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -41,9 +45,16 @@ import butterknife.OnClick;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.adapters.ImageAdapter;
+import dev.tcc.caique.medreport.helpers.DocumentHelper;
+import dev.tcc.caique.medreport.imgurmodel.ImageResponse;
+import dev.tcc.caique.medreport.imgurmodel.Upload;
 import dev.tcc.caique.medreport.models.Image;
 import dev.tcc.caique.medreport.models.Report;
+import dev.tcc.caique.medreport.service.UploadService;
 import dev.tcc.caique.medreport.utils.Constants;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,8 +73,9 @@ public class CreateReportFragment extends Fragment {
     @Bind(R.id.inputTitle)
     TextInputLayout inputTitle;
     private static final int INTENT_REQUEST_GET_IMAGES = 13;
-
     private ArrayList<Bitmap> images;
+    private Upload upload; // Upload object containging image and meta data
+    private File chosenFile; //chosen file from intent
 
     public CreateReportFragment() {
         // Required empty public constructor
@@ -103,6 +115,34 @@ public class CreateReportFragment extends Fragment {
             images = getBitmapsFromImageUris(imageUris);
             if (imageUris.size() > 0) {
                 gridView.setAdapter(new ImageAdapter(getActivity(), images));
+            }
+            String filePath = DocumentHelper.getPath(getActivity(), imageUris.get(0));
+            // Log.i("path", getRealPathFromURI(getActivity(),imageUris.get(0)));
+            //Safety check to prevent null pointer exception
+            // if (filePath == null || filePath.isEmpty()) return;
+
+        }                /*
+                    Picasso is a wonderful image loading tool from square inc.
+                    https://github.com/square/picasso
+                 */
+       /* Picasso.with(getActivity())
+                .load(chosenFile)
+                .placeholder(R.drawable.ic_photo_library_black)
+                .fit()
+                .into(uploadImage);*/
+    }
+
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
             }
         }
     }
@@ -147,49 +187,81 @@ public class CreateReportFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    private void createUpload(File image) {
+        upload = new Upload();
+        upload.image = image;
+    }
+
+    private class UiCallback implements Callback<ImageResponse> {
+
+        @Override
+        public void success(ImageResponse imageResponse, Response response) {
+            clearInput();
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            //Assume we have no connection, since error is null
+            if (error == null) {
+                Snackbar.make(v, "No internet connection", Snackbar.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save:
                 if (verifyFields()) {
-                    try {
-                        final Firebase ref = new Firebase(Constants.BASE_URL);
-                        final String timeStamp = ref.push().getKey();
-                        Report report = new Report();
-                        report.setDescription(description.getText().toString());
-                        report.setTitle(title.getText().toString());
-                        report.setStackId(timeStamp);
-                        ref.child("reports").child(ref.getAuth().getUid()).child(timeStamp).setValue(report, new Firebase.CompletionListener() {
-                            @Override
-                            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                if (firebaseError != null) {
-                                    showSnackBar("Erro ao salvar relatório. Tente novamente.");
-                                } else {
-                                    //Todo send image
-                                    ArrayList<String> images = createListImagesCompress();
-                                    for (String s : images) {
-                                        Image i = new Image();
-                                        i.setImage(s);
-                                        ref.child("images").child(timeStamp).push().setValue(i, new Firebase.CompletionListener() {
-                                            @Override
-                                            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                                if (firebaseError != null) {
-                                                    Log.i("Error", firebaseError.getMessage());
+                    if (chosenFile != null) {
+                        createUpload(chosenFile);
+                        new UploadService(getActivity()).Execute(upload, new UiCallback());
+                        try {
+                            final Firebase ref = new Firebase(Constants.BASE_URL);
+                            final String timeStamp = ref.push().getKey();
+                            Report report = new Report();
+                            report.setDescription(description.getText().toString());
+                            report.setTitle(title.getText().toString());
+                            report.setStackId(timeStamp);
+                            ref.child("reports").child(ref.getAuth().getUid()).child(timeStamp).setValue(report, new Firebase.CompletionListener() {
+                                @Override
+                                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                    if (firebaseError != null) {
+                                        showSnackBar("Erro ao salvar relatório. Tente novamente.");
+                                    } else {
+                                        //Todo send image
+                                        ArrayList<String> images = createListImagesCompress();
+                                        for (String s : images) {
+                                            Image i = new Image();
+                                            i.setImage(s);
+                                            ref.child("images").child(timeStamp).push().setValue(i, new Firebase.CompletionListener() {
+                                                @Override
+                                                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                                    if (firebaseError != null) {
+                                                        Log.i("Error", firebaseError.getMessage());
+                                                    }
                                                 }
-                                            }
-                                        });
+                                            });
+                                        }
+                                        showSnackBar("Relatório criado com sucesso");
                                     }
-                                    showSnackBar("Relatório criado com sucesso");
                                 }
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Log.i("aqui", "aqui");
                     }
                 }
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void clearInput() {
+        title.setText("");
+        description.clearFocus();
     }
 
     private ArrayList<String> createListImagesCompress() {

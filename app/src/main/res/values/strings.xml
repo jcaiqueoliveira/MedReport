@@ -9,4 +9,7 @@
     <string name="about">Aplicativo desenvolvido como trabalho de conclusão de curso para obter o título de bacharel em Ciência da Computação pela Universidade Federal de Sergipe. Deseja continuar o trabalho?</string>
     <string name="description">Descrição</string>
     <string name="title">Título</string>
+    <string name="notification_progress">Enviando imagens do relatório</string>
+    <string name="notifaction_success">Sucesso ao enviar imagens</string>
+    <string name="notification_fail">Erro ao enviar a imagem</string>
 </resources>

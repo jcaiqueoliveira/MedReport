@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.File;
+
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.fragments.AboutFragment;
 import dev.tcc.caique.medreport.fragments.AccompanimentsFragment;
@@ -23,6 +25,7 @@ import dev.tcc.caique.medreport.fragments.InviteFragment;
 import dev.tcc.caique.medreport.fragments.ProfileMedicalFragment;
 import dev.tcc.caique.medreport.fragments.ProfilePacientFragment;
 import dev.tcc.caique.medreport.fragments.ReportFragment;
+import dev.tcc.caique.medreport.imgurmodel.Upload;
 import dev.tcc.caique.medreport.models.Singleton;
 import dev.tcc.caique.medreport.utils.DialogUtils;
 
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     public Toolbar toolbar;
     private TextView name;
     private TextView type;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

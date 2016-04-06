@@ -64,8 +64,8 @@ public class ProfileMedicalFragment extends Fragment {
         ButterKnife.bind(this, v);
         setHasOptionsMenu(true);
         nameMedical.setText(Singleton.getInstance().getName());
-        crm.setText(Singleton.getInstance().getPm().getCrm());
-        specialization.setText(Singleton.getInstance().getPm().getSpecialization());
+        crm.setText(Singleton.getInstance().getPm().getCrm()==null?"":Singleton.getInstance().getPm().getCrm());
+        specialization.setText(Singleton.getInstance().getPm().getSpecialization()==null?"":Singleton.getInstance().getPm().getSpecialization());
         Utils.setViewAndChildrenEnabled(v, false);
         ((MainActivity) getActivity()).fab.hide();
         return v;

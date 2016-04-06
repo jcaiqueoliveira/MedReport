@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.firebase.client.AuthData;
@@ -35,11 +36,21 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.newAccountButton)
     TextView btnNewAccount;
 
+    @Bind(R.id.radioGroupType)
+    RadioGroup radioGroupType;
+    private int type = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        radioGroupType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                type = checkedId;
+            }
+        });
         //Todo https://developers.google.com/identity/sign-in/android/start-integrating
     }
 
@@ -61,14 +72,16 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         } else {
-            if (!TextUtils.isEmpty(tvUser.getText().toString()) && !TextUtils.isEmpty(tvEmail.getText().toString()) && !TextUtils.isEmpty(tvPass.getText().toString()))
+            if (!TextUtils.isEmpty(tvUser.getText().toString()) && !TextUtils.isEmpty(tvEmail.getText().toString()) && !TextUtils.isEmpty(tvPass.getText().toString()) && type > 0) {
                 ref.createUser(tvEmail.getText().toString(), tvPass.getText().toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
                     @Override
                     public void onSuccess(Map<String, Object> result) {
+
                         String uid = result.get("uid").toString();
                         Map<String, Object> user = new HashMap<String, Object>();
                         user.put(uid + "/name", tvUser.getText().toString());
                         user.put(uid + "/email", tvEmail.getText().toString());
+                        user.put(uid + "/type", type);
                         ref.child("users").updateChildren(user);
                         Snackbar.make(view, "Usuário criado com sucesso, faça login para acessar o aplicativo", Snackbar.LENGTH_SHORT).show();
                     }
@@ -78,6 +91,9 @@ public class LoginActivity extends AppCompatActivity {
                         Snackbar.make(view, "Erro ao criar usuário", Snackbar.LENGTH_SHORT).show();
                     }
                 });
+            } else {
+                Snackbar.make(view, "Preencha todos os campos", Snackbar.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -86,10 +102,12 @@ public class LoginActivity extends AppCompatActivity {
             btnNewAccount.setText("Entrar");
             tvUser.setVisibility(View.GONE);
             ((TextView) view.findViewById(R.id.tv_enter)).setText("Clique aqui para criar uma nova conta");
+            radioGroupType.setVisibility(View.GONE);
         } else {
             btnNewAccount.setText("Criar Conta");
             tvUser.setVisibility(View.VISIBLE);
             ((TextView) view.findViewById(R.id.tv_enter)).setText("Clique  aqui para entrar");
+            radioGroupType.setVisibility(View.VISIBLE);
         }
     }
 }
