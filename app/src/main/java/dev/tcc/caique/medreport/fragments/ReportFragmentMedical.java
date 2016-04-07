@@ -1,7 +1,6 @@
 package dev.tcc.caique.medreport.fragments;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -23,7 +23,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import dev.tcc.caique.medreport.R;
-import dev.tcc.caique.medreport.activities.ChatActivity;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.models.Accompaniments;
 import dev.tcc.caique.medreport.utils.Constants;
@@ -38,6 +37,7 @@ public class ReportFragmentMedical extends Fragment {
     FirebaseRecyclerAdapter<Accompaniments, ViewHolderAccompaniments> adapter;
     @Bind(R.id.noItem)
     TextView noItem;
+
     public ReportFragmentMedical() {
         // Required empty public constructor
     }
@@ -65,16 +65,17 @@ public class ReportFragmentMedical extends Fragment {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                ref.child("reports").child(ds.getKey());
-                                ref.addValueEventListener(new ValueEventListener() {
+                                Log.i("ds", ds.getKey());
+                                ref.child("reports").child(ds.getKey()).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot snapshot) {
+                                        Log.i("pai", snapshot.toString());
                                         viewHolderAccompaniments.numberReport.setText("Relatórios: " + snapshot.getChildrenCount());
                                     }
 
                                     @Override
                                     public void onCancelled(FirebaseError firebaseError) {
-                                        System.out.println("The read failed: " + firebaseError.getMessage());
+
                                     }
                                 });
                                 viewHolderAccompaniments.namePerson.setText((String) ds.child("name").getValue());
@@ -86,15 +87,16 @@ public class ReportFragmentMedical extends Fragment {
                             Log.i("error serach", firebaseError.getMessage());
                         }
                     });
-
+                    // todo atualizar o onclick
                     viewHolderAccompaniments.view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent i = new Intent(getActivity(), ChatActivity.class);
+                           /* Intent i = new Intent(getActivity(), ChatActivity.class);
                             Bundle b = new Bundle();
                             b.putString("SALA", accompaniments.getChat());
                             i.putExtras(b);
-                            startActivity(i);
+                            startActivity(i);*/
+                            Toast.makeText(getActivity(), "Ação a ser atualizada", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -120,10 +122,11 @@ public class ReportFragmentMedical extends Fragment {
             namePerson = (TextView) v.findViewById(R.id.nameAccompanimentList);
         }
     }
-    public void  updateUI(){
-        if(adapter.getItemCount()==0){
+
+    public void updateUI() {
+        if (adapter.getItemCount() == 0) {
             noItem.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             noItem.setVisibility(View.GONE);
         }
     }
