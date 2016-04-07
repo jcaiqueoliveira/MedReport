@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.models.Report;
@@ -23,15 +25,18 @@ import dev.tcc.caique.medreport.utils.Constants;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReportFragment extends Fragment {
+public class ReportFragmentPacient extends Fragment {
 
 
-    public ReportFragment() {
+    public ReportFragmentPacient() {
         // Required empty public constructor
     }
 
+    @Bind(R.id.noItem)
+    TextView noItem;
     private RecyclerView recyclerView;
     private Firebase ref;
+    private Firebase ref2;
     FirebaseRecyclerAdapter<Report, ViewHolderReport> adapter;
 
     @Override
@@ -39,7 +44,8 @@ public class ReportFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_report, container, false);
-        if(Singleton.getInstance().getType().equals("2")){
+        ButterKnife.bind(this, v);
+        if (Singleton.getInstance().getType().equals("2")) {
             ((MainActivity) getActivity()).fab.show();
             ((MainActivity) getActivity()).fab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -47,12 +53,12 @@ public class ReportFragment extends Fragment {
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, new CreateReportFragment()).addToBackStack(null).commit();
                 }
             });
-        }else{
+        } else {
             ((MainActivity) getActivity()).fab.hide();
         }
 
-        ref = new Firebase(Constants.BASE_URL+"reports");
-        ref.child(ref.getAuth().getUid());
+        ref = new Firebase(Constants.BASE_URL + "reports");
+        ref2 = ref.child(ref.getAuth().getUid());
         recyclerView = (RecyclerView) v.findViewById(R.id.reportRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -60,13 +66,14 @@ public class ReportFragment extends Fragment {
             adapter = new FirebaseRecyclerAdapter<Report, ViewHolderReport>(Report.class,
                     R.layout.layout_report_card_list,
                     ViewHolderReport.class,
-                    ref) {
+                    ref2) {
                 @Override
                 protected void populateViewHolder(ViewHolderReport viewHolderReport, Report r, int i) {
                     viewHolderReport.nameReport.setText(r.getTitle());
                 }
             };
             recyclerView.setAdapter(adapter);
+            updateUI();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -100,6 +107,14 @@ public class ReportFragment extends Fragment {
             delete = (ImageView) v.findViewById(R.id.delete);
             edit = (ImageView) v.findViewById(R.id.edit);
             nameReport = (TextView) v.findViewById(R.id.nameReport);
+        }
+    }
+
+    public void updateUI() {
+        if (adapter.getItemCount() == 0) {
+            noItem.setVisibility(View.VISIBLE);
+        } else {
+            noItem.setVisibility(View.GONE);
         }
     }
 }

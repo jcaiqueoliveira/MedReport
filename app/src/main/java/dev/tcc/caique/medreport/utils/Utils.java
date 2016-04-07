@@ -3,7 +3,6 @@ package dev.tcc.caique.medreport.utils;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -17,10 +16,6 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.models.ProfileMedical;
@@ -49,7 +44,7 @@ public class Utils {
 
     public static void getMyData(final AppCompatActivity mContext) {
         Firebase ref = new Firebase(Constants.BASE_URL + "users");
-        final Firebase ref2 = new Firebase(Constants.BASE_URL + "invites/" + ref.getAuth().getUid());
+        final Firebase ref2 = new Firebase(Constants.BASE_URL + "users/" + ref.getAuth().getUid());
         Query query = ref2.orderByChild("email");
         Singleton.getInstance().getFriends().clear();
         query.addValueEventListener(new ValueEventListener() {
@@ -57,7 +52,6 @@ public class Utils {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Singleton.getInstance().getFriends().add((String) ds.child("email").getValue());
-
                 }
             }
 

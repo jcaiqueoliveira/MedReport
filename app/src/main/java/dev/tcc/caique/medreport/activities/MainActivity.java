@@ -16,16 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import java.io.File;
-
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.fragments.AboutFragment;
 import dev.tcc.caique.medreport.fragments.AccompanimentsFragment;
 import dev.tcc.caique.medreport.fragments.InviteFragment;
 import dev.tcc.caique.medreport.fragments.ProfileMedicalFragment;
 import dev.tcc.caique.medreport.fragments.ProfilePacientFragment;
-import dev.tcc.caique.medreport.fragments.ReportFragment;
-import dev.tcc.caique.medreport.imgurmodel.Upload;
+import dev.tcc.caique.medreport.fragments.ReportFragmentMedical;
+import dev.tcc.caique.medreport.fragments.ReportFragmentPacient;
 import dev.tcc.caique.medreport.models.Singleton;
 import dev.tcc.caique.medreport.utils.DialogUtils;
 
@@ -123,7 +121,10 @@ public class MainActivity extends AppCompatActivity
             else
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, new ProfilePacientFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_report) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, new ReportFragment()).addToBackStack(null).commit();
+            if (Singleton.getInstance().getType().equals("1"))
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new ReportFragmentMedical()).addToBackStack(null).commit();
+            else
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new ReportFragmentPacient()).addToBackStack(null).commit();
         } else if (id == R.id.nav_invite) {
             toolbar.setTitle("Convites");
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new InviteFragment()).addToBackStack(null).commit();

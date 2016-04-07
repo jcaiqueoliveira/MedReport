@@ -23,6 +23,8 @@ import com.firebase.ui.FirebaseRecyclerAdapter;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.models.Invite;
@@ -38,6 +40,8 @@ public class InviteFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Bind(R.id.noItem)
+    TextView noItem;
     FirebaseRecyclerAdapter<Invite, ViewHolderInvite> adapter;
     private RecyclerView recyclerView;
 
@@ -46,10 +50,13 @@ public class InviteFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_invite, container, false);
-
+        ButterKnife.bind(this,v);
         final Firebase ref = new Firebase(Constants.BASE_URL);
         final Firebase ref2 = new Firebase(Constants.BASE_URL + "invites/" + ref.getAuth().getUid());
-        ((MainActivity) getActivity()).fab.show();
+        if (Singleton.getInstance().getType().equals("1"))
+            ((MainActivity) getActivity()).fab.show();
+        else
+            ((MainActivity) getActivity()).fab.hide();
         recyclerView = (RecyclerView) v.findViewById(R.id.inviteRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         try {
@@ -141,6 +148,7 @@ public class InviteFragment extends Fragment {
                 }
             };
             recyclerView.setAdapter(adapter);
+            updateUI();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -172,4 +180,11 @@ public class InviteFragment extends Fragment {
         }
     }
 
+    public void  updateUI(){
+        if(adapter.getItemCount()==0){
+            noItem.setVisibility(View.VISIBLE);
+        }else{
+            noItem.setVisibility(View.GONE);
+        }
+    }
 }

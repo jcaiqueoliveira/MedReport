@@ -45,12 +45,10 @@ import butterknife.OnClick;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.adapters.ImageAdapter;
-import dev.tcc.caique.medreport.helpers.DocumentHelper;
 import dev.tcc.caique.medreport.imgurmodel.ImageResponse;
 import dev.tcc.caique.medreport.imgurmodel.Upload;
 import dev.tcc.caique.medreport.models.Image;
 import dev.tcc.caique.medreport.models.Report;
-import dev.tcc.caique.medreport.service.UploadService;
 import dev.tcc.caique.medreport.utils.Constants;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -116,7 +114,7 @@ public class CreateReportFragment extends Fragment {
             if (imageUris.size() > 0) {
                 gridView.setAdapter(new ImageAdapter(getActivity(), images));
             }
-            String filePath = DocumentHelper.getPath(getActivity(), imageUris.get(0));
+            // String filePath = DocumentHelper.getPath(getActivity(), imageUris.get(0));
             // Log.i("path", getRealPathFromURI(getActivity(),imageUris.get(0)));
             //Safety check to prevent null pointer exception
             // if (filePath == null || filePath.isEmpty()) return;
@@ -213,46 +211,46 @@ public class CreateReportFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.save:
                 if (verifyFields()) {
-                    if (chosenFile != null) {
-                        createUpload(chosenFile);
-                        new UploadService(getActivity()).Execute(upload, new UiCallback());
-                        try {
-                            final Firebase ref = new Firebase(Constants.BASE_URL);
-                            final String timeStamp = ref.push().getKey();
-                            Report report = new Report();
-                            report.setDescription(description.getText().toString());
-                            report.setTitle(title.getText().toString());
-                            report.setStackId(timeStamp);
-                            ref.child("reports").child(ref.getAuth().getUid()).child(timeStamp).setValue(report, new Firebase.CompletionListener() {
-                                @Override
-                                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                    if (firebaseError != null) {
-                                        showSnackBar("Erro ao salvar relatório. Tente novamente.");
-                                    } else {
-                                        //Todo send image
-                                        ArrayList<String> images = createListImagesCompress();
-                                        for (String s : images) {
-                                            Image i = new Image();
-                                            i.setImage(s);
-                                            ref.child("images").child(timeStamp).push().setValue(i, new Firebase.CompletionListener() {
-                                                @Override
-                                                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                                    if (firebaseError != null) {
-                                                        Log.i("Error", firebaseError.getMessage());
-                                                    }
+                    //if (chosenFile != null) {
+                    //  createUpload(chosenFile);
+                    //  new UploadService(getActivity()).Execute(upload, new UiCallback());
+                    try {
+                        final Firebase ref = new Firebase(Constants.BASE_URL);
+                        final String timeStamp = ref.push().getKey();
+                        Report report = new Report();
+                        report.setDescription(description.getText().toString());
+                        report.setTitle(title.getText().toString());
+                        report.setStackId(timeStamp);
+                        ref.child("reports").child(ref.getAuth().getUid()).child(timeStamp).setValue(report, new Firebase.CompletionListener() {
+                            @Override
+                            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                if (firebaseError != null) {
+                                    showSnackBar("Erro ao salvar relatório. Tente novamente.");
+                                } else {
+                                    //Todo send image
+                                   /* ArrayList<String> images = createListImagesCompress();
+                                    for (String s : images) {
+                                        Image i = new Image();
+                                        i.setImage(s);
+                                        ref.child("images").child(timeStamp).push().setValue(i, new Firebase.CompletionListener() {
+                                            @Override
+                                            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                                if (firebaseError != null) {
+                                                    Log.i("Error", firebaseError.getMessage());
                                                 }
-                                            });
-                                        }
-                                        showSnackBar("Relatório criado com sucesso");
-                                    }
+                                            }
+                                        });
+                                    } */
+                                    showSnackBar("Relatório criado com sucesso");
                                 }
-                            });
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        Log.i("aqui", "aqui");
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+                    // } else {
+                    //   Log.i("aqui", "aqui");
+                    //}
                 }
                 break;
         }
