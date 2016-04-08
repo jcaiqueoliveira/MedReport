@@ -47,7 +47,6 @@ import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.adapters.ImageAdapter;
 import dev.tcc.caique.medreport.imgurmodel.ImageResponse;
 import dev.tcc.caique.medreport.imgurmodel.Upload;
-import dev.tcc.caique.medreport.models.Image;
 import dev.tcc.caique.medreport.models.Report;
 import dev.tcc.caique.medreport.utils.Constants;
 import retrofit.Callback;
@@ -74,6 +73,9 @@ public class CreateReportFragment extends Fragment {
     private ArrayList<Bitmap> images;
     private Upload upload; // Upload object containging image and meta data
     private File chosenFile; //chosen file from intent
+    private Bundle bundle;
+    private boolean isEditingMode = false;
+    private Report report;
 
     public CreateReportFragment() {
         // Required empty public constructor
@@ -89,6 +91,15 @@ public class CreateReportFragment extends Fragment {
         ButterKnife.bind(this, v);
         ((MainActivity) getActivity()).fab.hide();
         setHasOptionsMenu(true);
+        bundle = getArguments();
+        if (bundle != null) {
+            report = (Report) bundle.getSerializable("report");
+            if (report != null) {
+                isEditingMode = true;
+                title.setText(report.getTitle());
+                description.setText(report.getDescription());
+            }
+        }
         return v;
     }
 
@@ -211,23 +222,40 @@ public class CreateReportFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.save:
                 if (verifyFields()) {
+                    final Firebase ref = new Firebase(Constants.BASE_URL);
                     //if (chosenFile != null) {
                     //  createUpload(chosenFile);
                     //  new UploadService(getActivity()).Execute(upload, new UiCallback());
-                    try {
-                        final Firebase ref = new Firebase(Constants.BASE_URL);
-                        final String timeStamp = ref.push().getKey();
-                        Report report = new Report();
-                        report.setDescription(description.getText().toString());
-                        report.setTitle(title.getText().toString());
-                        report.setStackId(timeStamp);
-                        ref.child("reports").child(ref.getAuth().getUid()).child(timeStamp).setValue(report, new Firebase.CompletionListener() {
+                    if (isEditingMode) {
+                        Report r = new Report();
+                        r.setDescription(description.getText().toString());
+                        r.setTitle(title.getText().toString());
+                        r.setStackId(report.getStackId());
+                        ref.child("reports").child(ref.getAuth().getUid()).child(report.getStackId()).setValue(r, new Firebase.CompletionListener() {
                             @Override
                             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                                 if (firebaseError != null) {
-                                    showSnackBar("Erro ao salvar relatório. Tente novamente.");
+                                    showSnackBar("Erro ao atualizar relatório. Tente novamente.");
                                 } else {
-                                    //Todo send image
+                                    showSnackBar("Editado com sucesso");
+                                }
+                            }
+                        });
+                    } else {
+                        try {
+
+                            final String timeStamp = ref.push().getKey();
+                            Report report = new Report();
+                            report.setDescription(description.getText().toString());
+                            report.setTitle(title.getText().toString());
+                            report.setStackId(timeStamp);
+                            ref.child("reports").child(ref.getAuth().getUid()).child(timeStamp).setValue(report, new Firebase.CompletionListener() {
+                                @Override
+                                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                    if (firebaseError != null) {
+                                        showSnackBar("Erro ao salvar relatório. Tente novamente.");
+                                    } else {
+                                        //Todo send image
                                    /* ArrayList<String> images = createListImagesCompress();
                                     for (String s : images) {
                                         Image i = new Image();
@@ -241,12 +269,13 @@ public class CreateReportFragment extends Fragment {
                                             }
                                         });
                                     } */
-                                    showSnackBar("Relatório criado com sucesso");
+                                        showSnackBar("Relatório criado com sucesso");
+                                    }
                                 }
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                     // } else {
                     //   Log.i("aqui", "aqui");

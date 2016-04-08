@@ -65,11 +65,9 @@ public class ReportFragmentMedical extends Fragment {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                Log.i("ds", ds.getKey());
                                 ref.child("reports").child(ds.getKey()).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot snapshot) {
-                                        Log.i("pai", snapshot.toString());
                                         viewHolderAccompaniments.numberReport.setText("Relatórios: " + snapshot.getChildrenCount());
                                     }
 

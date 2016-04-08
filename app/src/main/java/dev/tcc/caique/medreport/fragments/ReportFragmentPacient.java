@@ -1,6 +1,7 @@
 package dev.tcc.caique.medreport.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,8 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 
 import butterknife.Bind;
@@ -68,8 +71,33 @@ public class ReportFragmentPacient extends Fragment {
                     ViewHolderReport.class,
                     ref2) {
                 @Override
-                protected void populateViewHolder(ViewHolderReport viewHolderReport, Report r, int i) {
+                protected void populateViewHolder(ViewHolderReport viewHolderReport, final Report r, int i) {
                     viewHolderReport.nameReport.setText(r.getTitle());
+                    viewHolderReport.delete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ref.child(ref.getAuth().getUid()).child(r.getStackId()).removeValue(new Firebase.CompletionListener() {
+                                @Override
+                                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                    if (firebaseError == null) {
+                                        Toast.makeText(getActivity(), "Removido com sucesso", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getActivity(), "Erro ao excluir. Tente Novamente", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    viewHolderReport.edit.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle b = new Bundle();
+                            b.putSerializable("report", r);
+                            CreateReportFragment createReportFragment = new CreateReportFragment();
+                            createReportFragment.setArguments(b);
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, createReportFragment).addToBackStack(null).commit();
+                        }
+                    });
                 }
             };
             recyclerView.setAdapter(adapter);

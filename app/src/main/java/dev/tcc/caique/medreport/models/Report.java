@@ -2,11 +2,13 @@ package dev.tcc.caique.medreport.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+
 /**
  * Created by caique on 31/01/16.
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Report {
+public class Report implements Serializable{
     private String title;
     private String description;
     private String stackId;
