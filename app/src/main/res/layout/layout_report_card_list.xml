@@ -13,7 +13,9 @@
             android:elevation="1dp"
             android:paddingLeft="5dp"
             android:orientation="horizontal"
-            android:weightSum="10">
+            android:weightSum="10"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp">
 
 
             <LinearLayout
@@ -30,12 +32,6 @@
                     android:text="Nome relatório"
                     android:textSize="22sp"/>
 
-                <TextView
-                    android:id="@+id/typeInviter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="20-11-2004"
-                    android:singleLine="true"/>
             </LinearLayout>
 
             <LinearLayout

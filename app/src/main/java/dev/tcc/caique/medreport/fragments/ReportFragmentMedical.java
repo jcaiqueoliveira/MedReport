@@ -64,7 +64,17 @@ public class ReportFragmentMedical extends Fragment {
                     queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            for (final DataSnapshot ds : dataSnapshot.getChildren()) {
+                                viewHolderAccompaniments.view.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Bundle b = new Bundle();
+                                        b.putString("stack",ds.getKey());
+                                        ListReportPacientOfMedicalFragment list = new ListReportPacientOfMedicalFragment();
+                                        list.setArguments(b);
+                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, list).addToBackStack(null).commit();
+                                    }
+                                });
                                 ref.child("reports").child(ds.getKey()).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot snapshot) {
