@@ -45,13 +45,8 @@ import butterknife.OnClick;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.adapters.ImageAdapter;
-import dev.tcc.caique.medreport.imgurmodel.ImageResponse;
-import dev.tcc.caique.medreport.imgurmodel.Upload;
 import dev.tcc.caique.medreport.models.Report;
 import dev.tcc.caique.medreport.utils.Constants;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,8 +66,6 @@ public class CreateReportFragment extends Fragment {
     TextInputLayout inputTitle;
     private static final int INTENT_REQUEST_GET_IMAGES = 13;
     private ArrayList<Bitmap> images;
-    private Upload upload; // Upload object containging image and meta data
-    private File chosenFile; //chosen file from intent
     private Bundle bundle;
     private boolean isEditingMode = false;
     private Report report;
@@ -194,27 +187,6 @@ public class CreateReportFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.save_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    private void createUpload(File image) {
-        upload = new Upload();
-        upload.image = image;
-    }
-
-    private class UiCallback implements Callback<ImageResponse> {
-
-        @Override
-        public void success(ImageResponse imageResponse, Response response) {
-            clearInput();
-        }
-
-        @Override
-        public void failure(RetrofitError error) {
-            //Assume we have no connection, since error is null
-            if (error == null) {
-                Snackbar.make(v, "No internet connection", Snackbar.LENGTH_SHORT).show();
-            }
-        }
     }
 
     @Override
