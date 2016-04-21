@@ -12,4 +12,5 @@
     <string name="notification_progress">Enviando imagens do relatório</string>
     <string name="notifaction_success">Sucesso ao enviar imagens</string>
     <string name="notification_fail">Erro ao enviar a imagem</string>
+    <string name="wait">Aguarde</string>
 </resources>

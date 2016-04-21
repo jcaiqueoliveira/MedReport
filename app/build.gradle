@@ -7,7 +7,7 @@ android {
         applicationId "dev.tcc.caique.medreport"
         multiDexEnabled true
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }
@@ -44,4 +44,6 @@ dependencies {
     compile 'com.firebaseui:firebase-ui:0.3.1'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.firebase:firebase-client-android:2.5.2'
+    compile files('libs/cloudinary-core-1.2.2.jar')
+    compile files('libs/cloudinary-android-1.2.2.jar')
 }

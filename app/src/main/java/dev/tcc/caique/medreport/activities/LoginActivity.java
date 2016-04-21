@@ -1,5 +1,6 @@
 package dev.tcc.caique.medreport.activities;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -62,7 +63,9 @@ public class LoginActivity extends AppCompatActivity {
                 ref.authWithPassword(tvEmail.getText().toString(), tvPass.getText().toString(), new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
-                        Utils.getMyData(LoginActivity.this);
+                        ProgressDialog progressDialog = dialogProgress();
+                        progressDialog.show();
+                        Utils.getMyData(LoginActivity.this,null,progressDialog);
                     }
 
                     @Override
@@ -109,5 +112,13 @@ public class LoginActivity extends AppCompatActivity {
             ((TextView) view.findViewById(R.id.tv_enter)).setText("Clique  aqui para entrar");
             radioGroupType.setVisibility(View.VISIBLE);
         }
+    }
+
+    private ProgressDialog dialogProgress() {
+        ProgressDialog progressDialog = new ProgressDialog(this, R.style.dialog);
+        progressDialog.setMessage(getString(R.string.wait));
+        progressDialog.setCancelable(false);
+        progressDialog.setIndeterminate(true);
+        return progressDialog;
     }
 }

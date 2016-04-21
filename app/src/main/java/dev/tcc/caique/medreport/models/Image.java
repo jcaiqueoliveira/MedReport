@@ -5,8 +5,14 @@ package dev.tcc.caique.medreport.models;
  */
 public class Image {
     private String image;
-    public Image(){
+    private String publicId;
 
+    public Image() {
+
+    }
+    public Image(String image, String publicId){
+        this.image = image;
+        this.publicId = publicId;
     }
 
     public String getImage() {
@@ -15,5 +21,13 @@ public class Image {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
     }
 }

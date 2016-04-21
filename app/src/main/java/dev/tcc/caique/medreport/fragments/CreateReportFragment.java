@@ -2,20 +2,16 @@ package dev.tcc.caique.medreport.fragments;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,7 +19,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -33,8 +28,7 @@ import com.firebase.client.FirebaseError;
 import com.gun0912.tedpicker.Config;
 import com.gun0912.tedpicker.ImagePickerActivity;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -46,16 +40,17 @@ import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.adapters.ImageAdapter;
 import dev.tcc.caique.medreport.models.Report;
+import dev.tcc.caique.medreport.models.Singleton;
+import dev.tcc.caique.medreport.service.SendImageCloudinary;
 import dev.tcc.caique.medreport.utils.Constants;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class CreateReportFragment extends Fragment {
+
     @Bind(R.id.gridview)
     GridView gridView;
-    @Bind(R.id.addImages)
-    Button btnAdd;
     @Bind(R.id.title)
     EditText title;
     @Bind(R.id.description)
@@ -69,6 +64,9 @@ public class CreateReportFragment extends Fragment {
     private Bundle bundle;
     private boolean isEditingMode = false;
     private Report report;
+    private ArrayList<InputStream> inputStreams = new ArrayList<>();
+    private Firebase uploadImg;
+    private String timeStamp;
 
     public CreateReportFragment() {
         // Required empty public constructor
@@ -93,6 +91,7 @@ public class CreateReportFragment extends Fragment {
                 description.setText(report.getDescription());
             }
         }
+        uploadImg = new Firebase(Constants.BASE_URL);
         return v;
     }
 
@@ -118,34 +117,16 @@ public class CreateReportFragment extends Fragment {
             if (imageUris.size() > 0) {
                 gridView.setAdapter(new ImageAdapter(getActivity(), images));
             }
-            // String filePath = DocumentHelper.getPath(getActivity(), imageUris.get(0));
-            // Log.i("path", getRealPathFromURI(getActivity(),imageUris.get(0)));
-            //Safety check to prevent null pointer exception
-            // if (filePath == null || filePath.isEmpty()) return;
-
-        }                /*
-                    Picasso is a wonderful image loading tool from square inc.
-                    https://github.com/square/picasso
-                 */
-       /* Picasso.with(getActivity())
-                .load(chosenFile)
-                .placeholder(R.drawable.ic_photo_library_black)
-                .fit()
-                .into(uploadImage);*/
-    }
-
-    public String getRealPathFromURI(Context context, Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = {MediaStore.Images.Media.DATA};
-            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
+            for (Uri uri : imageUris) {
+                try {
+                    InputStream in = getActivity().getContentResolver().openInputStream(Uri.parse("file://" + uri));
+                    inputStreams.add(in);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    Log.e("error", "failed to get inputStream");
+                }
             }
+            Singleton.getInstance().setInputStreams(inputStreams);
         }
     }
 
@@ -156,13 +137,9 @@ public class CreateReportFragment extends Fragment {
                 BitmapFactory.Options o = new BitmapFactory.Options();
                 o.inJustDecodeBounds = true;
                 o.inSampleSize = 6;
-
-                InputStream image_stream = getActivity().getContentResolver().openInputStream(Uri.parse("file://" + uri));
-                Bitmap bitmap = BitmapFactory.decodeStream(image_stream, null, o);
-                image_stream.close();
+                InputStream image_stream;
                 final int REQUIRED_SIZE = 75;
 
-                // Find the correct scale value. It should be the power of 2.
                 int scale = 1;
                 while (o.outWidth / scale / 2 >= REQUIRED_SIZE &&
                         o.outHeight / scale / 2 >= REQUIRED_SIZE) {
@@ -173,9 +150,7 @@ public class CreateReportFragment extends Fragment {
                 image_stream = getActivity().getContentResolver().openInputStream(Uri.parse("file://" + uri));
 
                 Bitmap selectedBitmap = BitmapFactory.decodeStream(image_stream, null, o2);
-                image_stream.close();
                 bitmaps.add(selectedBitmap);
-                //bitmaps.add(MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -216,7 +191,8 @@ public class CreateReportFragment extends Fragment {
                     } else {
                         try {
 
-                            final String timeStamp = ref.push().getKey();
+                            timeStamp = ref.push().getKey();
+                            Singleton.getInstance().setTimeStampReport(timeStamp);
                             Report report = new Report();
                             report.setDescription(description.getText().toString());
                             report.setTitle(title.getText().toString());
@@ -227,21 +203,8 @@ public class CreateReportFragment extends Fragment {
                                     if (firebaseError != null) {
                                         showSnackBar("Erro ao salvar relatório. Tente novamente.");
                                     } else {
-                                        //Todo send image
-                                   /* ArrayList<String> images = createListImagesCompress();
-                                    for (String s : images) {
-                                        Image i = new Image();
-                                        i.setImage(s);
-                                        ref.child("images").child(timeStamp).push().setValue(i, new Firebase.CompletionListener() {
-                                            @Override
-                                            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                                if (firebaseError != null) {
-                                                    Log.i("Error", firebaseError.getMessage());
-                                                }
-                                            }
-                                        });
-                                    } */
-                                        showSnackBar("Relatório criado com sucesso");
+                                        getActivity().startService(new Intent(getActivity(), SendImageCloudinary.class));
+                                        getActivity().onBackPressed();
                                     }
                                 }
                             });
@@ -249,35 +212,10 @@ public class CreateReportFragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
-                    // } else {
-                    //   Log.i("aqui", "aqui");
-                    //}
                 }
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void clearInput() {
-        title.setText("");
-        description.clearFocus();
-    }
-
-    private ArrayList<String> createListImagesCompress() {
-        ArrayList<String> listImages = new ArrayList<>();
-        if (images.size() > 0) {
-            for (Bitmap bmp : images) {
-                ByteArrayOutputStream bYtE = new ByteArrayOutputStream();
-                bmp.compress(Bitmap.CompressFormat.JPEG, 100, bYtE);
-                bmp.recycle();
-                byte[] byteArray = bYtE.toByteArray();
-                String imageFile = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                listImages.add(imageFile);
-            }
-        } else {
-            Log.i("maior que ", "0");
-        }
-        return listImages;
     }
 
     private boolean verifyFields() {

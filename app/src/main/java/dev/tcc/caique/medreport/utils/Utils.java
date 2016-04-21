@@ -1,5 +1,6 @@
 package dev.tcc.caique.medreport.utils;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -42,7 +43,7 @@ public class Utils {
         context.startActivityForResult(i, Constants.CAMERA_INTENT);
     }
 
-    public static void getMyData(final AppCompatActivity mContext) {
+    public static void getMyData(final AppCompatActivity mContext, final View view, final ProgressDialog progressDialog) {
         Firebase ref = new Firebase(Constants.BASE_URL + "users");
         final Firebase ref2 = new Firebase(Constants.BASE_URL + "users/" + ref.getAuth().getUid());
         Query query = ref2.orderByChild("email");
@@ -79,19 +80,11 @@ public class Utils {
                             if (pp != null && pp.getName() != null)
                                 Singleton.getInstance().setName(pp.getName());
                         }
-                        /*for (DataSnapshot profile : ds.child("profile").getChildren()) {
-                            if (Singleton.getInstance().getType().equals("1")) {
-                                Log.i("Value",profile.toString());
-                                ProfileMedical pm = profile.getValue(ProfileMedical.class);
-                                Log.i("Profile Medical", "valor" + pm.toString());
-                                Singleton.getInstance().setName(pm.getName());
-                                Log.i("Profile Medical", pm.toString());
-                            } else {
-                                Log.i("Paciente", "aqui");
-                            }
-
-                        }*/
                     }
+                    if (view != null)
+                        view.setVisibility(View.GONE);
+                    if(progressDialog!=null)
+                        progressDialog.hide();
                     mContext.startActivity(new Intent(mContext, MainActivity.class));
                     mContext.finish();
                 } else {

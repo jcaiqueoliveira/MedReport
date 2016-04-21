@@ -1,5 +1,6 @@
 package dev.tcc.caique.medreport.models;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -10,7 +11,8 @@ public class Singleton {
     private String type;
     private ProfileMedical pm = new ProfileMedical();
     private ProfilePacient pp = new ProfilePacient();
-
+    private ArrayList<InputStream> inputStreams = new ArrayList<>();
+    private String timeStampReport;
     public static Singleton getInstance() {
         return ourInstance;
     }
@@ -68,5 +70,21 @@ public class Singleton {
 
     public void setPp(ProfilePacient pp) {
         this.pp = pp;
+    }
+
+    public ArrayList<InputStream> getInputStreams() {
+        return inputStreams;
+    }
+
+    public void setInputStreams(ArrayList<InputStream> inputStreams) {
+        this.inputStreams = inputStreams;
+    }
+
+    public String getTimeStampReport() {
+        return timeStampReport;
+    }
+
+    public void setTimeStampReport(String timeStampReport) {
+        this.timeStampReport = timeStampReport;
     }
 }
