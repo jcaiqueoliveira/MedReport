@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/editProfile"
-        android:icon="@drawable/ic_edit"
+        android:icon="@drawable/ic_edit_white"
         android:orderInCategory="10"
         android:title="Editar"
         app:showAsAction="ifRoom|withText" />
@@ -12,7 +12,7 @@
 
     <item
         android:id="@+id/saveProfile"
-        android:icon="@drawable/ic_done"
+        android:icon="@drawable/ic_done_white"
         android:orderInCategory="10"
         android:title="Salvar"
         app:showAsAction="ifRoom|withText" />

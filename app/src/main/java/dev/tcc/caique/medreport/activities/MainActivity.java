@@ -1,10 +1,14 @@
 package dev.tcc.caique.medreport.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -34,7 +38,8 @@ public class MainActivity extends AppCompatActivity
     public Toolbar toolbar;
     private TextView name;
     private TextView type;
-
+    static final int REQUEST_WRITE_CAMERA = 2;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +77,7 @@ public class MainActivity extends AppCompatActivity
         name.setText("Olá " + Singleton.getInstance().getName());
         if (Singleton.getInstance().getType() != null)
             type.setText(Singleton.getInstance().getType().equals("1") ? "Médico" : "Paciente");
+        requestPermissionAndroid6();
     }
 
     @Override
@@ -160,4 +166,22 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
+    private void requestPermissionAndroid6() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
+                    REQUEST_WRITE_CAMERA);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_WRITE_CAMERA) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)
+                Snackbar.make(findViewById(R.id.fab), "Permissão garantida", Snackbar.LENGTH_SHORT).show();
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
 }

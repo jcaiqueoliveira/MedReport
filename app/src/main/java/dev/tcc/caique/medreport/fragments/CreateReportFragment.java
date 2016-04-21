@@ -1,14 +1,18 @@
 package dev.tcc.caique.medreport.fragments;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -67,6 +71,8 @@ public class CreateReportFragment extends Fragment {
     private ArrayList<InputStream> inputStreams = new ArrayList<>();
     private Firebase uploadImg;
     private String timeStamp;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_WRITE_CAMERA = 2;
 
     public CreateReportFragment() {
         // Required empty public constructor
@@ -98,7 +104,7 @@ public class CreateReportFragment extends Fragment {
     @OnClick(R.id.addImages)
     public void addImages() {
         //Prompt dialog to user select between camera and gallery
-        openGalleryToSelectImages();
+        dispatchTakePictureIntent();
     }
 
     private void openGalleryToSelectImages() {
@@ -236,5 +242,35 @@ public class CreateReportFragment extends Fragment {
         View view = snack.getView();
         ((TextView) view.findViewById(android.support.design.R.id.snackbar_text)).setTextColor(ContextCompat.getColor(getActivity(), android.R.color.white));
         snack.show();
+    }
+
+    private void dispatchTakePictureIntent() {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+
+            openGalleryToSelectImages();
+            return;
+        } else {
+            Log.i("a", "b");
+            this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
+                    REQUEST_WRITE_CAMERA);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_WRITE_CAMERA) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)
+                openGalleryToSelectImages();
+            else {
+                Snackbar.make(v, "Permissão não garantida", Snackbar.LENGTH_SHORT).show();
+                Log.i("0", "" + grantResults[0]);
+                Log.i("1", "" + grantResults[1]);
+            }
+        } else {
+            Log.i("request code", "" + requestCode);
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 }
