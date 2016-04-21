@@ -126,16 +126,19 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, new ProfileMedicalFragment()).addToBackStack(null).commit();
             else
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, new ProfilePacientFragment()).addToBackStack(null).commit();
+            toolbar.setTitle("Perfil");
         } else if (id == R.id.nav_report) {
             if (Singleton.getInstance().getType().equals("1"))
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, new ReportFragmentMedical()).addToBackStack(null).commit();
             else
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, new ReportFragmentPacient()).addToBackStack(null).commit();
+            toolbar.setTitle("Relatórios");
         } else if (id == R.id.nav_invite) {
             toolbar.setTitle("Convites");
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new InviteFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_chat) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new AccompanimentsFragment(), "HOME").addToBackStack(null).commit();
+            toolbar.setTitle("Acompanhamentos");
         } else if (id == R.id.nav_share) {
             b = false;
             String shareBody = "Here is the share content body";

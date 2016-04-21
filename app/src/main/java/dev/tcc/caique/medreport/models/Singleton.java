@@ -13,13 +13,15 @@ public class Singleton {
     private ProfilePacient pp = new ProfilePacient();
     private ArrayList<InputStream> inputStreams = new ArrayList<>();
     private String timeStampReport;
-    public static Singleton getInstance() {
-        return ourInstance;
-    }
-
     private int typeAccount;
     private String name;
     private ArrayList<String> friends = new ArrayList<>();
+    private ArrayList<Image> imageToDeleteCloudinary = new ArrayList<>();
+
+
+    public static Singleton getInstance() {
+        return ourInstance;
+    }
 
     private Singleton() {
     }
@@ -86,5 +88,13 @@ public class Singleton {
 
     public void setTimeStampReport(String timeStampReport) {
         this.timeStampReport = timeStampReport;
+    }
+
+    public ArrayList<Image> getImageToDeleteCloudinary() {
+        return imageToDeleteCloudinary;
+    }
+
+    public void setImageToDeleteCloudinary(ArrayList<Image> imageToDeleteCloudinary) {
+        this.imageToDeleteCloudinary = imageToDeleteCloudinary;
     }
 }

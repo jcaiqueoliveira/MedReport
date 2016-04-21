@@ -27,8 +27,10 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.gun0912.tedpicker.Config;
 import com.gun0912.tedpicker.ImagePickerActivity;
 
@@ -95,6 +97,18 @@ public class CreateReportFragment extends Fragment {
                 isEditingMode = true;
                 title.setText(report.getTitle());
                 description.setText(report.getDescription());
+                Firebase firebase = new Firebase(Constants.BASE_URL + "images/" + report.getStackId());
+                firebase.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.i("retorno", dataSnapshot.toString());
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
             }
         }
         uploadImg = new Firebase(Constants.BASE_URL);

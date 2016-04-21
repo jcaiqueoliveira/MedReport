@@ -54,7 +54,7 @@
 
         android:layout_above="@+id/addImages" />
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

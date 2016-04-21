@@ -45,6 +45,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".service.SendImageCloudinary" />
+        <service android:name=".service.ServiceDeleImageCloudinary" />
+
         <meta-data
             android:name="CLOUDINARY_URL"
             android:value="cloudinary://667338644874746:cmsInEJHBQ1HL6vS1iysqvRs-xo@dgh8cvhny" />
