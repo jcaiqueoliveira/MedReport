@@ -20,6 +20,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.fragments.AboutFragment;
 import dev.tcc.caique.medreport.fragments.AccompanimentsFragment;
@@ -29,6 +32,7 @@ import dev.tcc.caique.medreport.fragments.ProfilePacientFragment;
 import dev.tcc.caique.medreport.fragments.ReportFragmentMedical;
 import dev.tcc.caique.medreport.fragments.ReportFragmentPacient;
 import dev.tcc.caique.medreport.models.Singleton;
+import dev.tcc.caique.medreport.utils.Constants;
 import dev.tcc.caique.medreport.utils.DialogUtils;
 
 public class MainActivity extends AppCompatActivity
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity
     private TextView type;
     static final int REQUEST_WRITE_CAMERA = 2;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    private CircleImageView imgProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +79,19 @@ public class MainActivity extends AppCompatActivity
         View headerLayout = navigationView.getHeaderView(0);
         name = (TextView) headerLayout.findViewById(R.id.nameHeader);
         type = (TextView) headerLayout.findViewById(R.id.typeAccount);
+        imgProfile = (CircleImageView) headerLayout.findViewById(R.id.imgProfile);
         name.setText("Olá " + Singleton.getInstance().getName());
-        if (Singleton.getInstance().getType() != null)
-            type.setText(Singleton.getInstance().getType().equals("1") ? "Médico" : "Paciente");
+        if (Singleton.getInstance().getType() != null) {
+            if (Singleton.getInstance().getType().equals(Constants.TYPE_MEDICAL)) {
+                type.setText("Médico");
+                if (Singleton.getInstance().getPm().getProfileUrl() != null)
+                    Glide.with(this).load(Singleton.getInstance().getPm().getProfileUrl()).into(imgProfile);
+            } else {
+                type.setText("Paciente");
+                if (Singleton.getInstance().getPp().getProfileUrl() != null)
+                    Glide.with(this).load(Singleton.getInstance().getPp().getProfileUrl()).into(imgProfile);
+            }
+        }
         requestPermissionAndroid6();
     }
 

@@ -1,10 +1,18 @@
 package dev.tcc.caique.medreport.fragments;
 
-import android.app.Activity;
+import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatEditText;
@@ -18,9 +26,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,6 +74,11 @@ public class ProfilePacientFragment extends Fragment {
     AppCompatEditText edtProblem3;
     @Bind(R.id.inputName)
     TextInputLayout inputName;
+    static final int REQUEST_WRITE_CAMERA = 2;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private Uri outputFileUri;
+    private String file, dir;
+    private ProgressDialog progress;
 
     public ProfilePacientFragment() {
         // Required empty public constructor
@@ -91,6 +111,10 @@ public class ProfilePacientFragment extends Fragment {
             edtProblem1.setText(pp.getHealthProblem());
             edtProblem2.setText(pp.getAllergy());
             edtProblem3.setText(pp.getDrugAllergy());
+        }
+        dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/MedReport/";
+        if (Singleton.getInstance().getPp().getProfileUrl() != null) {
+            Glide.with(getActivity()).load(Singleton.getInstance().getPp().getProfileUrl()).into(imgProfile);
         }
         return v;
     }
@@ -127,19 +151,7 @@ public class ProfilePacientFragment extends Fragment {
                 if (TextUtils.isEmpty(edtName.getText().toString())) {
                     inputName.setError("Campo Obrigatório");
                 } else {
-                    Firebase f = new Firebase(Constants.BASE_URL);
-                    final ProfilePacient p = getFieldsProfile();
-                    f.child("users").child(f.getAuth().getUid()).child("profile").setValue(p, new Firebase.CompletionListener() {
-                        @Override
-                        public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                            if (firebaseError == null) {
-                                showSnackBar("Perfil Atualizado");
-                                Singleton.getInstance().setPp(p);
-                            } else {
-                                showSnackBar("Erro ao atualizar perfil. Tente novamente");
-                            }
-                        }
-                    });
+                    new UpdateProfile().execute();
                     Utils.setViewAndChildrenEnabled(v, false);
                     getActivity().invalidateOptionsMenu();
                 }
@@ -150,18 +162,7 @@ public class ProfilePacientFragment extends Fragment {
 
     @OnClick({R.id.imgProfile})
     public void OnClick() {
-        Utils.openCamera(getActivity());
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.CAMERA_INTENT) {
-            if (resultCode == Activity.RESULT_OK) {
-                Log.i("Aqui", "Aqui");
-                Picasso.with(getActivity()).load(data.getData()).into(imgProfile);
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
+        dispatchTakePictureIntent();
     }
 
     private void showSnackBar(String msg) {
@@ -182,5 +183,134 @@ public class ProfilePacientFragment extends Fragment {
         profilePacient.setAllergy(edtProblem2.getText().toString());
         profilePacient.setDrugAllergy(edtProblem3.getText().toString());
         return profilePacient;
+    }
+
+    private void dispatchTakePictureIntent() {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            startIntentCamera();
+        } else {
+            Log.i("a", "b");
+            this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
+                    REQUEST_WRITE_CAMERA);
+        }
+    }
+
+    private void startIntentCamera() {
+        outputFileUri = Uri.fromFile(createFile());
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    private File createFile() {
+        createFolderIfNotExist();
+        file = dir + "profilePicture.jpg";
+        File newfile = new File(file);
+        try {
+            newfile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return newfile;
+    }
+
+    private void createFolderIfNotExist() {
+        File f = new File(dir);
+        if (!f.exists()) {
+            f.mkdir();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_WRITE_CAMERA) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)
+                startIntentCamera();
+            else {
+                showSnackBar("Permissão não garantida");
+                Log.i("0", "" + grantResults[0]);
+                Log.i("1", "" + grantResults[1]);
+            }
+        } else {
+            Log.i("request code", "" + requestCode);
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
+            Glide.with(getActivity()).load(outputFileUri).into(imgProfile);
+            Log.i("uri", outputFileUri.toString());
+            //PreferencesHelper.saveMyMotocycle(getActivity(), motoCycle, position);
+        }
+    }
+
+    public class UpdateProfile extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            progress = dialogProgress();
+            progress.show();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            ProfilePacient profilePacient = getFieldsProfile();
+            if (outputFileUri != null) {
+                Map<String, String> config = new HashMap<>();
+                config.put("cloud_name", Constants.CLOUDINARY_NAME);
+                config.put("api_key", Constants.CLOUDINARY_API_KEY);
+                config.put("api_secret", Constants.CLOUDINARY_API_SECRET);
+                Cloudinary cloudinary = new Cloudinary(config);
+                try {
+                    Map result = cloudinary.uploader().upload(
+                            getActivity().getContentResolver().openInputStream(Uri.parse(outputFileUri.toString())),
+                            ObjectUtils.emptyMap());
+                    Log.i("result", result.toString());
+                    profilePacient.setPublicId((String) result.get("public_id"));
+                    profilePacient.setProfileUrl((String) result.get("secure_url"));
+                    updateUserInFirebase(profilePacient);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                updateUserInFirebase(profilePacient);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private void updateUserInFirebase(final ProfilePacient profilePacient) {
+        Firebase f = new Firebase(Constants.BASE_URL);
+        f.child("users").child(f.getAuth().getUid()).child("profile").setValue(profilePacient, new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                if (firebaseError == null) {
+                    progress.dismiss();
+                    showSnackBar("Perfil Atualizado");
+                    Singleton.getInstance().setPp(profilePacient);
+                } else {
+                    progress.dismiss();
+                    showSnackBar("Erro ao atualizar perfil. Tente novamente");
+
+                }
+            }
+        });
+    }
+
+    private ProgressDialog dialogProgress() {
+        ProgressDialog progressDialog = new ProgressDialog(getActivity(), R.style.dialog);
+        progressDialog.setMessage(getString(R.string.wait));
+        progressDialog.setCancelable(false);
+        progressDialog.setIndeterminate(true);
+        return progressDialog;
     }
 }

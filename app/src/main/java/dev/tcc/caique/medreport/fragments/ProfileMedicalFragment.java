@@ -18,9 +18,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -123,7 +123,7 @@ public class ProfileMedicalFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.CAMERA_INTENT) {
             if (resultCode == Activity.RESULT_OK) {
-                Picasso.with(getActivity()).load(data.getData()).into(imgProfile);
+                Glide.with(getActivity()).load(data.getData()).into(imgProfile);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

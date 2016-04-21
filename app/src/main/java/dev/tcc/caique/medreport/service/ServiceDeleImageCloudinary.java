@@ -16,6 +16,7 @@ import java.util.Map;
 
 import dev.tcc.caique.medreport.models.Image;
 import dev.tcc.caique.medreport.models.Singleton;
+import dev.tcc.caique.medreport.utils.Constants;
 
 /**
  * Created by Avell B153 MAX on 21/04/2016.
@@ -42,9 +43,9 @@ public class ServiceDeleImageCloudinary extends Service {
         Log.i("aqui", "aqui");
         Log.i("images", images.toString());
         Map<String, String> config = new HashMap<>();
-        config.put("cloud_name", "dgh8cvhny");
-        config.put("api_key", "667338644874746");
-        config.put("api_secret", "cmsInEJHBQ1HL6vS1iysqvRs-xo");
+        config.put("cloud_name", Constants.CLOUDINARY_NAME);
+        config.put("api_key", Constants.CLOUDINARY_API_KEY);
+        config.put("api_secret", Constants.CLOUDINARY_API_SECRET);
         Cloudinary cloudinary = new Cloudinary(config);
         for (Image i : images)
             try {

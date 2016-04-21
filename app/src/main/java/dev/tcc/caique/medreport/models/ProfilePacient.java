@@ -12,6 +12,8 @@ public class ProfilePacient {
     private String healthProblem;
     private String allergy;
     private String drugAllergy;
+    private String profileUrl;
+    private String publicId;
 
     public ProfilePacient() {
     }
@@ -78,5 +80,37 @@ public class ProfilePacient {
 
     public void setDrugAllergy(String drugAllergy) {
         this.drugAllergy = drugAllergy;
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
+    }
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
+    }
+
+    @Override
+    public String toString() {
+        return "ProfilePacient{" +
+                "name='" + name + '\'' +
+                ", age='" + age + '\'' +
+                ", gender='" + gender + '\'' +
+                ", stature='" + stature + '\'' +
+                ", weight='" + weight + '\'' +
+                ", healthProblem='" + healthProblem + '\'' +
+                ", allergy='" + allergy + '\'' +
+                ", drugAllergy='" + drugAllergy + '\'' +
+                ", profileUrl='" + profileUrl + '\'' +
+                ", publicId='" + publicId + '\'' +
+                '}';
     }
 }

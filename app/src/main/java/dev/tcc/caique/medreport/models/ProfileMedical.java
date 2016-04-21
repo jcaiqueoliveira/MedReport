@@ -7,7 +7,7 @@ public class ProfileMedical {
     private String name;
     private String crm;
     private String specialization;
-
+    private String profileUrl;
     public ProfileMedical() {
     }
 
@@ -42,5 +42,13 @@ public class ProfileMedical {
                 ", crm='" + crm + '\'' +
                 ", specialization='" + specialization + '\'' +
                 '}';
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
     }
 }
