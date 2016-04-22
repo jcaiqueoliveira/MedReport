@@ -9,8 +9,10 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -97,6 +99,13 @@ public class Utils {
                 Log.i("error", firebaseError.getMessage());
             }
         });
+    }
+
+    public static ViewGroup.LayoutParams getChatUserMessageLayoutParams(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.FILL_PARENT);
+        params.weight = 1.0f;
+        params.gravity = Gravity.RIGHT;
+        return params;
     }
 
     public static Bitmap recodeImage(String imageFile) {

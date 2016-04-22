@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
@@ -16,6 +18,7 @@ import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.models.ChatMessage;
 import dev.tcc.caique.medreport.models.Singleton;
 import dev.tcc.caique.medreport.utils.Constants;
+import dev.tcc.caique.medreport.utils.Utils;
 
 public class ChatActivity extends AppCompatActivity {
     private EditText textEdit;
@@ -42,6 +45,10 @@ public class ChatActivity extends AppCompatActivity {
                 mFirebase) {
             @Override
             protected void populateViewHolder(ViewHolderChat viewHolderChat, ChatMessage c, int i) {
+                if(Singleton.getInstance().getName().equals(c.getName())){
+                    viewHolderChat.name.setLayoutParams(Utils.getChatUserMessageLayoutParams());
+                    viewHolderChat.message.setLayoutParams(Utils.getChatUserMessageLayoutParams());
+                }
                 viewHolderChat.name.setText(c.getName());
                 viewHolderChat.message.setText(c.getText());
             }
