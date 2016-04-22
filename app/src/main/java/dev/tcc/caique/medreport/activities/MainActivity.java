@@ -81,17 +81,7 @@ public class MainActivity extends AppCompatActivity
         type = (TextView) headerLayout.findViewById(R.id.typeAccount);
         imgProfile = (CircleImageView) headerLayout.findViewById(R.id.imgProfile);
         name.setText("Olá " + Singleton.getInstance().getName());
-        if (Singleton.getInstance().getType() != null) {
-            if (Singleton.getInstance().getType().equals(Constants.TYPE_MEDICAL)) {
-                type.setText("Médico");
-                if (Singleton.getInstance().getPm().getProfileUrl() != null)
-                    Glide.with(this).load(Singleton.getInstance().getPm().getProfileUrl()).into(imgProfile);
-            } else {
-                type.setText("Paciente");
-                if (Singleton.getInstance().getPp().getProfileUrl() != null)
-                    Glide.with(this).load(Singleton.getInstance().getPp().getProfileUrl()).into(imgProfile);
-            }
-        }
+        loadProfileImage();
         requestPermissionAndroid6();
     }
 
@@ -106,6 +96,20 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
         //
+    }
+
+    public void loadProfileImage() {
+        if (Singleton.getInstance().getType() != null) {
+            if (Singleton.getInstance().getType().equals(Constants.TYPE_MEDICAL)) {
+                type.setText("Médico");
+                if (Singleton.getInstance().getPm().getProfileUrl() != null)
+                    Glide.with(this).load(Singleton.getInstance().getPm().getProfileUrl()).into(imgProfile);
+            } else {
+                type.setText("Paciente");
+                if (Singleton.getInstance().getPp().getProfileUrl() != null)
+                    Glide.with(this).load(Singleton.getInstance().getPp().getProfileUrl()).into(imgProfile);
+            }
+        }
     }
 
     @Override

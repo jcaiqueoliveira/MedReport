@@ -145,22 +145,6 @@ public class ProfileMedicalFragment extends Fragment {
         dispatchTakePictureIntent();
     }
 
-
-    private void updateProfileInformationsFirebase(final ProfileMedical profileMedical) {
-        Firebase f = new Firebase(Constants.BASE_URL);
-        f.child("users").child(f.getAuth().getUid()).child("profile").setValue(profileMedical, new Firebase.CompletionListener() {
-            @Override
-            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                if (firebaseError == null) {
-                    showSnackBar("Perfil Atualizado");
-                    Singleton.getInstance().setPm(profileMedical);
-                } else {
-                    showSnackBar("Erro ao atualizar perfil. Tente novamente");
-                }
-            }
-        });
-    }
-
     private void showSnackBar(String msg) {
         Snackbar snack = Snackbar.make(v.findViewById(R.id.parent), msg, Snackbar.LENGTH_LONG);
         View view = snack.getView();
@@ -280,6 +264,7 @@ public class ProfileMedicalFragment extends Fragment {
                     progress.dismiss();
                     showSnackBar("Perfil Atualizado");
                     Singleton.getInstance().setPm(profileMedical);
+                    ((MainActivity)getActivity()).loadProfileImage();
                 } else {
                     progress.dismiss();
                     showSnackBar("Erro ao atualizar perfil. Tente novamente");

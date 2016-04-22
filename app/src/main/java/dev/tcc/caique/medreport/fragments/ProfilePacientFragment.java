@@ -297,6 +297,7 @@ public class ProfilePacientFragment extends Fragment {
                     progress.dismiss();
                     showSnackBar("Perfil Atualizado");
                     Singleton.getInstance().setPp(profilePacient);
+                    ((MainActivity)getActivity()).loadProfileImage();
                 } else {
                     progress.dismiss();
                     showSnackBar("Erro ao atualizar perfil. Tente novamente");

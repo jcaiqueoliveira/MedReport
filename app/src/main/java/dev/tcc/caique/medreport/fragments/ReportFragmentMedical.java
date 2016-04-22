@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -69,7 +70,7 @@ public class ReportFragmentMedical extends Fragment {
                                     @Override
                                     public void onClick(View v) {
                                         Bundle b = new Bundle();
-                                        b.putString("stack",ds.getKey());
+                                        b.putString("stack", ds.getKey());
                                         ListReportPacientOfMedicalFragment list = new ListReportPacientOfMedicalFragment();
                                         list.setArguments(b);
                                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, list).addToBackStack(null).commit();
@@ -87,12 +88,15 @@ public class ReportFragmentMedical extends Fragment {
                                     }
                                 });
                                 viewHolderAccompaniments.namePerson.setText((String) ds.child("name").getValue());
+                                String url = (String) ds.child("profile").child("profileUrl").getValue();
+                                if (url != null)
+                                    Glide.with(getActivity()).load(url).into(viewHolderAccompaniments.thumbnail);
                             }
                         }
 
                         @Override
                         public void onCancelled(FirebaseError firebaseError) {
-                            Log.i("error serach", firebaseError.getMessage());
+                            Log.i("error search", firebaseError.getMessage());
                         }
                     });
                     // todo atualizar o onclick

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -37,6 +38,7 @@ public class AccompanimentsFragment extends Fragment {
     FirebaseRecyclerAdapter<Accompaniments, ViewHolderAccompaniments> adapter;
     @Bind(R.id.noItem)
     TextView noItem;
+
     public AccompanimentsFragment() {
         // Required empty public constructor
     }
@@ -52,27 +54,31 @@ public class AccompanimentsFragment extends Fragment {
         accompanimentsList.setHasFixedSize(true);
         accompanimentsList.setLayoutManager(new LinearLayoutManager(getActivity()));
         final Firebase ref = new Firebase(Constants.BASE_URL);
-        final Firebase ref2 = new Firebase(Constants.BASE_URL+"friends/" + ref.getAuth().getUid());
-        final Firebase ref3 = new Firebase(Constants.BASE_URL+"users");
+        final Firebase ref2 = new Firebase(Constants.BASE_URL + "friends/" + ref.getAuth().getUid());
+        final Firebase ref3 = new Firebase(Constants.BASE_URL + "users");
         try {
             adapter = new FirebaseRecyclerAdapter<Accompaniments, ViewHolderAccompaniments>(Accompaniments.class, R.layout.layout_accompaniments, ViewHolderAccompaniments.class, ref2) {
                 @Override
                 protected void populateViewHolder(final ViewHolderAccompaniments viewHolderAccompaniments, final Accompaniments accompaniments, int i) {
                     Query queryRef = ref3.orderByChild("email").equalTo(accompaniments.getEmail());
-
                     queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                Log.i("DATASNAP", ds.toString());
                                 viewHolderAccompaniments.namePerson.setText((String) ds.child("name").getValue());
+                                String url = (String) ds.child("profile").child("profileUrl").getValue();
+                                if (url != null) {
+                                    Glide.with(getActivity()).load(url).into(viewHolderAccompaniments.thumbnail);
+                                    Log.i("url", url);
+                                }
                             }
-
                         }
 
                         @Override
                         public void onCancelled(FirebaseError firebaseError) {
-                            Log.i("error serach", firebaseError.getMessage());
+                            Log.i("error search", firebaseError.getMessage());
                         }
                     });
 
