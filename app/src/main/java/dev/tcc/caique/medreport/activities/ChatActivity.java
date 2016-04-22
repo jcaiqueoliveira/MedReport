@@ -1,5 +1,8 @@
 package dev.tcc.caique.medreport.activities;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.models.ChatMessage;
 import dev.tcc.caique.medreport.models.Singleton;
@@ -36,7 +40,12 @@ public class ChatActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         String chat = b.getString("SALA");
         String user = b.getString("USUARIO");
-        setTitle(user);
+        Bitmap pic =  b.getParcelable("FOTO");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(user);
+        //TODO: Procurar alternativa para o método abaixo
+        getSupportActionBar().setIcon(new BitmapDrawable(pic));
         mFirebase = new Firebase(Constants.BASE_URL+"chat/" + chat);
         chatMessages = (RecyclerView) findViewById(R.id.chatMessages);
         chatMessages.setHasFixedSize(true);
