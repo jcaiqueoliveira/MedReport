@@ -35,6 +35,8 @@ public class ChatActivity extends AppCompatActivity {
         sendButton = (Button) this.findViewById(R.id.send_button);
         Bundle b = getIntent().getExtras();
         String chat = b.getString("SALA");
+        String user = b.getString("USUARIO");
+        setTitle(user);
         mFirebase = new Firebase(Constants.BASE_URL+"chat/" + chat);
         chatMessages = (RecyclerView) findViewById(R.id.chatMessages);
         chatMessages.setHasFixedSize(true);
@@ -46,10 +48,8 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             protected void populateViewHolder(ViewHolderChat viewHolderChat, ChatMessage c, int i) {
                 if(Singleton.getInstance().getName().equals(c.getName())){
-                    viewHolderChat.name.setLayoutParams(Utils.getChatUserMessageLayoutParams());
                     viewHolderChat.message.setLayoutParams(Utils.getChatUserMessageLayoutParams());
                 }
-                viewHolderChat.name.setText(c.getName());
                 viewHolderChat.message.setText(c.getText());
             }
         };
@@ -66,11 +66,10 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public static class ViewHolderChat extends RecyclerView.ViewHolder {
-        public TextView name, message;
+        public TextView message;
 
         public ViewHolderChat(View v) {
             super(v);
-            name = (TextView) v.findViewById(android.R.id.text1);
             message = (TextView) v.findViewById(android.R.id.text2);
         }
     }

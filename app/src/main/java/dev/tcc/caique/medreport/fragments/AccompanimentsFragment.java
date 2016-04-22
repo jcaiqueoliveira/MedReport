@@ -88,6 +88,7 @@ public class AccompanimentsFragment extends Fragment {
                             Intent i = new Intent(getActivity(), ChatActivity.class);
                             Bundle b = new Bundle();
                             b.putString("SALA", accompaniments.getChat());
+                            b.putString("USUARIO", viewHolderAccompaniments.namePerson.getText().toString());
                             i.putExtras(b);
                             startActivity(i);
                         }
