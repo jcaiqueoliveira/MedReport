@@ -60,13 +60,13 @@ public class AccompanimentsFragment extends Fragment {
             adapter = new FirebaseRecyclerAdapter<Accompaniments, ViewHolderAccompaniments>(Accompaniments.class, R.layout.layout_accompaniments, ViewHolderAccompaniments.class, ref2) {
                 @Override
                 protected void populateViewHolder(final ViewHolderAccompaniments viewHolderAccompaniments, final Accompaniments accompaniments, int i) {
+                    noItem.setVisibility(View.GONE);
                     Query queryRef = ref3.orderByChild("email").equalTo(accompaniments.getEmail());
                     queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                Log.i("DATASNAP", ds.toString());
                                 viewHolderAccompaniments.namePerson.setText((String) ds.child("name").getValue());
                                 String url = (String) ds.child("profile").child("profileUrl").getValue();
                                 if (url != null) {

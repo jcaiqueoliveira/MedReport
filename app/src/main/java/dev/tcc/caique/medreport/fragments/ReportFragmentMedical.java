@@ -60,7 +60,7 @@ public class ReportFragmentMedical extends Fragment {
             adapter = new FirebaseRecyclerAdapter<Accompaniments, ViewHolderAccompaniments>(Accompaniments.class, R.layout.layout_report_medical_item, ViewHolderAccompaniments.class, ref2) {
                 @Override
                 protected void populateViewHolder(final ViewHolderAccompaniments viewHolderAccompaniments, final Accompaniments accompaniments, int i) {
-
+                    noItem.setVisibility(View.GONE);
                     Query queryRef = ref3.orderByChild("email").equalTo(accompaniments.getEmail());
                     queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -114,7 +114,6 @@ public class ReportFragmentMedical extends Fragment {
                 }
             };
             accompanimentsList.setAdapter(adapter);
-            updateUI();
         } catch (Exception e) {
             e.printStackTrace();
         }
