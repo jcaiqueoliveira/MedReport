@@ -2,6 +2,10 @@ package dev.tcc.caique.medreport.fragments;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +24,8 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 
+import java.io.Serializable;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -28,6 +34,7 @@ import dev.tcc.caique.medreport.activities.ChatActivity;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.models.Accompaniments;
 import dev.tcc.caique.medreport.utils.Constants;
+import dev.tcc.caique.medreport.utils.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -88,6 +95,8 @@ public class AccompanimentsFragment extends Fragment {
                             Intent i = new Intent(getActivity(), ChatActivity.class);
                             Bundle b = new Bundle();
                             b.putString("SALA", accompaniments.getChat());
+                            b.putString("USUARIO", viewHolderAccompaniments.namePerson.getText().toString());
+                            b.putParcelable("FOTO", Utils.drawableToBitmap(viewHolderAccompaniments.thumbnail.getDrawable()));
                             i.putExtras(b);
                             startActivity(i);
                         }
