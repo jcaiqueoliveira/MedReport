@@ -8,6 +8,8 @@ public class ProfileMedical {
     private String crm;
     private String specialization;
     private String profileUrl;
+    private String publicId;
+
     public ProfileMedical() {
     }
 
@@ -35,20 +37,30 @@ public class ProfileMedical {
         this.specialization = specialization;
     }
 
-    @Override
-    public String toString() {
-        return "ProfileMedical{" +
-                "name='" + name + '\'' +
-                ", crm='" + crm + '\'' +
-                ", specialization='" + specialization + '\'' +
-                '}';
-    }
-
     public String getProfileUrl() {
         return profileUrl;
     }
 
     public void setProfileUrl(String profileUrl) {
         this.profileUrl = profileUrl;
+    }
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
+    }
+
+    @Override
+    public String toString() {
+        return "ProfileMedical{" +
+                "name='" + name + '\'' +
+                ", crm='" + crm + '\'' +
+                ", specialization='" + specialization + '\'' +
+                ", profileUrl='" + profileUrl + '\'' +
+                ", publicId='" + publicId + '\'' +
+                '}';
     }
 }
