@@ -64,7 +64,7 @@ public class SendImageCloudinary extends Service {
             try {
                 Firebase uploadImg = new Firebase(Constants.BASE_URL);
                 for (Image i : uploadToCloudinary(Singleton.getInstance().getInputStreams(), Singleton.getInstance().getTimeStampReport())) {
-                    uploadImg.child("images").child(Singleton.getInstance().getTimeStampReport()).push().setValue(i, new Firebase.CompletionListener() {
+                    uploadImg.child("images").child(Singleton.getInstance().getTimeStampReport()).child(i.getPublicId()).setValue(i, new Firebase.CompletionListener() {
                         @Override
                         public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                             //  getActivity().onBackPressed();

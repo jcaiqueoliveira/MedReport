@@ -23,7 +23,8 @@
         android:id="@+id/buttonContact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Contate-me!"
+        android:text="Contate-nos!"
+        android:textColor="@android:color/white"
         android:layout_gravity="center"
         android:textAllCaps="false"/>
 </LinearLayout>

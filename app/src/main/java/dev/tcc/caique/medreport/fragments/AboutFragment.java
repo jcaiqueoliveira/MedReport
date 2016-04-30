@@ -42,7 +42,7 @@ public class AboutFragment extends Fragment {
     @OnClick({R.id.buttonContact})
     public void onClick(){
         String uriText =
-                "mailto:jcaique.jc@gmail.com" +
+                "mailto:jcaique.jc@gmail.com;" +"andcarv@gmail.com;"+
                         "?subject=" + Uri.encode("MedReport Contact");
 
         Uri uri = Uri.parse(uriText);

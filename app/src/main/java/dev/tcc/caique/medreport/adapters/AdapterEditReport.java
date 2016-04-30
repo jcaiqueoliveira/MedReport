@@ -13,8 +13,6 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.firebase.client.Firebase;
 
-import java.util.ArrayList;
-
 import dev.tcc.caique.medreport.models.Image;
 import dev.tcc.caique.medreport.models.Report;
 import dev.tcc.caique.medreport.models.Singleton;
@@ -25,19 +23,17 @@ import dev.tcc.caique.medreport.utils.Constants;
  * Created by Avell B153 MAX on 30/04/2016.
  */
 public class AdapterEditReport extends BaseAdapter {
-    private ArrayList<Image> urls;
     private FragmentActivity mContext;
     private Report report;
 
-    public AdapterEditReport(ArrayList<Image> urls, FragmentActivity mContex, Report report) {
-        this.urls = urls;
+    public AdapterEditReport(FragmentActivity mContex, Report report) {
         this.mContext = mContex;
         this.report = report;
     }
 
     @Override
     public int getCount() {
-        return urls.size();
+        return Singleton.getInstance().getCurrentImageInReport().size();
     }
 
     @Override
@@ -63,7 +59,7 @@ public class AdapterEditReport extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        Glide.with(mContext).load(urls.get(position).getImage()).placeholder(android.R.drawable.progress_indeterminate_horizontal).into(imageView);
+        Glide.with(mContext).load(Singleton.getInstance().getCurrentImageInReport().get(position).getImage()).placeholder(android.R.drawable.progress_indeterminate_horizontal).into(imageView);
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -72,15 +68,14 @@ public class AdapterEditReport extends BaseAdapter {
                 builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Firebase firebase = new Firebase(Constants.BASE_URL + "images/" + report.getStackId() + "/");
-                        Image image = urls.remove(position);
-                        firebase.setValue(urls);
+                        Firebase firebase = new Firebase(Constants.BASE_URL + "images/" + report.getStackId() + "/" + Singleton.getInstance().getCurrentImageInReport().get(position).getPublicId());
+                        Image image = Singleton.getInstance().getCurrentImageInReport().remove(position);
+                        firebase.removeValue();
                         Singleton.getInstance().getImageToDeleteCloudinary().clear();
                         Singleton.getInstance().getImageToDeleteCloudinary().add(image);
                         mContext.startService(new Intent(mContext, ServiceDeleImageCloudinary.class));
                         notifyDataSetChanged();
                         dialog.dismiss();
-
                     }
                 });
                 builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

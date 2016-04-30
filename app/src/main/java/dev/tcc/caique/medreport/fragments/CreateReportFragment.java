@@ -76,7 +76,6 @@ public class CreateReportFragment extends Fragment {
     private String timeStamp;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_WRITE_CAMERA = 2;
-    private ArrayList<Image> urls = new ArrayList<>();
 
     public CreateReportFragment() {
         // Required empty public constructor
@@ -103,12 +102,12 @@ public class CreateReportFragment extends Fragment {
                 firebase.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        urls.clear();
+                        Singleton.getInstance().getCurrentImageInReport().clear();
                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                            urls.add(ds.getValue(Image.class));
+                            Singleton.getInstance().getCurrentImageInReport().add(ds.getValue(Image.class));
                             // Log.i("valor",ds.getValue(Image.class).toString());
                         }
-                        gridView.setAdapter(new AdapterEditReport(urls, getActivity(), report));
+                        gridView.setAdapter(new AdapterEditReport(getActivity(), report));
                     }
 
                     @Override
@@ -142,7 +141,7 @@ public class CreateReportFragment extends Fragment {
             ArrayList<Uri> imageUris = data.getParcelableArrayListExtra(ImagePickerActivity.EXTRA_IMAGE_URIS);
             images = getBitmapsFromImageUris(imageUris);
             if (imageUris.size() > 0) {
-                gridView.setAdapter(new ImageAdapter(getActivity(), images));
+                gridView.setAdapter(new ImageAdapter(getActivity(), images, report));
             }
             for (Uri uri : imageUris) {
                 try {
@@ -211,12 +210,14 @@ public class CreateReportFragment extends Fragment {
                                     showSnackBar("Erro ao atualizar relatório. Tente novamente.");
                                 } else {
                                     showSnackBar("Editado com sucesso");
+                                    Singleton.getInstance().setTimeStampReport(report.getStackId());
+                                    getActivity().startService(new Intent(getActivity(), SendImageCloudinary.class));
+                                    getActivity().onBackPressed();
                                 }
                             }
                         });
                     } else {
                         try {
-
                             timeStamp = ref.push().getKey();
                             Singleton.getInstance().setTimeStampReport(timeStamp);
                             Report report = new Report();
@@ -229,8 +230,7 @@ public class CreateReportFragment extends Fragment {
                                     if (firebaseError != null) {
                                         showSnackBar("Erro ao salvar relatório. Tente novamente.");
                                     } else {
-                                        getActivity().startService(new Intent(getActivity(), SendImageCloudinary.class));
-                                        getActivity().onBackPressed();
+
                                     }
                                 }
                             });

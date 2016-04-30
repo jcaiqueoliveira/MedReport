@@ -17,7 +17,7 @@ public class Singleton {
     private String name;
     private ArrayList<String> friends = new ArrayList<>();
     private ArrayList<Image> imageToDeleteCloudinary = new ArrayList<>();
-
+    private ArrayList<Image> currentImageInReport = new ArrayList<>();
 
     public static Singleton getInstance() {
         return ourInstance;
@@ -96,5 +96,13 @@ public class Singleton {
 
     public void setImageToDeleteCloudinary(ArrayList<Image> imageToDeleteCloudinary) {
         this.imageToDeleteCloudinary = imageToDeleteCloudinary;
+    }
+
+    public ArrayList<Image> getCurrentImageInReport() {
+        return currentImageInReport;
+    }
+
+    public void setCurrentImageInReport(ArrayList<Image> currentImageInReport) {
+        this.currentImageInReport = currentImageInReport;
     }
 }
