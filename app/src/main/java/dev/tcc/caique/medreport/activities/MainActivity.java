@@ -102,11 +102,11 @@ public class MainActivity extends AppCompatActivity
         if (Singleton.getInstance().getType() != null) {
             if (Singleton.getInstance().getType().equals(Constants.TYPE_MEDICAL)) {
                 type.setText("Médico");
-                if (Singleton.getInstance().getPm().getProfileUrl() != null)
+                if (Singleton.getInstance().getPm() != null && Singleton.getInstance().getPm().getProfileUrl() != null)
                     Glide.with(this).load(Singleton.getInstance().getPm().getProfileUrl()).into(imgProfile);
             } else {
                 type.setText("Paciente");
-                if (Singleton.getInstance().getPp().getProfileUrl() != null)
+                if (Singleton.getInstance().getPp() != null && Singleton.getInstance().getPp().getProfileUrl() != null)
                     Glide.with(this).load(Singleton.getInstance().getPp().getProfileUrl()).into(imgProfile);
             }
         }

@@ -43,11 +43,6 @@ public class Utils {
         }
     }
 
-    public static void openCamera(FragmentActivity context) {
-        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        context.startActivityForResult(i, Constants.CAMERA_INTENT);
-    }
-
     public static void getMyData(final AppCompatActivity mContext, final View view, final ProgressDialog progressDialog) {
         Firebase ref = new Firebase(Constants.BASE_URL + "users");
         final Firebase ref2 = new Firebase(Constants.BASE_URL + "users/" + ref.getAuth().getUid());
