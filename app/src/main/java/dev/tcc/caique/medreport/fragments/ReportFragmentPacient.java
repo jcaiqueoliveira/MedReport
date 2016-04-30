@@ -89,7 +89,6 @@ public class ReportFragmentPacient extends Fragment {
                     firebase1.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            Log.e("DATA", dataSnapshot.toString());
                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                 Log.i("dataSnap", ds.toString());
                                 //images.add(ds.getValue(Image.class));
@@ -146,7 +145,7 @@ public class ReportFragmentPacient extends Fragment {
     }
 
     public static class ViewHolderReport extends RecyclerView.ViewHolder {
-        public ImageView delete, edit, send;
+        public ImageView delete, edit;
         public TextView nameReport;
 
         public ViewHolderReport(View v) {
@@ -224,6 +223,4 @@ public class ReportFragmentPacient extends Fragment {
             }
         });
     }
-
-
 }

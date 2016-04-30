@@ -78,7 +78,7 @@ public class AccompanimentsFragment extends Fragment {
                                 viewHolderAccompaniments.namePerson.setText((String) ds.child("name").getValue());
                                 url[0] = (String) ds.child("profile").child("profileUrl").getValue();
                                 if (url[0] != null) {
-                                    Glide.with(getActivity()).load(url[0]).into(viewHolderAccompaniments.thumbnail);
+                                    Glide.with(getActivity()).load(url[0]).placeholder(android.R.drawable.progress_horizontal).into(viewHolderAccompaniments.thumbnail);
                                     Log.i("url", url[0]);
                                 }
                             }

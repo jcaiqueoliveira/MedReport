@@ -30,4 +30,12 @@ public class Image {
     public void setPublicId(String publicId) {
         this.publicId = publicId;
     }
+
+    @Override
+    public String toString() {
+        return "Image{" +
+                "image='" + image + '\'' +
+                ", publicId='" + publicId + '\'' +
+                '}';
+    }
 }

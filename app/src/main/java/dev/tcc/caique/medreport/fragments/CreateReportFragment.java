@@ -44,7 +44,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
+import dev.tcc.caique.medreport.adapters.AdapterEditReport;
 import dev.tcc.caique.medreport.adapters.ImageAdapter;
+import dev.tcc.caique.medreport.models.Image;
 import dev.tcc.caique.medreport.models.Report;
 import dev.tcc.caique.medreport.models.Singleton;
 import dev.tcc.caique.medreport.service.SendImageCloudinary;
@@ -75,7 +77,7 @@ public class CreateReportFragment extends Fragment {
     private String timeStamp;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_WRITE_CAMERA = 2;
-
+    private ArrayList<Image> urls = new ArrayList<>();
     public CreateReportFragment() {
         // Required empty public constructor
     }
@@ -101,7 +103,11 @@ public class CreateReportFragment extends Fragment {
                 firebase.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Log.i("retorno", dataSnapshot.toString());
+                     for(DataSnapshot ds: dataSnapshot.getChildren()){
+                        urls.add(ds.getValue(Image.class));
+                        // Log.i("valor",ds.getValue(Image.class).toString());
+                     }
+                     gridView.setAdapter(new AdapterEditReport(urls,getActivity()));
                     }
 
                     @Override
@@ -143,7 +149,6 @@ public class CreateReportFragment extends Fragment {
                     inputStreams.add(in);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                    Log.e("error", "failed to get inputStream");
                 }
             }
             Singleton.getInstance().setInputStreams(inputStreams);
@@ -265,7 +270,6 @@ public class CreateReportFragment extends Fragment {
             openGalleryToSelectImages();
             return;
         } else {
-            Log.i("a", "b");
             this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
                     REQUEST_WRITE_CAMERA);
         }
@@ -279,11 +283,8 @@ public class CreateReportFragment extends Fragment {
                 openGalleryToSelectImages();
             else {
                 Snackbar.make(v, "Permissão não garantida", Snackbar.LENGTH_SHORT).show();
-                Log.i("0", "" + grantResults[0]);
-                Log.i("1", "" + grantResults[1]);
             }
         } else {
-            Log.i("request code", "" + requestCode);
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }

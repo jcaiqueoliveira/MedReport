@@ -40,7 +40,6 @@ public class ServiceDeleImageCloudinary extends Service {
     }
 
     private void deleteImagesCloudinary(ArrayList<Image> images) {
-        Log.i("aqui", "aqui");
         Log.i("images", images.toString());
         Map<String, String> config = new HashMap<>();
         config.put("cloud_name", Constants.CLOUDINARY_NAME);
@@ -50,7 +49,6 @@ public class ServiceDeleImageCloudinary extends Service {
         for (Image i : images)
             try {
                 Map resultDestroy = cloudinary.uploader().destroy(i.getPublicId(), ObjectUtils.asMap("invalidate", true));
-                Log.e("result Cloudinary", resultDestroy.toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }
