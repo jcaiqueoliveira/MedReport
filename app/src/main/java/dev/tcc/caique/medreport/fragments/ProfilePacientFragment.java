@@ -84,7 +84,6 @@ public class ProfilePacientFragment extends Fragment {
         // Required empty public constructor
     }
 
-    //Todo http://developer.android.com/guide/topics/ui/menus.html#ChangingTheMenu
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +112,7 @@ public class ProfilePacientFragment extends Fragment {
             edtProblem3.setText(pp.getDrugAllergy());
         }
         dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/MedReport/";
-        if (Singleton.getInstance().getPp().getProfileUrl() != null) {
+        if (Singleton.getInstance().getPp()!=null && Singleton.getInstance().getPp().getProfileUrl() != null) {
             Glide.with(getActivity()).load(Singleton.getInstance().getPp().getProfileUrl()).into(imgProfile);
         }
         return v;

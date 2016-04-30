@@ -92,7 +92,7 @@ public class ProfileMedicalFragment extends Fragment {
         Utils.setViewAndChildrenEnabled(v, false);
         ((MainActivity) getActivity()).fab.hide();
         dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/MedReport/";
-        if (Singleton.getInstance().getPm().getProfileUrl() != null) {
+        if (Singleton.getInstance().getPm()!=null && Singleton.getInstance().getPm().getProfileUrl() != null) {
             Glide.with(getActivity()).load(Singleton.getInstance().getPm().getProfileUrl()).into(imgProfile);
         }
         return v;

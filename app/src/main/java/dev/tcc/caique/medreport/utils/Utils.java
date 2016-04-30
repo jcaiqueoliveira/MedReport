@@ -7,8 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.provider.MediaStore;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
@@ -52,6 +50,7 @@ public class Utils {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Log.e("user", ds.getValue().toString());
                     Singleton.getInstance().getFriends().add((String) ds.child("email").getValue());
                 }
             }
@@ -83,8 +82,9 @@ public class Utils {
                     }
                     if (view != null)
                         view.setVisibility(View.GONE);
-                    if(progressDialog!=null)
-                        progressDialog.hide();
+                    if (progressDialog != null) {
+                        progressDialog.dismiss();
+                    }
                     mContext.startActivity(new Intent(mContext, MainActivity.class));
                     mContext.finish();
                 } else {
@@ -98,17 +98,18 @@ public class Utils {
             }
         });
     }
-    public static Bitmap drawableToBitmap (Drawable drawable) {
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
         Bitmap bitmap = null;
 
         if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if(bitmapDrawable.getBitmap() != null) {
+            if (bitmapDrawable.getBitmap() != null) {
                 return bitmapDrawable.getBitmap();
             }
         }
 
-        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
             bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
         } else {
             bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
@@ -120,7 +121,7 @@ public class Utils {
         return bitmap;
     }
 
-    public static ViewGroup.LayoutParams getChatUserMessageLayoutParams(){
+    public static ViewGroup.LayoutParams getChatUserMessageLayoutParams() {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.FILL_PARENT);
         params.weight = 1.0f;
         params.gravity = Gravity.RIGHT;

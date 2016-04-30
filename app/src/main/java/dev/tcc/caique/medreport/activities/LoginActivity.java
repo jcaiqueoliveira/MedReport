@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onAuthenticated(AuthData authData) {
                         ProgressDialog progressDialog = dialogProgress();
                         progressDialog.show();
-                        Utils.getMyData(LoginActivity.this,null,progressDialog);
+                        Utils.getMyData(LoginActivity.this, null, progressDialog);
                     }
 
                     @Override
@@ -80,19 +80,20 @@ public class LoginActivity extends AppCompatActivity {
                 ref.createUser(tvEmail.getText().toString(), tvPass.getText().toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
                     @Override
                     public void onSuccess(Map<String, Object> result) {
-                        Log.e("Criou","Criou");
+                        Log.e("Criou", "Criou");
                         String uid = result.get("uid").toString();
                         Map<String, Object> user = new HashMap<String, Object>();
                         user.put("name", tvUser.getText().toString());
                         user.put("email", tvEmail.getText().toString());
                         user.put("type", type);
+                        Log.e("usuario", user.toString());
                         ref.child("users").child(uid).setValue(user, new Firebase.CompletionListener() {
                             @Override
                             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                if(firebaseError==null){
+                                if (firebaseError == null) {
                                     Snackbar.make(view, "Usuário criado com sucesso, faça login para acessar o aplicativo", Snackbar.LENGTH_SHORT).show();
-                                }else{
-                                    Log.e("Error",firebaseError.getMessage());
+                                } else {
+                                    Log.e("Error", firebaseError.getMessage());
                                     Snackbar.make(view, "Error", Snackbar.LENGTH_SHORT).show();
                                 }
                             }
