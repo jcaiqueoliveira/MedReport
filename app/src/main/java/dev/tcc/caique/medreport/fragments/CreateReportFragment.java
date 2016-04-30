@@ -16,7 +16,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -78,6 +77,7 @@ public class CreateReportFragment extends Fragment {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_WRITE_CAMERA = 2;
     private ArrayList<Image> urls = new ArrayList<>();
+
     public CreateReportFragment() {
         // Required empty public constructor
     }
@@ -103,11 +103,12 @@ public class CreateReportFragment extends Fragment {
                 firebase.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                     for(DataSnapshot ds: dataSnapshot.getChildren()){
-                        urls.add(ds.getValue(Image.class));
-                        // Log.i("valor",ds.getValue(Image.class).toString());
-                     }
-                     gridView.setAdapter(new AdapterEditReport(urls,getActivity()));
+                        urls.clear();
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            urls.add(ds.getValue(Image.class));
+                            // Log.i("valor",ds.getValue(Image.class).toString());
+                        }
+                        gridView.setAdapter(new AdapterEditReport(urls, getActivity(), report));
                     }
 
                     @Override

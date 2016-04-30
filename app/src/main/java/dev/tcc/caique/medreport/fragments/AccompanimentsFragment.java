@@ -2,10 +2,6 @@ package dev.tcc.caique.medreport.fragments;
 
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,8 +20,6 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 
-import java.io.Serializable;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -34,7 +28,6 @@ import dev.tcc.caique.medreport.activities.ChatActivity;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.models.Accompaniments;
 import dev.tcc.caique.medreport.utils.Constants;
-import dev.tcc.caique.medreport.utils.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,8 +71,7 @@ public class AccompanimentsFragment extends Fragment {
                                 viewHolderAccompaniments.namePerson.setText((String) ds.child("name").getValue());
                                 url[0] = (String) ds.child("profile").child("profileUrl").getValue();
                                 if (url[0] != null) {
-                                    Glide.with(getActivity()).load(url[0]).placeholder(android.R.drawable.progress_horizontal).into(viewHolderAccompaniments.thumbnail);
-                                    Log.i("url", url[0]);
+                                    Glide.with(getActivity()).load(url[0]).placeholder(android.R.drawable.progress_indeterminate_horizontal).into(viewHolderAccompaniments.thumbnail);
                                 }
                             }
                         }

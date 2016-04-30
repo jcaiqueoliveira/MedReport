@@ -1,6 +1,7 @@
 package dev.tcc.caique.medreport.adapters;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -10,11 +11,15 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
 
-import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.models.Image;
+import dev.tcc.caique.medreport.models.Report;
+import dev.tcc.caique.medreport.models.Singleton;
+import dev.tcc.caique.medreport.service.ServiceDeleImageCloudinary;
+import dev.tcc.caique.medreport.utils.Constants;
 
 /**
  * Created by Avell B153 MAX on 30/04/2016.
@@ -22,10 +27,12 @@ import dev.tcc.caique.medreport.models.Image;
 public class AdapterEditReport extends BaseAdapter {
     private ArrayList<Image> urls;
     private FragmentActivity mContext;
+    private Report report;
 
-    public AdapterEditReport(ArrayList<Image> urls, FragmentActivity mContex) {
+    public AdapterEditReport(ArrayList<Image> urls, FragmentActivity mContex, Report report) {
         this.urls = urls;
         this.mContext = mContex;
+        this.report = report;
     }
 
     @Override
@@ -65,7 +72,12 @@ public class AdapterEditReport extends BaseAdapter {
                 builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        urls.remove(position);
+                        Firebase firebase = new Firebase(Constants.BASE_URL + "images/" + report.getStackId() + "/");
+                        Image image = urls.remove(position);
+                        firebase.setValue(urls);
+                        Singleton.getInstance().getImageToDeleteCloudinary().clear();
+                        Singleton.getInstance().getImageToDeleteCloudinary().add(image);
+                        mContext.startService(new Intent(mContext, ServiceDeleImageCloudinary.class));
                         notifyDataSetChanged();
                         dialog.dismiss();
 
