@@ -1,19 +1,20 @@
 package dev.tcc.caique.medreport.activities;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.models.ChatMessage;
 import dev.tcc.caique.medreport.models.Singleton;
@@ -26,22 +27,35 @@ public class ChatActivity extends AppCompatActivity {
     private Firebase mFirebase;
     private RecyclerView chatMessages;
     private FirebaseRecyclerAdapter<ChatMessage, ViewHolderChat> adapter;
+    private Toolbar toolbar;
+    private CircleImageView thunbnail;
+    private TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         textEdit = (EditText) this.findViewById(R.id.text_edit);
         sendButton = (Button) this.findViewById(R.id.send_button);
+        thunbnail = (CircleImageView) this.findViewById(R.id.thumbnail);
+        title = (TextView) toolbar.findViewById(R.id.title);
         Bundle b = getIntent().getExtras();
         String chat = b.getString("SALA");
         String user = b.getString("USUARIO");
-        Bitmap pic = b.getParcelable("FOTO");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle(user);
+        String pic = b.getString("FOTO");
+        if (pic != null) {
+            Glide.with(this).load(pic).into(thunbnail);
+        } else {
+            thunbnail.setVisibility(View.GONE);
+        }
+        title.setText(user);
         //TODO: Procurar alternativa para o método abaixo
-        getSupportActionBar().setIcon(new BitmapDrawable(pic));
+        //   getSupportActionBar().setIcon(new BitmapDrawable(pic));
         mFirebase = new Firebase(Constants.BASE_URL + "chat/" + chat);
         chatMessages = (RecyclerView) findViewById(R.id.chatMessages);
         chatMessages.setHasFixedSize(true);

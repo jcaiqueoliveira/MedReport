@@ -38,7 +38,9 @@
         <activity
             android:name=".activities.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.ChatActivity" />
+        <activity
+            android:name=".activities.ChatActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.gun0912.tedpicker.ImagePickerActivity"
             android:screenOrientation="portrait"

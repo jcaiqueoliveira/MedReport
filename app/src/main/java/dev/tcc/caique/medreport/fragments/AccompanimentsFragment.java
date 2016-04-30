@@ -68,6 +68,7 @@ public class AccompanimentsFragment extends Fragment {
                 @Override
                 protected void populateViewHolder(final ViewHolderAccompaniments viewHolderAccompaniments, final Accompaniments accompaniments, int i) {
                     noItem.setVisibility(View.GONE);
+                    final String[] url = {null};
                     Query queryRef = ref3.orderByChild("email").equalTo(accompaniments.getEmail());
                     queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -75,10 +76,10 @@ public class AccompanimentsFragment extends Fragment {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                 viewHolderAccompaniments.namePerson.setText((String) ds.child("name").getValue());
-                                String url = (String) ds.child("profile").child("profileUrl").getValue();
-                                if (url != null) {
-                                    Glide.with(getActivity()).load(url).into(viewHolderAccompaniments.thumbnail);
-                                    Log.i("url", url);
+                                url[0] = (String) ds.child("profile").child("profileUrl").getValue();
+                                if (url[0] != null) {
+                                    Glide.with(getActivity()).load(url[0]).into(viewHolderAccompaniments.thumbnail);
+                                    Log.i("url", url[0]);
                                 }
                             }
                         }
@@ -96,7 +97,7 @@ public class AccompanimentsFragment extends Fragment {
                             Bundle b = new Bundle();
                             b.putString("SALA", accompaniments.getChat());
                             b.putString("USUARIO", viewHolderAccompaniments.namePerson.getText().toString());
-                            b.putParcelable("FOTO", Utils.drawableToBitmap(viewHolderAccompaniments.thumbnail.getDrawable()));
+                            b.putString("FOTO", url[0]);
                             i.putExtras(b);
                             startActivity(i);
                         }
