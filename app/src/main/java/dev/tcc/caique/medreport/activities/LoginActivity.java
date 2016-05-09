@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.util.Log;
@@ -36,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     AppCompatEditText tvPass;
 
     @Bind(R.id.newAccountButton)
-    TextView btnNewAccount;
+    AppCompatButton btnNewAccount;
 
     @Bind(R.id.radioGroupType)
     RadioGroup radioGroupType;
@@ -51,6 +52,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 type = checkedId;
+            }
+        });
+
+        btnNewAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Sign(v);
             }
         });
         //Todo https://developers.google.com/identity/sign-in/android/start-integrating
