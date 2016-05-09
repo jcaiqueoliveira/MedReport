@@ -25,6 +25,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 import dev.tcc.caique.medreport.R;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.models.Invite;
@@ -50,15 +51,17 @@ public class InviteFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_invite, container, false);
-        ButterKnife.bind(this,v);
+        ButterKnife.bind(this, v);
         final Firebase ref = new Firebase(Constants.BASE_URL);
         final Firebase ref2 = new Firebase(Constants.BASE_URL + "invites/" + ref.getAuth().getUid());
         if (Singleton.getInstance().getType().equals("1"))
             ((MainActivity) getActivity()).fab.show();
         else
             ((MainActivity) getActivity()).fab.hide();
+
         recyclerView = (RecyclerView) v.findViewById(R.id.inviteRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setHasFixedSize(true);
         try {
             adapter = new FirebaseRecyclerAdapter<Invite, ViewHolderInvite>(Invite.class,
                     R.layout.layout_invite_card_list,
@@ -66,6 +69,7 @@ public class InviteFragment extends Fragment {
                     ref2) {
                 @Override
                 protected void populateViewHolder(ViewHolderInvite viewHolderInvite, final Invite inviter, int i) {
+
                     viewHolderInvite.nameInviter.setText(inviter.getName());
                     viewHolderInvite.accept.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -107,6 +111,7 @@ public class InviteFragment extends Fragment {
                                                                     }
                                                                 });
                                                                 Toast.makeText(getActivity(), "Adicionado com sucesso", Toast.LENGTH_SHORT).show();
+                                                                ref.child("invites").child(ref.getAuth().getUid()).child(inviter.getStackId()).removeValue();
                                                             } else {
                                                                 Log.i("error", firebaseError.getMessage());
                                                             }
@@ -150,7 +155,7 @@ public class InviteFragment extends Fragment {
             recyclerView.setAdapter(adapter);
             updateUI();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("error1", e.getMessage());
         }
 
         ((MainActivity) getActivity()).fab.setOnClickListener(new View.OnClickListener() {
@@ -171,19 +176,21 @@ public class InviteFragment extends Fragment {
     public static class ViewHolderInvite extends RecyclerView.ViewHolder {
         public ImageView accept, exclude;
         public TextView nameInviter;
+        public CircleImageView thumbnal;
 
         public ViewHolderInvite(View v) {
             super(v);
             accept = (ImageView) v.findViewById(R.id.accept);
             exclude = (ImageView) v.findViewById(R.id.recuse);
             nameInviter = (TextView) v.findViewById(R.id.nameInviter);
+            thumbnal = (CircleImageView) v.findViewById(R.id.thumbnail);
         }
     }
 
-    public void  updateUI(){
-        if(adapter.getItemCount()==0){
+    public void updateUI() {
+        if (adapter.getItemCount() == 0) {
             noItem.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             noItem.setVisibility(View.GONE);
         }
     }

@@ -1,5 +1,7 @@
 package dev.tcc.caique.medreport.utils;
 
+import android.support.multidex.MultiDex;
+
 import com.firebase.client.Firebase;
 
 /**

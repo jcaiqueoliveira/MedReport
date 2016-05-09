@@ -24,7 +24,6 @@
                    android:id="@+id/thumbnail"
                    android:layout_width="60dp"
                    android:layout_height="60dp"
-                   android:scaleType="fitXY"
                    android:src="@drawable/ic_account_box"/>
             </LinearLayout>
 

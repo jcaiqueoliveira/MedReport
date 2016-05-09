@@ -230,7 +230,8 @@ public class CreateReportFragment extends Fragment {
                                     if (firebaseError != null) {
                                         showSnackBar("Erro ao salvar relatório. Tente novamente.");
                                     } else {
-
+                                        getActivity().startService(new Intent(getActivity(), SendImageCloudinary.class));
+                                        getActivity().onBackPressed();
                                     }
                                 }
                             });

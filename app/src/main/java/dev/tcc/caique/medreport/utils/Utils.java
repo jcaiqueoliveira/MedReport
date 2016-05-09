@@ -50,14 +50,12 @@ public class Utils {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Log.e("user", ds.getValue().toString());
                     Singleton.getInstance().getFriends().add((String) ds.child("email").getValue());
                 }
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                Log.i("Cancelado", "cancelado");
             }
         });
         Query queryRef = ref.orderByChild("email").equalTo((String) ref.getAuth().getProviderData().get("email"));
