@@ -153,8 +153,12 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, new ReportFragmentPacient()).addToBackStack(null).commit();
             toolbar.setTitle("Relatórios");
         } else if (id == R.id.nav_invite) {
-            toolbar.setTitle("Convites");
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, new InviteFragment()).addToBackStack(null).commit();
+            if (Singleton.getInstance().getType().equals("1")) {
+                DialogUtils.inviteFriend(this);
+            } else {
+                toolbar.setTitle("Convites");
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new InviteFragment()).addToBackStack(null).commit();
+            }
         } else if (id == R.id.nav_chat) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new AccompanimentsFragment(), "HOME").addToBackStack(null).commit();
             toolbar.setTitle("Acompanhamentos");

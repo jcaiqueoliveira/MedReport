@@ -69,7 +69,7 @@ public class InviteFragment extends Fragment {
                     ref2) {
                 @Override
                 protected void populateViewHolder(ViewHolderInvite viewHolderInvite, final Invite inviter, int i) {
-
+                    Log.e("REF",ref2.getKey());
                     viewHolderInvite.nameInviter.setText(inviter.getName());
                     viewHolderInvite.accept.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -95,6 +95,7 @@ public class InviteFragment extends Fragment {
                                         query.addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                                Log.e("DATA", dataSnapshot.getValue().toString());
                                                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                                     ref.child("friends").child(ds.getKey()).child(stackId2).setValue(map, new Firebase.CompletionListener() {//adicionando a quem enviou o convite
                                                         @Override
