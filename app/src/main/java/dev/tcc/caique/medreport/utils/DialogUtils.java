@@ -2,6 +2,7 @@ package dev.tcc.caique.medreport.utils;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dev.tcc.caique.medreport.R;
+import dev.tcc.caique.medreport.activities.LoginActivity;
 import dev.tcc.caique.medreport.models.Singleton;
 
 /**
@@ -40,8 +42,11 @@ public class DialogUtils {
         builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                //Todo logout and navigate to login activity
                 dialog.dismiss();
-                mContext.finish();
+                final Firebase ref = new Firebase(Constants.BASE_URL);
+                ref.unauth();
+                mContext.startActivity(new Intent(mContext, LoginActivity.class));
             }
         });
         alertDialog = builder.create();
