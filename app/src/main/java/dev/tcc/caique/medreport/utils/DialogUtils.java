@@ -137,4 +137,29 @@ public class DialogUtils {
         alertDialog = builder.create();
         alertDialog.show();
     }
+
+    public static void deleteAccompanimentDialog(final FragmentActivity mContext, final String userId, final String chatId) {
+        android.support.v7.app.AlertDialog alertDialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage("Tem certeza que deseja deletar este acompanhamento?");
+        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                final Firebase ref = new Firebase(Constants.BASE_URL);
+                ref.child("friends").child(ref.getAuth().getUid()).child(userId).removeValue();
+                ref.child("chat").child(chatId).removeValue();
+                dialog.dismiss();
+            }
+        });
+        alertDialog = builder.create();
+        alertDialog.show();
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+        alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+    }
 }
