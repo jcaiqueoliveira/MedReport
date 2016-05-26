@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * Created by Avell B153 MAX on 22/03/2016.
+ * Caique Oliveira on 22/03/2016.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {

@@ -19,7 +19,7 @@ import dev.tcc.caique.medreport.models.Singleton;
 import dev.tcc.caique.medreport.utils.Constants;
 
 /**
- * Created by Avell B153 MAX on 21/04/2016.
+ * Caique Oliveira on 21/04/2016.
  */
 public class ServiceDeleImageCloudinary extends Service {
     @Override

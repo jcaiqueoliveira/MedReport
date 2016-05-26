@@ -1,7 +1,7 @@
 package dev.tcc.caique.medreport.models;
 
 /**
- * Created by Avell B153 MAX on 27/03/2016.
+ * Caique Oliveira on 27/03/2016.
  */
 public class Image {
     private String image;

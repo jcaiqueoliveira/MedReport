@@ -40,7 +40,7 @@ public class ListReportPacientOfMedicalFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_list_report_pacient_of_medical, container, false);
         Bundle b = getArguments();
         if (b != null) {
-            String stack = b.getString("stack");
+            final String stack = b.getString("stack");
             ref = new Firebase(Constants.BASE_URL + "reports");
             ref2 = ref.child(stack);
             recyclerView = (RecyclerView) v.findViewById(R.id.reportRecyclerView);
@@ -58,6 +58,7 @@ public class ListReportPacientOfMedicalFragment extends Fragment {
                         public void onClick(View v) {
                             Bundle b = new Bundle();
                             b.putSerializable("report", report);
+                            b.putString("uid", stack);
                             ShowReportMedicalFragment showReportMedicalFragment = new ShowReportMedicalFragment();
                             showReportMedicalFragment.setArguments(b);
                             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, showReportMedicalFragment).addToBackStack(null).commit();
@@ -75,6 +76,7 @@ public class ListReportPacientOfMedicalFragment extends Fragment {
         public ImageView delete, edit, send;
         public TextView nameReport;
         public View v;
+
         public ViewHolderReport(View v) {
             super(v);
             this.v = v;

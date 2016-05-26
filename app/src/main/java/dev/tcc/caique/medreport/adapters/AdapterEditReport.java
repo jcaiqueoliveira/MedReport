@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -20,15 +21,23 @@ import dev.tcc.caique.medreport.service.ServiceDeleImageCloudinary;
 import dev.tcc.caique.medreport.utils.Constants;
 
 /**
- * Created by Avell B153 MAX on 30/04/2016.
+ * Caique Oliveira on 30/04/2016.
  */
 public class AdapterEditReport extends BaseAdapter {
     private FragmentActivity mContext;
     private Report report;
+    private boolean isOnlyShow = false;
 
     public AdapterEditReport(FragmentActivity mContex, Report report) {
         this.mContext = mContex;
         this.report = report;
+    }
+
+    public AdapterEditReport(FragmentActivity mContext, Report report, boolean isOnlyShow) {
+        Log.e("Aqui", "aqui");
+        this.mContext = mContext;
+        this.report = report;
+        this.isOnlyShow = isOnlyShow;
     }
 
     @Override
@@ -60,34 +69,36 @@ public class AdapterEditReport extends BaseAdapter {
         }
 
         Glide.with(mContext).load(Singleton.getInstance().getCurrentImageInReport().get(position).getImage()).placeholder(android.R.drawable.progress_indeterminate_horizontal).into(imageView);
-        imageView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle("Deseja remover a imagem?");
-                builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Firebase firebase = new Firebase(Constants.BASE_URL + "images/" + report.getStackId() + "/" + Singleton.getInstance().getCurrentImageInReport().get(position).getPublicId());
-                        Image image = Singleton.getInstance().getCurrentImageInReport().remove(position);
-                        firebase.removeValue();
-                        Singleton.getInstance().getImageToDeleteCloudinary().clear();
-                        Singleton.getInstance().getImageToDeleteCloudinary().add(image);
-                        mContext.startService(new Intent(mContext, ServiceDeleImageCloudinary.class));
-                        notifyDataSetChanged();
-                        dialog.dismiss();
-                    }
-                });
-                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.show();
-                return false;
-            }
-        });
+        if (!isOnlyShow) {
+            imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle("Deseja remover a imagem?");
+                    builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Firebase firebase = new Firebase(Constants.BASE_URL + "images/" + report.getStackId() + "/" + Singleton.getInstance().getCurrentImageInReport().get(position).getPublicId());
+                            Image image = Singleton.getInstance().getCurrentImageInReport().remove(position);
+                            firebase.removeValue();
+                            Singleton.getInstance().getImageToDeleteCloudinary().clear();
+                            Singleton.getInstance().getImageToDeleteCloudinary().add(image);
+                            mContext.startService(new Intent(mContext, ServiceDeleImageCloudinary.class));
+                            notifyDataSetChanged();
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
+                    return false;
+                }
+            });
+        }
         return imageView;
     }
 }

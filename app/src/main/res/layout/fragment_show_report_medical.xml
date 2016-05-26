@@ -38,5 +38,19 @@
                 android:focusable="false"
                 android:singleLine="false" />
         </android.support.design.widget.TextInputLayout>
+        <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_below="@+id/linear"
+            android:id="@+id/gridview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:numColumns="2"
+            android:verticalSpacing="5dp"
+            android:horizontalSpacing="5dp"
+            android:layout_margin="5dp"
+            android:gravity="center"
+
+            android:layout_above="@+id/addImages" />
+
     </LinearLayout>
+
 </FrameLayout>

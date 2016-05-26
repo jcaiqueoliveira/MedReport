@@ -81,7 +81,7 @@ public class ReportFragmentMedical extends Fragment {
                                                     list.setArguments(b);
                                                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, list).addToBackStack(null).commit();
                                                 } else {
-                                                    Snackbar.make(v, "Este paciente ainda não possui relatórios", Snackbar.LENGTH_LONG).show();
+                                                    Snackbar.make(v, "Este paciente ainda não possui relatórios", Snackbar.LENGTH_SHORT).show();
                                                 }
                                             }
                                         });

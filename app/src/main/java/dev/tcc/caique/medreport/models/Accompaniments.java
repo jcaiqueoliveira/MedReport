@@ -1,7 +1,7 @@
 package dev.tcc.caique.medreport.models;
 
 /**
- * Created by Avell B153 MAX on 06/03/2016.
+ * Caique Oliveira on 06/03/2016.
  */
 public class Accompaniments {
     private String stackId;

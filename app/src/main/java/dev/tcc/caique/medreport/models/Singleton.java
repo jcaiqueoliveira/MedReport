@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
- * Created by Avell B153 MAX on 22/02/2016.
+ * Caique Oliveira on 22/02/2016.
  */
 public class Singleton {
     private static Singleton ourInstance = new Singleton();

@@ -25,7 +25,7 @@ import dev.tcc.caique.medreport.activities.LoginActivity;
 import dev.tcc.caique.medreport.models.Singleton;
 
 /**
- * Created by Avell B153 MAX on 20/02/2016.
+ * Caique Oliveira on 20/02/2016.
  */
 public class DialogUtils {
 
