@@ -194,13 +194,14 @@ public class AccompanimentsFragment extends Fragment {
         if (!TextUtils.isEmpty(url)) {
             Glide.with(getActivity()).load(url).into(imageProfile);
         }
-        if (!TextUtils.isEmpty((String) ds.child("profile").child("specialization").getValue()))
-            specialization.setText((String) ds.child("profile").child("specialization").getValue());
+        Object specialization1 = ds.child("profile").child("specialization").getValue();
+        if (specialization1 != null && !TextUtils.isEmpty(specialization1.toString()))
+            specialization.setText(specialization1.toString());
         else
             specialization.setVisibility(View.GONE);
-
-        if (!TextUtils.isEmpty((String) ds.child("profile").child("crm").getValue()))
-            crm.setText((String) ds.child("profile").child("crm").getValue());
+        Object crm1 = ds.child("profile").child("crm").getValue();
+        if (crm1 != null && !TextUtils.isEmpty(crm1.toString()))
+            crm.setText(crm1.toString());
         else
             crm.setVisibility(View.GONE);
 
