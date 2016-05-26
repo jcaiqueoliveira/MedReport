@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -70,7 +71,11 @@ public class InviteFragment extends Fragment {
                 @Override
                 protected void populateViewHolder(ViewHolderInvite viewHolderInvite, final Invite inviter, int i) {
                     Log.e("REF",ref2.getKey());
+                    Log.e("Invite",inviter.toString());
                     viewHolderInvite.nameInviter.setText(inviter.getName());
+                    if(inviter!=null && inviter.getPhoto()!=null){
+                        Glide.with(getActivity()).load(inviter.getPhoto()).into(viewHolderInvite.thumbnal);
+                    }
                     viewHolderInvite.accept.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

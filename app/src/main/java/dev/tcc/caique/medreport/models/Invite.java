@@ -7,8 +7,10 @@ public class Invite {
     private String name;
     private String user;
     private String stackId;
+    private String photo;
 
-    public Invite(){}
+    public Invite() {
+    }
 
     public String getName() {
         return name;
@@ -42,12 +44,22 @@ public class Invite {
         this.stackId = stackId;
     }
 
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     @Override
     public String toString() {
         return "Invite{" +
                 "name='" + name + '\'' +
                 ", user='" + user + '\'' +
                 ", stackId='" + stackId + '\'' +
+                ", photo='" + photo + '\'' +
                 '}';
     }
 }

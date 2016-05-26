@@ -22,7 +22,9 @@ public class Singleton {
     public static Singleton getInstance() {
         return ourInstance;
     }
-
+    public static void resetInstance(){
+        ourInstance = null;
+    }
     private Singleton() {
     }
 

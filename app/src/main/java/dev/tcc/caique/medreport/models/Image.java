@@ -6,7 +6,6 @@ package dev.tcc.caique.medreport.models;
 public class Image {
     private String image;
     private String publicId;
-
     public Image() {
 
     }
@@ -30,6 +29,8 @@ public class Image {
     public void setPublicId(String publicId) {
         this.publicId = publicId;
     }
+
+
 
     @Override
     public String toString() {

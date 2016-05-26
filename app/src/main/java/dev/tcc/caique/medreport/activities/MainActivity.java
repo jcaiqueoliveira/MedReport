@@ -210,4 +210,10 @@ public class MainActivity extends AppCompatActivity
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        Singleton.resetInstance();
+        super.onDestroy();
+    }
 }

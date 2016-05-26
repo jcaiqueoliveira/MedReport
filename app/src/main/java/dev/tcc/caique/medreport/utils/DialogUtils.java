@@ -44,9 +44,12 @@ public class DialogUtils {
             public void onClick(DialogInterface dialog, int which) {
                 //Todo logout and navigate to login activity
                 dialog.dismiss();
+
                 final Firebase ref = new Firebase(Constants.BASE_URL);
                 ref.unauth();
+                Singleton.resetInstance();
                 mContext.startActivity(new Intent(mContext, LoginActivity.class));
+
             }
         });
         alertDialog = builder.create();
@@ -95,6 +98,14 @@ public class DialogUtils {
                                                                 friendInvite.put("name", Singleton.getInstance().getName());
                                                                 Firebase reference = firebase.push();
                                                                 friendInvite.put("stackId", reference.getKey());
+                                                                if (Singleton.getInstance().getType().equals(Constants.TYPE_MEDICAL)) {
+                                                                    if (Singleton.getInstance().getPm().getProfileUrl() != null)
+                                                                        friendInvite.put("photo", Singleton.getInstance().getPm().getProfileUrl());
+                                                                } else {
+                                                                    if (Singleton.getInstance().getPp().getProfileUrl() != null)
+                                                                        friendInvite.put("photo", Singleton.getInstance().getPp().getProfileUrl());
+                                                                }
+                                                                Log.e("DATA", firebase.getAuth().toString());
                                                                 invites.child("invites").child(resultSearchFriend.getKey()).child(reference.getKey()).setValue(friendInvite, new Firebase.CompletionListener() {
                                                                     @Override
                                                                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
@@ -109,6 +120,7 @@ public class DialogUtils {
                                                                 });
                                                             }
                                                         }
+
                                                         @Override
                                                         public void onCancelled(FirebaseError firebaseError) {
                                                         }
@@ -116,6 +128,7 @@ public class DialogUtils {
                                         }
                                     }
                                 }
+
                                 @Override
                                 public void onCancelled(FirebaseError firebaseError) {
 
@@ -127,6 +140,7 @@ public class DialogUtils {
                             Toast.makeText(mContext, "Usuário não encontrado", Toast.LENGTH_SHORT).show();
                         }
                     }
+
                     @Override
                     public void onCancelled(FirebaseError firebaseError) {
                         Log.i("error", firebaseError.getMessage());
