@@ -121,20 +121,12 @@ public class AccompanimentsFragment extends Fragment {
                             startActivity(i);
                         }
                     });
-                    viewHolderAccompaniments.informations.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                        }
-                    });
-
-                    viewHolderAccompaniments.accompanimentRow.setOnLongClickListener(new View.OnLongClickListener() {
+                    viewHolderAccompaniments.view.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
                             Log.d("OnLongClick", "Paciente: " + viewHolderAccompaniments.namePerson.getText().toString());
                             DialogUtils.deleteAccompanimentDialog(getActivity(), accompaniments.getStackId(), accompaniments.getChat());
                             //get user id, then chat id with user id and then delete friends with usr id and chat with chat id
-
                             return true;
                         }
                     });
@@ -160,10 +152,6 @@ public class AccompanimentsFragment extends Fragment {
         public TextView namePerson;
         public ImageView informations;
         public View view;
-
-        public interface OnItemLongClickListener {
-            public boolean onItemLongClicked(int position);
-        }
 
         public ViewHolderAccompaniments(View v) {
             super(v);

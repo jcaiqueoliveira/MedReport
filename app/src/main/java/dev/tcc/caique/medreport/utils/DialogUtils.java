@@ -141,7 +141,7 @@ public class DialogUtils {
     public static void deleteAccompanimentDialog(final FragmentActivity mContext, final String userId, final String chatId) {
         android.support.v7.app.AlertDialog alertDialog;
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setMessage("Tem certeza que deseja deletar este acompanhamento?");
+        builder.setMessage("Deseja apagar este acompanhamento?");
         builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
