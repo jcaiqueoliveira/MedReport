@@ -63,7 +63,7 @@ public class DialogUtils {
         final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         View v = mContext.getLayoutInflater().inflate(R.layout.search_friend, null);
         final EditText edit = (EditText) v.findViewById(R.id.email);
-        builder.setTitle("Adicionar");
+        builder.setTitle("Enviar convite");
         builder.setView(v);
         builder.setPositiveButton("Adicionar", new DialogInterface.OnClickListener() {
             @Override
