@@ -4,7 +4,6 @@ package dev.tcc.caique.medreport.fragments;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatEditText;
@@ -132,8 +131,8 @@ public class AccompanimentsFragment extends Fragment {
                     viewHolderAccompaniments.accompanimentRow.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-                            Log.d("OnLongClick","Paciente: "+viewHolderAccompaniments.namePerson.getText().toString());
-                            DialogUtils.deleteAccompanimentDialog(getActivity(),accompaniments.getStackId(),accompaniments.getChat());
+                            Log.d("OnLongClick", "Paciente: " + viewHolderAccompaniments.namePerson.getText().toString());
+                            DialogUtils.deleteAccompanimentDialog(getActivity(), accompaniments.getStackId(), accompaniments.getChat());
                             //get user id, then chat id with user id and then delete friends with usr id and chat with chat id
 
                             return true;
@@ -224,38 +223,42 @@ public class AccompanimentsFragment extends Fragment {
         if (!TextUtils.isEmpty(url))
             Glide.with(getActivity()).load(url).into(imgProfile);
         edtName.setText(ds.child("name").getValue().toString());
-        if (!TextUtils.isEmpty(ds.child("profile").child("age").getValue().toString()))
-            edtAge.setText(ds.child("profile").child("age").getValue().toString());
-            else
-            edtAge.setVisibility(View.GONE);
 
-        if (!TextUtils.isEmpty(ds.child("profile").child("gender").getValue().toString()))
-            edtGender.setText(ds.child("profile").child("gender").getValue().toString());
+        Object age = ds.child("profile").child("age").getValue();
+        if (age != null && !TextUtils.isEmpty(age.toString()))
+            edtAge.setText(age.toString());
+        else
+            edtAge.setVisibility(View.GONE);
+        Object gender = ds.child("profile").child("gender").getValue();
+        if (gender != null && !TextUtils.isEmpty(gender.toString()))
+            edtGender.setText(gender.toString());
         else
             edtGender.setVisibility(View.GONE);
-
-        if (!TextUtils.isEmpty(ds.child("profile").child("stature").getValue().toString()))
-            edtHeight.setText(ds.child("profile").child("stature").getValue().toString());
+        Object stature = ds.child("profile").child("stature").getValue();
+        if (stature != null && !TextUtils.isEmpty(stature.toString()))
+            edtHeight.setText(stature.toString());
         else
             edtHeight.setVisibility(View.GONE);
 
-        if (!TextUtils.isEmpty(ds.child("profile").child("weight").getValue().toString()))
-            weight.setText(ds.child("profile").child("weight").getValue().toString());
+        Object weight1 = ds.child("profile").child("weight").getValue();
+        if (weight1 != null && !TextUtils.isEmpty(weight1.toString()))
+            weight.setText(weight1.toString());
         else
             weight.setVisibility(View.GONE);
-
-        if (!TextUtils.isEmpty(ds.child("profile").child("healthProblem").getValue().toString()))
-            edtProblem1.setText(ds.child("profile").child("healthProblem").getValue().toString());
+        Object healthProblem = ds.child("profile").child("healthProblem").getValue();
+        if (healthProblem != null && !TextUtils.isEmpty(healthProblem.toString()))
+            edtProblem1.setText(healthProblem.toString());
         else
             edtProblem1.setVisibility(View.GONE);
-
-        if (!TextUtils.isEmpty(ds.child("profile").child("allergy").getValue().toString()))
-            edtProblem2.setText(ds.child("profile").child("allergy").getValue().toString());
+        Object allergy = ds.child("profile").child("allergy").getValue();
+        if (allergy != null && !TextUtils.isEmpty(allergy.toString()))
+            edtProblem2.setText(allergy.toString());
         else
             edtProblem2.setVisibility(View.GONE);
 
-        if (!TextUtils.isEmpty(ds.child("profile").child("drugAllergy").getValue().toString()))
-            edtProblem3.setText(ds.child("profile").child("drugAllergy").getValue().toString());
+        Object drugAllergy = ds.child("profile").child("drugAllergy").getValue();
+        if (drugAllergy != null && !TextUtils.isEmpty(drugAllergy.toString()))
+            edtProblem3.setText(drugAllergy.toString());
         else
             edtProblem3.setVisibility(View.GONE);
 
@@ -268,5 +271,5 @@ public class AccompanimentsFragment extends Fragment {
         edtProblem2.setEnabled(false);
         edtProblem3.setEnabled(false);
         return view;
-        }
     }
+}
