@@ -10,7 +10,7 @@
         >
 
     </android.support.v7.widget.RecyclerView>
-    <!-- TODO: Update blank fragment layout -->
+
     <TextView
         android:id="@+id/noItem"
         android:layout_width="match_parent"
