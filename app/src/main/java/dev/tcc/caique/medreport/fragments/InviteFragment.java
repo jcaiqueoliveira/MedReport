@@ -70,10 +70,8 @@ public class InviteFragment extends Fragment {
                     ref2) {
                 @Override
                 protected void populateViewHolder(ViewHolderInvite viewHolderInvite, final Invite inviter, int i) {
-                    Log.e("REF",ref2.getKey());
-                    Log.e("Invite",inviter.toString());
                     viewHolderInvite.nameInviter.setText(inviter.getName());
-                    if(inviter!=null && inviter.getPhoto()!=null){
+                    if (inviter.getPhoto() != null) {
                         Glide.with(getActivity()).load(inviter.getPhoto()).into(viewHolderInvite.thumbnal);
                     }
                     viewHolderInvite.accept.setOnClickListener(new View.OnClickListener() {
@@ -194,10 +192,25 @@ public class InviteFragment extends Fragment {
     }
 
     public void updateUI() {
-        if (adapter.getItemCount() == 0) {
-            noItem.setVisibility(View.VISIBLE);
-        } else {
-            noItem.setVisibility(View.GONE);
-        }
+        Firebase f = new Firebase(Constants.BASE_URL + "/invites");
+        f.child(f.getAuth().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    if (dataSnapshot.getChildrenCount() > 0) {
+                        noItem.setVisibility(View.GONE);
+                    } else {
+                        noItem.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    noItem.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 }

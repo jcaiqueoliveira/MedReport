@@ -2,6 +2,7 @@ package dev.tcc.caique.medreport.fragments;
 
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -66,19 +67,24 @@ public class ReportFragmentMedical extends Fragment {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (final DataSnapshot ds : dataSnapshot.getChildren()) {
-                                viewHolderAccompaniments.view.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Bundle b = new Bundle();
-                                        b.putString("stack", ds.getKey());
-                                        ListReportPacientOfMedicalFragment list = new ListReportPacientOfMedicalFragment();
-                                        list.setArguments(b);
-                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, list).addToBackStack(null).commit();
-                                    }
-                                });
+
                                 ref.child("reports").child(ds.getKey()).addValueEventListener(new ValueEventListener() {
                                     @Override
-                                    public void onDataChange(DataSnapshot snapshot) {
+                                    public void onDataChange(final DataSnapshot snapshot) {
+                                        viewHolderAccompaniments.view.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                if (snapshot.getChildrenCount() > 0) {
+                                                    Bundle b = new Bundle();
+                                                    b.putString("stack", ds.getKey());
+                                                    ListReportPacientOfMedicalFragment list = new ListReportPacientOfMedicalFragment();
+                                                    list.setArguments(b);
+                                                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, list).addToBackStack(null).commit();
+                                                } else {
+                                                    Snackbar.make(v, "Este paciente ainda não possui relatórios", Snackbar.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
                                         viewHolderAccompaniments.numberReport.setText("Relatórios: " + snapshot.getChildrenCount());
                                     }
 
