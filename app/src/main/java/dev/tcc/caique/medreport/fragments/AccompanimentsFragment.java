@@ -4,6 +4,7 @@ package dev.tcc.caique.medreport.fragments;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatEditText;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -34,6 +36,7 @@ import dev.tcc.caique.medreport.activities.ChatActivity;
 import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.models.Accompaniments;
 import dev.tcc.caique.medreport.utils.Constants;
+import dev.tcc.caique.medreport.utils.DialogUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -125,6 +128,17 @@ public class AccompanimentsFragment extends Fragment {
 
                         }
                     });
+
+                    viewHolderAccompaniments.accompanimentRow.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            Log.d("OnLongClick","Paciente: "+viewHolderAccompaniments.namePerson.getText().toString());
+                            DialogUtils.deleteAccompanimentDialog(getActivity(),accompaniments.getStackId(),accompaniments.getChat());
+                            //get user id, then chat id with user id and then delete friends with usr id and chat with chat id
+
+                            return true;
+                        }
+                    });
                 }
             };
             accompanimentsList.setAdapter(adapter);
@@ -142,10 +156,15 @@ public class AccompanimentsFragment extends Fragment {
     }
 
     public static class ViewHolderAccompaniments extends RecyclerView.ViewHolder {
+        public LinearLayout accompanimentRow;
         public CircleImageView thumbnail;
         public TextView namePerson;
         public ImageView informations;
         public View view;
+
+        public interface OnItemLongClickListener {
+            public boolean onItemLongClicked(int position);
+        }
 
         public ViewHolderAccompaniments(View v) {
             super(v);
@@ -153,6 +172,7 @@ public class AccompanimentsFragment extends Fragment {
             thumbnail = (CircleImageView) v.findViewById(R.id.thumbnail);
             namePerson = (TextView) v.findViewById(R.id.nameAccompanimentList);
             informations = (ImageView) v.findViewById(R.id.informations);
+            accompanimentRow = (LinearLayout) v.findViewById(R.id.accompanimentRow);
         }
     }
 
