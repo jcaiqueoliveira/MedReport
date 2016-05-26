@@ -183,11 +183,6 @@ public class AccompanimentsFragment extends Fragment {
             noItem.setVisibility(View.GONE);
         }
     }
-    //TODO
-    private View removeAccompaniment(String name) {
-        return null;
-    }
-
 
     private View getProfileMedicalInfo(DataSnapshot ds, String url) {
         final View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_profile_medical, null);
