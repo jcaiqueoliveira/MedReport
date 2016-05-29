@@ -68,6 +68,7 @@ public class AccompanimentsFragment extends Fragment {
             adapter = new FirebaseRecyclerAdapter<Accompaniments, ViewHolderAccompaniments>(Accompaniments.class, R.layout.layout_accompaniments, ViewHolderAccompaniments.class, ref2) {
                 @Override
                 protected void populateViewHolder(final ViewHolderAccompaniments viewHolderAccompaniments, final Accompaniments accompaniments, int i) {
+                    Log.e("ACOMPANHAMENTO", accompaniments.toString());
                     noItem.setVisibility(View.GONE);
                     final String[] url = {null};
                     Query queryRef = ref3.orderByChild("email").equalTo(accompaniments.getEmail());
@@ -125,7 +126,7 @@ public class AccompanimentsFragment extends Fragment {
                         @Override
                         public boolean onLongClick(View v) {
                             Log.d("OnLongClick", "Paciente: " + viewHolderAccompaniments.namePerson.getText().toString());
-                            DialogUtils.deleteAccompanimentDialog(getActivity(), accompaniments.getStackId(), accompaniments.getChat());
+                            DialogUtils.deleteAccompanimentDialog(getActivity(), accompaniments.getStackId(), accompaniments.getChat(),accompaniments.getEmail());
                             //get user id, then chat id with user id and then delete friends with usr id and chat with chat id
                             return true;
                         }

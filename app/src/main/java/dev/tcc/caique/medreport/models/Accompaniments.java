@@ -35,4 +35,13 @@ public class Accompaniments {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "Accompaniments{" +
+                "stackId='" + stackId + '\'' +
+                ", chat='" + chat + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

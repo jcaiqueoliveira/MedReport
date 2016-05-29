@@ -152,7 +152,7 @@ public class DialogUtils {
         alertDialog.show();
     }
 
-    public static void deleteAccompanimentDialog(final FragmentActivity mContext, final String userId, final String chatId) {
+    public static void deleteAccompanimentDialog(final FragmentActivity mContext, final String userId, final String chatId, final String email) {
         android.support.v7.app.AlertDialog alertDialog;
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setMessage("Deseja apagar este acompanhamento?");
@@ -168,6 +168,34 @@ public class DialogUtils {
                 final Firebase ref = new Firebase(Constants.BASE_URL);
                 ref.child("friends").child(ref.getAuth().getUid()).child(userId).removeValue();
                 ref.child("chat").child(chatId).removeValue();
+                final Query query = ref.child("users").orderByChild("email").equalTo(email);
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (final DataSnapshot ds : dataSnapshot.getChildren()) {
+                            Query query1 = ref.child("friends").child(ds.getKey()).orderByChild("email").equalTo(ref.getAuth().getProviderData().get("email").toString());
+                            query1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                        ref.child("friends").child(ds.getKey()).child(dataSnapshot1.getKey()).removeValue();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(FirebaseError firebaseError) {
+
+                                }
+                            });
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
                 dialog.dismiss();
             }
         });
