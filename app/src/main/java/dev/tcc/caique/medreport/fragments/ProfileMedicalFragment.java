@@ -101,6 +101,7 @@ public class ProfileMedicalFragment extends Fragment {
     @Override
     public void onResume() {
         ((MainActivity) getActivity()).navigationView.setCheckedItem(Constants.PROFILE);
+        ((MainActivity)getActivity()).toolbar.setTitle("Perfil");
         super.onResume();
     }
 

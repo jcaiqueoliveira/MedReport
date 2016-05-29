@@ -174,6 +174,7 @@ public class InviteFragment extends Fragment {
     @Override
     public void onResume() {
         ((MainActivity) getActivity()).navigationView.setCheckedItem(Constants.INVITE);
+        ((MainActivity)getActivity()).toolbar.setTitle("Convites");
         super.onResume();
     }
 

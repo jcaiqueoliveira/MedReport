@@ -68,8 +68,6 @@ public class AccompanimentsFragment extends Fragment {
             adapter = new FirebaseRecyclerAdapter<Accompaniments, ViewHolderAccompaniments>(Accompaniments.class, R.layout.layout_accompaniments, ViewHolderAccompaniments.class, ref2) {
                 @Override
                 protected void populateViewHolder(final ViewHolderAccompaniments viewHolderAccompaniments, final Accompaniments accompaniments, int i) {
-                    Log.e("ACOMPANHAMENTO", accompaniments.toString());
-                    noItem.setVisibility(View.GONE);
                     final String[] url = {null};
                     Query queryRef = ref3.orderByChild("email").equalTo(accompaniments.getEmail());
                     queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -126,7 +124,7 @@ public class AccompanimentsFragment extends Fragment {
                         @Override
                         public boolean onLongClick(View v) {
                             Log.d("OnLongClick", "Paciente: " + viewHolderAccompaniments.namePerson.getText().toString());
-                            DialogUtils.deleteAccompanimentDialog(getActivity(), accompaniments.getStackId(), accompaniments.getChat(),accompaniments.getEmail());
+                            DialogUtils.deleteAccompanimentDialog(getActivity(), accompaniments.getStackId(), accompaniments.getChat(), accompaniments.getEmail());
                             //get user id, then chat id with user id and then delete friends with usr id and chat with chat id
                             return true;
                         }
@@ -144,6 +142,7 @@ public class AccompanimentsFragment extends Fragment {
     @Override
     public void onResume() {
         ((MainActivity) getActivity()).navigationView.setCheckedItem(Constants.ACCOMPANIMENTS);
+        ((MainActivity)getActivity()).toolbar.setTitle("Acompanhamentos");
         super.onResume();
     }
 
@@ -165,11 +164,22 @@ public class AccompanimentsFragment extends Fragment {
     }
 
     public void updateUI() {
-        if (adapter.getItemCount() == 0) {
-            noItem.setVisibility(View.VISIBLE);
-        } else {
-            noItem.setVisibility(View.GONE);
-        }
+        Firebase firebase = new Firebase(Constants.BASE_URL);
+        firebase.child("friends").child(firebase.getAuth().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() > 0) {
+                    noItem.setVisibility(View.GONE);
+                } else {
+                    noItem.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     private View getProfileMedicalInfo(DataSnapshot ds, String url) {

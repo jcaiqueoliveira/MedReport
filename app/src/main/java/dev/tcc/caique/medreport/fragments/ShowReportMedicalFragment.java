@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import dev.tcc.caique.medreport.R;
+import dev.tcc.caique.medreport.activities.MainActivity;
 import dev.tcc.caique.medreport.adapters.AdapterEditReport;
 import dev.tcc.caique.medreport.models.Image;
 import dev.tcc.caique.medreport.models.Report;
@@ -87,5 +88,12 @@ public class ShowReportMedicalFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        ((MainActivity) getActivity()).navigationView.setCheckedItem(Constants.REPORT);
+        ((MainActivity)getActivity()).toolbar.setTitle("Relatórios");
+        super.onResume();
     }
 }

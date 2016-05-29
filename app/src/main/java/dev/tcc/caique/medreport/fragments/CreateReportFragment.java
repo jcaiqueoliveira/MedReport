@@ -290,4 +290,11 @@ public class CreateReportFragment extends Fragment {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+
+    @Override
+    public void onResume() {
+        ((MainActivity) getActivity()).navigationView.setCheckedItem(Constants.REPORT);
+        ((MainActivity)getActivity()).toolbar.setTitle("Relatórios");
+        super.onResume();
+    }
 }

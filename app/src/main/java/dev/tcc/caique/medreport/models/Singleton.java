@@ -18,7 +18,7 @@ public class Singleton {
     private ArrayList<String> friends = new ArrayList<>();
     private ArrayList<Image> imageToDeleteCloudinary = new ArrayList<>();
     private ArrayList<Image> currentImageInReport = new ArrayList<>();
-
+    private String urlToShow;
     public static Singleton getInstance() {
         return ourInstance;
     }
@@ -106,5 +106,13 @@ public class Singleton {
 
     public void setCurrentImageInReport(ArrayList<Image> currentImageInReport) {
         this.currentImageInReport = currentImageInReport;
+    }
+
+    public String getUrlToShow() {
+        return urlToShow;
+    }
+
+    public void setUrlToShow(String urlToShow) {
+        this.urlToShow = urlToShow;
     }
 }

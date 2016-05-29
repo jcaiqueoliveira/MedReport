@@ -121,6 +121,7 @@ public class ProfilePacientFragment extends Fragment {
     @Override
     public void onResume() {
         ((MainActivity) getActivity()).navigationView.setCheckedItem(Constants.PROFILE);
+        ((MainActivity)getActivity()).toolbar.setTitle("Perfil");
         super.onResume();
     }
 
@@ -229,8 +230,6 @@ public class ProfilePacientFragment extends Fragment {
                 startIntentCamera();
             else {
                 showSnackBar("Permissão não garantida");
-                Log.i("0", "" + grantResults[0]);
-                Log.i("1", "" + grantResults[1]);
             }
         } else {
             Log.i("request code", "" + requestCode);

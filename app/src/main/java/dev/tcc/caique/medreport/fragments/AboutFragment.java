@@ -48,11 +48,12 @@ public class AboutFragment extends Fragment {
         Uri uri = Uri.parse(uriText);
         Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
         sendIntent.setData(uri);
-        startActivity(Intent.createChooser(sendIntent, "Escolha um aplicativo"));
+        startActivity(Intent.createChooser(sendIntent, "Como deseja realizar essa ação:"));
     }
     @Override
     public void onResume() {
         ((MainActivity) getActivity()).navigationView.setCheckedItem(Constants.ABOUT);
+        ((MainActivity)getActivity()).toolbar.setTitle("Sobre");
         super.onResume();
     }
 }

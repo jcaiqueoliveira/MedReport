@@ -85,21 +85,6 @@ public class ReportFragmentPacient extends Fragment {
                 protected void populateViewHolder(ViewHolderReport viewHolderReport, final Report r, int i) {
                     noItem.setVisibility(View.GONE);
                     viewHolderReport.nameReport.setText(r.getTitle());
-                    Firebase firebase1 = new Firebase(Constants.BASE_URL + "images/" + r.getStackId());
-                    firebase1.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                Log.i("dataSnap", ds.toString());
-                                //images.add(ds.getValue(Image.class));
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-
-                        }
-                    });
                     viewHolderReport.delete.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -119,6 +104,7 @@ public class ReportFragmentPacient extends Fragment {
                 }
             };
             recyclerView.setAdapter(adapter);
+            updateUI();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -135,6 +121,7 @@ public class ReportFragmentPacient extends Fragment {
     @Override
     public void onResume() {
         ((MainActivity) getActivity()).navigationView.setCheckedItem(Constants.REPORT);
+        ((MainActivity)getActivity()).toolbar.setTitle("Relatórios");
         super.onResume();
     }
 
@@ -220,6 +207,24 @@ public class ReportFragmentPacient extends Fragment {
                 } else {
                     Toast.makeText(getActivity(), "Erro ao excluir. Tente Novamente", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+    }
+    public void updateUI() {
+        Firebase firebase = new Firebase(Constants.BASE_URL);
+        firebase.child("reports").child(firebase.getAuth().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() > 0) {
+                    noItem.setVisibility(View.GONE);
+                } else {
+                    noItem.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
             }
         });
     }

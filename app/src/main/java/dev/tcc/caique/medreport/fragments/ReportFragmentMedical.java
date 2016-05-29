@@ -120,6 +120,7 @@ public class ReportFragmentMedical extends Fragment {
                 }
             };
             accompanimentsList.setAdapter(adapter);
+            updateUI();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -141,10 +142,21 @@ public class ReportFragmentMedical extends Fragment {
     }
 
     public void updateUI() {
-        if (adapter.getItemCount() == 0) {
-            noItem.setVisibility(View.VISIBLE);
-        } else {
-            noItem.setVisibility(View.GONE);
-        }
+        Firebase firebase = new Firebase(Constants.BASE_URL);
+        firebase.child("friends").child(firebase.getAuth().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() > 0) {
+                    noItem.setVisibility(View.GONE);
+                } else {
+                    noItem.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 }

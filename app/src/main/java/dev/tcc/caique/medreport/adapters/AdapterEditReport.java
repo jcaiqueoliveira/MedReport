@@ -1,7 +1,11 @@
 package dev.tcc.caique.medreport.adapters;
 
+import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Build;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -14,6 +18,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.firebase.client.Firebase;
 
+import dev.tcc.caique.medreport.R;
+import dev.tcc.caique.medreport.activities.ShowImage;
 import dev.tcc.caique.medreport.models.Image;
 import dev.tcc.caique.medreport.models.Report;
 import dev.tcc.caique.medreport.models.Singleton;
@@ -55,20 +61,32 @@ public class AdapterEditReport extends BaseAdapter {
         return 0;
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
+        final ImageView imageView;
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
             imageView.setLayoutParams(new GridView.LayoutParams(300, 300));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(5, 5, 5, 5);
+            imageView.setId(R.id.showImage);
+            imageView.setTransitionName("exibicao");
         } else {
             imageView = (ImageView) convertView;
         }
 
         Glide.with(mContext).load(Singleton.getInstance().getCurrentImageInReport().get(position).getImage()).placeholder(android.R.drawable.progress_indeterminate_horizontal).into(imageView);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(mContext, imageView, "exibicao");
+                Singleton.getInstance().setUrlToShow(Singleton.getInstance().getCurrentImageInReport().get(position).getImage());
+                mContext.startActivity(new Intent(mContext, ShowImage.class), options.toBundle());
+            }
+        });
+
         if (!isOnlyShow) {
             imageView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override

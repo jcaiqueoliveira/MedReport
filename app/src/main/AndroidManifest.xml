@@ -33,8 +33,8 @@
         </activity>
         <activity
             android:name=".activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.LoginActivity"
@@ -55,6 +55,8 @@
         <meta-data
             android:name="CLOUDINARY_URL"
             android:value="cloudinary://667338644874746:cmsInEJHBQ1HL6vS1iysqvRs-xo@dgh8cvhny" />
+
+        <activity android:name=".activities.ShowImage"></activity>
     </application>
 
 </manifest>
