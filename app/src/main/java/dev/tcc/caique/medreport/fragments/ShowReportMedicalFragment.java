@@ -74,9 +74,7 @@ public class ShowReportMedicalFragment extends Fragment {
         f.child(r.getStackId()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("resuult2", dataSnapshot.toString());
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Log.e("Resul", "Cadê" + ds.toString());
                     images.add(ds.getValue(Image.class));
                 }
                 Singleton.getInstance().setCurrentImageInReport(images);

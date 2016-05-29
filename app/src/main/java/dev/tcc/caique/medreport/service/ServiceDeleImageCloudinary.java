@@ -49,7 +49,6 @@ public class ServiceDeleImageCloudinary extends Service {
         for (Image i : images)
             try {
                 Map resultDestroy = cloudinary.uploader().destroy(i.getPublicId(), ObjectUtils.asMap("invalidate", true));
-                Log.e("resul", resultDestroy.toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -105,7 +105,6 @@ public class DialogUtils {
                                                                     if (Singleton.getInstance().getPp().getProfileUrl() != null)
                                                                         friendInvite.put("photo", Singleton.getInstance().getPp().getProfileUrl());
                                                                 }
-                                                                Log.e("DATA", firebase.getAuth().toString());
                                                                 invites.child("invites").child(resultSearchFriend.getKey()).child(reference.getKey()).setValue(friendInvite, new Firebase.CompletionListener() {
                                                                     @Override
                                                                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {

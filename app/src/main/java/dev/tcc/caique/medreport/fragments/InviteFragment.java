@@ -98,7 +98,6 @@ public class InviteFragment extends Fragment {
                                         query.addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                                Log.e("DATA", dataSnapshot.getValue().toString());
                                                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                                     ref.child("friends").child(ds.getKey()).child(stackId2).setValue(map, new Firebase.CompletionListener() {//adicionando a quem enviou o convite
                                                         @Override
@@ -159,7 +158,7 @@ public class InviteFragment extends Fragment {
             recyclerView.setAdapter(adapter);
             updateUI();
         } catch (Exception e) {
-            Log.e("error1", e.getMessage());
+         e.printStackTrace();
         }
 
         ((MainActivity) getActivity()).fab.setOnClickListener(new View.OnClickListener() {

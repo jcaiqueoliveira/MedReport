@@ -70,12 +70,11 @@ public class AccompanimentsFragment extends Fragment {
                 protected void populateViewHolder(final ViewHolderAccompaniments viewHolderAccompaniments, final Accompaniments accompaniments, int i) {
                     final String[] url = {null};
                     Query queryRef = ref3.orderByChild("email").equalTo(accompaniments.getEmail());
-                    queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    queryRef.addValueEventListener(new ValueEventListener() {
 
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (final DataSnapshot ds : dataSnapshot.getChildren()) {
-                                Log.e("dados", ds.toString());
                                 viewHolderAccompaniments.namePerson.setText((String) ds.child("name").getValue());
                                 url[0] = (String) ds.child("profile").child("profileUrl").getValue();
                                 if (url[0] != null) {

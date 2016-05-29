@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.cloudinary.Cloudinary;
@@ -79,7 +80,7 @@ public class SendImageCloudinary extends Service {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            Toast.makeText(SendImageCloudinary.this, "Relatório criado com sucesso!", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(SendImageCloudinary.this, "Relatório criado com sucesso!", Toast.LENGTH_SHORT).show();
             onDestroy();
             super.onPostExecute(aVoid);
         }

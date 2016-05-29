@@ -40,7 +40,6 @@ public class AdapterEditReport extends BaseAdapter {
     }
 
     public AdapterEditReport(FragmentActivity mContext, Report report, boolean isOnlyShow) {
-        Log.e("Aqui", "aqui");
         this.mContext = mContext;
         this.report = report;
         this.isOnlyShow = isOnlyShow;
