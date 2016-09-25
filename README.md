@@ -1,5 +1,6 @@
 ﻿# MedReport
-This is a repository to create the app android  called MedReport. This project is part of tcc in computer science
+This is a repository to create the android app called MedReport. This project is part of a CS completion of coursework at Universidade de Sergipe.
+
 
 #To Do Android
 - [ ] Adicionar foto na lista de convites(foto de quem enviou o convite) ( go to referencias.txt)
